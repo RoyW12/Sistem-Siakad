@@ -16,7 +16,12 @@ public class App{
                 System.out.println("===============");
                 System.out.println("===============");
                 System.out.print("Nomor Induk Mahasiswa : ");
-
+                nim = sc.nextLong();
+                System.out.println("===============");
+                System.out.println("===============");
+                System.out.println( "jumlah tagihan UKT = " + jumlahTagihanUKT);
+                System.out.print("masukkan jumlah UKT yang dibayar ");
+                nominalPembayaran = sc.nextInt();
 
     }
 }
