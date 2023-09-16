@@ -23,5 +23,11 @@ public class App{
                 System.out.print("masukkan jumlah UKT yang dibayar ");
                 nominalPembayaran = sc.nextInt();
 
+                System.out.println("=======BUKTI PEMBAYARAN=======");
+                sisaTagihan = jumlahTagihanUKT - nominalPembayaran;
+                System.out.println("Sisa tagihan = " + sisaTagihan);
+
+                System.out.println("Nama : " + nama + "\n" + "Nim : " + nim + "\n" + "Nominal Pembayaran : " + nominalPembayaran + "\n" + "Sisa Tagihan : " + sisaTagihan);
+
     }
 }
