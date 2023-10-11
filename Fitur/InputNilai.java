@@ -14,6 +14,18 @@ public class InputNilai {
         long nim = input.nextLong();
         input.nextLine(); 
 
+        System.out.println("----------------------");
+        System.out.println("  Daftar Mata Kuliah  ");
+        System.out.println("----------------------");
+        System.out.println("| 1. Praktikum Daspro");
+        System.out.println("| 2. Daspro");
+        System.out.println("| 3. Pancasila");
+        System.out.println("| 4. CTPS");
+        System.out.println("| 5. Matdas");
+        System.out.println("| 6. Bahasa Inggris");
+        System.out.println("| 7. KTI");
+        System.out.println("| 8. K3");
+
         System.out.print("Masukkan mata kuliah      : ");
         String matkul = input.nextLine();
 
@@ -29,25 +41,27 @@ public class InputNilai {
         System.out.println("| Mata Kuliah : " + matkul);
         System.out.println("| Nilai       : " + nilai);
 
+        String nilaiHuruf;
         if (nilai > 80 && nilai <= 100) {
-            System.out.println("| Nilai huruf : A");
+            nilaiHuruf = "A";
         } else if (nilai > 73 && nilai <= 80 ) {
-            System.out.println("| Nilai huruf : B+");
+            nilaiHuruf = "B+";
         } else if (nilai > 65 && nilai <= 73) {
-            System.out.println("| Nilai huruf : B");
+            nilaiHuruf = "B";
         } else if (nilai > 60 && nilai <= 65) {
-            System.out.println("| Nilai huruf : C+");
+            nilaiHuruf = "C+";
         } else if (nilai > 50 && nilai <= 60) {
-            System.out.println("| Nilai huruf : C");
+            nilaiHuruf = "C";
         } else if (nilai > 39 && nilai <= 50) {
-            System.out.println("| Nilai huruf : D");
-        } else if (nilai <= 39) {
-            System.out.println("| Nilai huruf : E");
+            nilaiHuruf = "D";
+        } else if (nilai > 0 && nilai <= 39) {
+            nilaiHuruf = "E";
         } else {
-            System.out.println("| Nilai huruf tidak tersedia");
+            nilaiHuruf = "Tidak tersedia";
         }
 
-       
+        System.out.println("| Nilai huruf : " + nilaiHuruf);
+
         input.close();
     }
 }
