@@ -22,7 +22,7 @@ public class JadwalKuliah {
             System.out.println("4. Kamis");
             System.out.println("5. Jumat");
 
-            System.out.print("Masukan Nomor = ");
+            System.out.print("Masukan Nomor Hari = ");
             Jadwal_MataKuliah = Masuk.nextInt();
 
             switch (Jadwal_MataKuliah) {
