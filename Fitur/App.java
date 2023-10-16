@@ -2,109 +2,178 @@ package Fitur;
 
 import java.util.Scanner;
 
-public class App{
-    static String[] mahasiswa = {"mahasiswa","mahasiswa123"};
-    static String[] admin = {"admin","admin123"};
-    static boolean login = true;
+public class App {
+    static Scanner userInput = new Scanner(System.in);
+    static String[][] userAdmin = { { "admin1", "admin1" }, { "admin2", "admin2" }, { "admin3", "admin3" } };
+    static String[][] userDosen = { { "dosen1", "dosen1" }, { "dosen2", "dosen2" }, { "dosen3", "dosen3" } };
 
-    static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
 
-        int fitur = 0;
-        login();
+        loginView();
+    }
 
-        while(login){
-            fitur();
+    static void loginView() {
+        while (true) {
+            renderTitle("SISTEM SIAKAD");
+            renderTitle("1. admin");
+            renderTitle("2. dosen");
+            renderTitle("3. mahasiswa");
+            renderTitle("0. keluar");
+            renderTitle("Pilih login sebagai => 1.admin  2.dosen  3.mahasiswa");
+            int choice = getUserChoice();
 
-            renderString("Pilih Fitur: ");
-            try {
-                fitur = sc.nextInt();
-                sc.nextLine();
-            } catch (Exception e) {
-                System.out.println("Inputan salah");
-                sc.nextLine();
-                continue;
+            switch (choice) {
+                case 1:
+                    login(choice);
+                    break;
+                case 2:
+                    login(choice);
+                    break;
+                case 3:
+                    login(choice);
+                    break;
+                case 0:
+                    System.exit(choice);
+                    break;
+                default:
+                    System.out.println("user can't be found");
+                    continue;
             }
-            if(fitur == 1){
-                edit();
-            }else if(fitur == 2){
-            }
-            else if(fitur == 3){
-            }
-            else if(fitur == 4){
-            }
-            else if(fitur == 5){
-            }
-            else if(fitur == 6){
-            }
-            else if(fitur == 7){
-                login = false;
-                System.out.println("Terimakasih sudah menggunakan program ini");
-            }
-            else{
-                System.out.println("fitur tidak tersedia,masukkan angka 1-5 ");
-            };
+            break;
         }
     }
 
-    static void renderString(String string){
-        System.out.println(string);
+    static boolean checkUsernamePassword(String username, String password, String[][] userArray) {
+        boolean isLoggedIn = true;
+        for (int i = 0; i < userArray.length; i++) {
+            if (username.equals(userArray[i][0]) && password.equals(userArray[i][1])) {
+                isLoggedIn = false;
+                clearConsole();
+                return true;
+            }
+        }
+        if (isLoggedIn) {
+            clearConsole();
+            System.out.println("incorrect username and password ");
+
+        }
+        return false;
     }
 
-    static void login(){
-        System.out.print("username:");
-            String username = sc.nextLine().trim(); //trim menghapus spasi di awal dan akhir string
+    static boolean adminLogin(String username, String password) {
+        return checkUsernamePassword(username, password, userAdmin);
+    }
+
+    static boolean dosenLogin(String username, String password) {
+        return checkUsernamePassword(username, password, userDosen);
+    }
+
+    static void login(int choice) {
+        while (true) {
+            boolean isBreak = false;
+            System.out.println("masukkan username dan password");
+            System.out.print("username:");
+            String username = userInput.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
             System.out.print("password:");
-            String password = sc.nextLine().trim(); //trim menghapus spasi di awal dan akhir string
-                while(login){
-                    if(username.equals(admin[0]) && password.equals(admin[1])){
-                    renderString("welcome back " + username);
-                    break;
-                    }else if(username.equals(mahasiswa[0] ) && password.equals(mahasiswa[1])){
-                    renderString("welcome back " + username);
-                    break;
-                    }else{
-                        System.out.println("incorrect username");
-                        login =false;
-                        break;
-                    }                    
+            String password = userInput.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
+
+            if (choice == 1) {
+                isBreak = adminLogin(username, password);
+                if (isBreak) {
+                    dashboardAdmin(username);
+                }
+            } else if (choice == 2) {
+                isBreak = dosenLogin(username, password);
+                if (dosenLogin(username, password)) {
+                    dashboardDosen(username);
+                }
+            }
+            if (isBreak) {
+                break;
+            }
         }
     }
-    static void fitur(){
-        renderString(" \n Fitur Utama :");
-        renderString("1. Edit Biodata");
-        renderString("2. Pembayaran UKT");
-        renderString("3. Cetak KRS");
-        renderString("4. Peminjaman Buku");
-        renderString("5. Cetak KHS");
-        renderString("6. Cek Jadwal Perkuliahan");
-        renderString("7. Keluar");
-}
-    static void edit(){
+
+    static void dashboardAdmin(String user) {
+        renderTitle("Selamat Datang " + user);
+        System.out.println("=== Dashboard Admin ===");
+        System.out.println("1. Input data mahasiswa ke master");
+        System.out.println("2. Update data mahasiswa");
+        System.out.println("3. Input data mata kuliah ke master");
+        System.out.println("4. Input nilai");
+        System.out.println("5. Logout");
+        System.out.println("0. Keluar");
+        System.out.print("pilih fitur: ");
+        int choice = getUserChoice();
+        switch (choice) {
+            case 1:
+                clearConsole();
+                inputDataMahasiswa();
+                break;
+            case 2:
+                clearConsole();
+                updateDataMahasiswa();
+                break;
+            case 3:
+                clearConsole();
+                inputDataMatkul();
+                break;
+            case 4:
+                clearConsole();
+                inputNilai();
+                break;
+            case 5:
+                clearConsole();
+                loginView();
+                break;
+            case 0:
+                System.exit(choice);
+        }
+    }
+
+    static void dashboardDosen(String username) {
+        renderTitle("Selamat Datang " + username);
+        renderTitle("1. Cetak KHS");
+        renderTitle("2. Logout");
+        renderTitle("0. keluar");
+    }
+
+    static void inputDataMahasiswa() {
 
     }
-    // static void ukt(){
-    //      Long nim;
-    //             int jumlahTagihanUKT = 10000000,sisaTagihan,nominalPembayaran;
-    //             String nama;  
 
-    //             System.out.println("Pembayaran UKT");
-    //             System.out.print("Nama Mahasiswa : ");
-    //             nama = sc.nextLine();
-    //             System.out.println("===============");
-    //             System.out.println("===============");
-    //             System.out.print("Nomor Induk Mahasiswa : ");
-    //             nim = sc.nextLong();
-    //             System.out.println("===============");
-    //             System.out.println("===============");
-    //             System.out.println( "jumlah tagihan UKT = " + jumlahTagihanUKT);
-    //             System.out.print("masukkan jumlah UKT yang dibayar ");
-    //             nominalPembayaran = sc.nextInt();
+    static void inputDataMatkul() {
 
-    //             System.out.println("=======BUKTI PEMBAYARAN=======");
-    //             sisaTagihan = jumlahTagihanUKT - nominalPembayaran;
-    //             System.out.println("Sisa tagihan = " + sisaTagihan);
+    }
 
-    //             System.out.println("Nama : " + nama + "\n" + "Nim : " + nim + "\n" + "Nominal Pembayaran : " + nominalPembayaran + "\n" + "Sisa Tagihan : " + sisaTagihan);
-    // }
+    static void inputNilai() {
+
+    }
+
+    static void updateDataMahasiswa() {
+
+    }
+
+    static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    static void renderTitle(String title) {
+        System.out.println(title);
+    }
+
+    static int getUserChoice() {
+        int choice = 0;
+
+        try {
+            choice = userInput.nextInt();
+            userInput.nextLine();
+        } catch (Exception e) {
+            System.out.println("Inputan salah");
+            userInput.nextLine();
+        }
+        return choice;
+    }
+
 }
