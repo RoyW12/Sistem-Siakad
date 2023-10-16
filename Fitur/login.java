@@ -1,3 +1,5 @@
+package Fitur;
+
 import java.util.Scanner;
 
 public class login {
@@ -23,6 +25,8 @@ public class login {
             if (passInput.equals(passwordMahasiswa)) {
                 level = "mahasiswa";
             }
+        } else {
+            System.out.println("user tidak ditemukan");
         }
 
         if (level == "admin") {
