@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class App {
     static Scanner userInput = new Scanner(System.in);
     static String[][] userAdmin = { { "admin1", "admin1" }, { "admin2", "admin2" }, { "admin3", "admin3" } };
-    static String[][] userDosen = { { "dosen1", "dosen1" }, { "dosen2", "dosen2" }, { "dosen3", "dosen3" } };
+    static String[][] userMahasiswa = { { "mahasiswa1", "mahasiswa1" }, { "mahasiswa2", "mahasiswa2" },
+            { "mahasiswa3", "mahasiswa3" } };
 
     public static void main(String[] args) {
 
@@ -16,10 +17,9 @@ public class App {
         while (true) {
             renderTitle("SISTEM SIAKAD");
             renderTitle("1. admin");
-            renderTitle("2. dosen");
-            renderTitle("3. mahasiswa");
+            renderTitle("2. mahasiswa");
             renderTitle("0. keluar");
-            renderTitle("Pilih login sebagai => 1.admin  2.dosen  3.mahasiswa");
+            renderTitle("Pilih login sebagai => 1.admin 2.mahasiswa atau keluar pilih 0");
             int choice = getUserChoice();
 
             switch (choice) {
@@ -29,10 +29,8 @@ public class App {
                 case 2:
                     login(choice);
                     break;
-                case 3:
-                    login(choice);
-                    break;
                 case 0:
+                    clearConsole();
                     System.exit(choice);
                     break;
                 default:
@@ -64,8 +62,8 @@ public class App {
         return checkUsernamePassword(username, password, userAdmin);
     }
 
-    static boolean dosenLogin(String username, String password) {
-        return checkUsernamePassword(username, password, userDosen);
+    static boolean dosenMahasiswa(String username, String password) {
+        return checkUsernamePassword(username, password, userMahasiswa);
     }
 
     static void login(int choice) {
@@ -83,9 +81,9 @@ public class App {
                     dashboardAdmin(username);
                 }
             } else if (choice == 2) {
-                isBreak = dosenLogin(username, password);
-                if (dosenLogin(username, password)) {
-                    dashboardDosen(username);
+                isBreak = dosenMahasiswa(username, password);
+                if (dosenMahasiswa(username, password)) {
+                    dashboardMahasiswa(username);
                 }
             }
             if (isBreak) {
@@ -131,7 +129,7 @@ public class App {
         }
     }
 
-    static void dashboardDosen(String username) {
+    static void dashboardMahasiswa(String username) {
         renderTitle("Selamat Datang " + username);
         renderTitle("1. Cetak KHS");
         renderTitle("2. Logout");
@@ -164,7 +162,7 @@ public class App {
     }
 
     static int getUserChoice() {
-        int choice = 0;
+        int choice = -1;
 
         try {
             choice = userInput.nextInt();
