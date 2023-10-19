@@ -1,81 +1,124 @@
 package Fitur;
+
 import java.util.Scanner;
+
 public class Khs {
     public static void main(String[] args) {
-        String nama, matkul1, matkul2,matkul3,matkul4,matkul5,predikat = "";
-        long nim;
-        int bobotMatkul1,bobotMatkul2,bobotMatkul3,bobotMatkul4,bobotMatkul5, sks1,sks2,sks3,sks4,sks5,totSKS;
+        Scanner input = new Scanner(System.in);
+        String nama = "", matkul = "", matkul1, matkul2, matkul3, matkul4, matkul5, predikat = "";
+        String namaMaster = "dina";
+        long nim = 0;
+        long nimMaster = 234172005;
+        matkul1 = "PrakDaspro";
+        matkul2 = "Daspro";
+        matkul3 = "CTPS";
+        matkul4 = "KTI";
+        matkul5 = "K3";
+        int bobotMatkul1 = 0, bobotMatkul2 = 0, bobotMatkul3 = 0, bobotMatkul4 = 0, bobotMatkul5 = 0,
+                sks1 = 0,
+                sks2 = 0, sks3 = 0, sks4 = 0, sks5 = 0, totSKS = 0;
         double ips;
-        Scanner input28 = new Scanner(System.in);
+        boolean isFind = false;
 
-        System.out.print("Masukan nama      : ");
-        nama = input28.nextLine();
-        System.out.print("Masukan nim       : ");
-        nim = input28.nextLong();
-        input28.nextLine();
-        System.out.print("Masukan matkul 1 ");
-        matkul1 = input28.nextLine();
-        System.out.print("Masukan jumlah sks matkul 1: ");
-        sks1 = input28.nextInt();
-        System.out.print("Masukan jumlah bobot matkul 1: ");
-        bobotMatkul1 = input28.nextInt();
-        input28.nextLine();
-        System.out.print("Masukan matkul2       : ");
-        matkul2 = input28.nextLine();
-        System.out.print("Masukan jumlah sks matkul 2: ");
-        sks2 = input28.nextInt();
-        System.out.print("Masukan jumlah bobot matkul 2: ");
-        bobotMatkul2 = input28.nextInt();
-        input28.nextLine();
-        System.out.print("Masukan matkul3       : ");
-        matkul3 = input28.nextLine();
-        System.out.print("Masukan jumlah sks matkul 3: ");
-        sks3 = input28.nextInt();
-        System.out.print("Masukan jumlah bobot matkul 3: ");
-        bobotMatkul3 = input28.nextInt();
-        input28.nextLine();
-        System.out.print("Masukan matkul4       : ");
-        matkul4 = input28.nextLine();
-        System.out.print("Masukan jumlah sks matkul 4: ");
-        sks4 = input28.nextInt();
-        System.out.print("Masukan jumlah bobot matkul 4: ");
-        bobotMatkul4 = input28.nextInt();
-        input28.nextLine();
-        System.out.print("Masukan matkul5       : ");
-        matkul5 = input28.nextLine();
-        System.out.print("Masukan jumlah sks matkul 5: ");
-        sks5 = input28.nextInt();
-        System.out.print("Masukan jumlah bobot matkul 5: ");
-        bobotMatkul5 = input28.nextInt();
-        totSKS = sks1 + sks2 + sks3 + sks4 + sks5;
-        ips = ((sks1 * bobotMatkul1) + (sks2 * bobotMatkul2) + (sks3 * bobotMatkul3) + (sks4 * bobotMatkul4) + (sks5 * bobotMatkul5)) / totSKS;
-        if(ips < 4){
-            if(ips < 4 && ips > 2){
+        while (!isFind) {
+            System.out.print("Masukkan nama    : ");
+            nama = input.nextLine();
+            System.out.print("Masukkan NIM     : ");
+            nim = input.nextLong();
+            input.nextLine();
+
+            if (nama.equals(namaMaster)) {
+                if (nim == nimMaster) {
+                    isFind = true;
+                } else {
+                    System.out.println("nim salah");
+                    continue;
+                }
+            } else {
+                System.out.println("mahasiswa tidak ditemukan");
+                continue;
+            }
+        }
+
+
+        int i = 1;
+        while (i <= 5) {
+            System.out.println("Pilihan Matkul Urut- PrakDaspro, Daspro, CTPS, KTI, K3");
+            System.out.print("Masukkan Matkul ke-" + i + ": ");
+            matkul = input.next();
+
+            i++;
+
+            if (matkul.equalsIgnoreCase(matkul1)) {
+                System.out.print("Masukkan jumlah sks matkul : ");
+                sks1 = input.nextInt();
+                System.out.print("Masukkan jumlah bobot matkul : ");
+                bobotMatkul1 = input.nextInt();
+                input.nextLine();
+            } else if (matkul.equalsIgnoreCase(matkul2)) {
+                System.out.print("Masukkan jumlah sks matkul : ");
+                sks2 = input.nextInt();
+                System.out.print("Masukkan jumlah bobot matkul : ");
+                bobotMatkul2 = input.nextInt();
+                input.nextLine();
+            } else if (matkul.equalsIgnoreCase(matkul3)) {
+                System.out.print("Masukkan jumlah sks matkul : ");
+                sks3 = input.nextInt();
+                System.out.print("Masukkan jumlah bobot matkul : ");
+                bobotMatkul3 = input.nextInt();
+                input.nextLine();
+            } else if (matkul.equalsIgnoreCase(matkul4)) {
+                System.out.print("Masukkan jumlah sks matkul : ");
+                sks4 = input.nextInt();
+                System.out.print("Masukkan jumlah bobot matkul : ");
+                bobotMatkul4 = input.nextInt();
+                input.nextLine();
+            } else if (matkul.equalsIgnoreCase(matkul5)) {
+                System.out.print("Masukkan jumlah sks matkul : ");
+                sks5 = input.nextInt();
+                System.out.print("Masukkan jumlah bobot matkul : ");
+                bobotMatkul5 = input.nextInt();
+                input.nextLine();
+            } else {
+                i--;
+                System.out.println("Matkul invalid");
+                continue;
+            }
+            totSKS = sks1 + sks2 + sks3 + sks4 + sks5;
+
+        }
+
+        ips = ((sks1 * bobotMatkul1) + (sks2 * bobotMatkul2) + (sks3 * bobotMatkul3) + (sks4 * bobotMatkul4)
+                + (sks5 * bobotMatkul5)) / totSKS;
+        if (ips < 4) {
+            if (ips <= 4 && ips > 2) {
                 predikat = "anda lulus semester";
-            }else{
+            } else {
                 predikat = "anda tidak lulus semester";
             }
-        }else{
+        } else {
             System.out.println("nilai ips tidak terdefinisi");
         }
 
-        System.out.println("-------------------");
-        System.out.println(" KARTU HASIL STUDI  ");
-        System.out.println("-------------------");
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("|\t\t\t  KARTU HASIL STUDI   \t\t\t|");
+        System.out.println("|----------------------------------------------------------------|");
         System.out.println("| Nama          : " + nama);
         System.out.println("| NIM           : " + nim);
-        System.out.println("| Mata Kuliah 1 : " + matkul1 + " dengan sks " + sks1 + " dengan bobot nilai " + bobotMatkul1);
-        System.out.println("| Mata Kuliah 2 : " + matkul2 + " dengan sks " + sks2 + " dengan bobot nilai " + bobotMatkul2);
-        System.out.println("| Mata Kuliah 3 : " + matkul3 + " dengan sks " + sks3 + " dengan bobot nilai " + bobotMatkul3);
-        System.out.println("| Mata Kuliah 4 : " + matkul4 + " dengan sks " + sks4 + " dengan bobot nilai " + bobotMatkul4);
-        System.out.println("| Mata Kuliah 5 : " + matkul5 + " dengan sks " + sks5 + " dengan bobot nilai " + bobotMatkul5);
-        System.out.println("| ips           : " + ips);
-        System.out.println("status anda adalah " + predikat);
-
-
-
-
-
+        System.out.println(
+                "| Mata Kuliah 1 : " + matkul1 + " dengan sks " + sks1 + " dengan bobot nilai " + bobotMatkul1);
+        System.out.println(
+                "| Mata Kuliah 2 : " + matkul2 + " dengan sks " + sks2 + " dengan bobot nilai " + bobotMatkul2);
+        System.out.println(
+                "| Mata Kuliah 3 : " + matkul3 + " dengan sks " + sks3 + " dengan bobot nilai " + bobotMatkul3);
+        System.out.println(
+                "| Mata Kuliah 4 : " + matkul4 + " dengan sks " + sks4 + " dengan bobot nilai " + bobotMatkul4);
+        System.out.println(
+                "| Mata Kuliah 5 : " + matkul5 + " dengan sks " + sks5 + " dengan bobot nilai " + bobotMatkul5);
+        System.out.println("| ips           : " + ips + "  \t\t\t\t\t\t |");
+        System.out.println("|________________________________________________________________|");
+        System.out.println("| Status anda adalah " + predikat + "\t\t\t |");
+        System.out.println("|________________________________________________________________|");
 
     }
 }
