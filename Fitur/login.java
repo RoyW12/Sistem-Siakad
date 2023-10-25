@@ -11,24 +11,30 @@ public class login {
         String passwordMahasiswa = "mahasiswa123";
         String userInput, passInput;
         String level = "";
-
-        System.out.println("input user");
-        userInput = input28.nextLine();
-        System.out.println("input password");
-        passInput = input28.nextLine();
-
-        if (userInput.equals(usernameAdmin)) {
-            if (passInput.equals(passwordAdmin)) {
-                level = "admin";
+        boolean isFind = false;
+        while (!isFind) {
+            System.out.println("input username");
+            userInput = input28.nextLine();
+            System.out.println("input password");
+            passInput = input28.nextLine();
+            if (userInput.equals(usernameAdmin)) {
+                if (passInput.equals(passwordAdmin)) {
+                    level = "admin";
+                    isFind = true;
+                } else {
+                    System.out.println("password salah");
+                }
+            } else if (userInput.equals(usernameMahasiswa)) {
+                if (passInput.equals(passwordMahasiswa)) {
+                    level = "mahasiswa";
+                    isFind = true;
+                } else {
+                    System.out.println("Password salah");
+                }
+            } else {
+                System.out.println("user tidak ditemukan");
             }
-        } else if (userInput.equals(usernameMahasiswa)) {
-            if (passInput.equals(passwordMahasiswa)) {
-                level = "mahasiswa";
-            }
-        } else {
-            System.out.println("user tidak ditemukan");
         }
-
         if (level == "admin") {
             System.out.println("selamat datang admin");
             System.out.println("pilih fitur: ");
