@@ -71,7 +71,7 @@ public class App {
         return checkUsernamePassword(username, password, userAdmin);
     }
 
-    static boolean dosenMahasiswa(String username, String password) {
+    static boolean mahasiswaLogin(String username, String password) {
         return checkUsernamePassword(username, password, userMahasiswa);
     }
 
@@ -90,8 +90,8 @@ public class App {
                     dashboardAdmin(username);
                 }
             } else if (choice == 2) {
-                isBreak = dosenMahasiswa(username, password);
-                if (dosenMahasiswa(username, password)) {
+                isBreak = mahasiswaLogin(username, password);
+                if (isBreak) {
                     dashboardMahasiswa(username);
                 }
             }
@@ -204,14 +204,37 @@ public class App {
         System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
     }
 
-    static void dashboardMahasiswa(String username) {
-        renderTitle("Selamat Datang " + username);
-        renderTitle("1. Cetak KHS");
-        renderTitle("2. Logout");
-        renderTitle("0. keluar");
+    static void dashboardMahasiswa(String user) {
+
+        while (true) {
+            renderTitle("Selamat Datang " + user);
+            System.out.println("=== Dashboard Mahasiswa ===");
+            renderTitle("1. Cetak KHS");
+            renderTitle("2. Logout");
+            renderTitle("0. keluar");
+            System.out.print("pilih fitur: ");
+            int choice = getUserChoice();
+            switch (choice) {
+                case 1:
+                    clearConsole();
+                    cetakKHS();
+                    break;
+                case 2:
+                    clearConsole();
+                    loginView();
+                    break;
+                case 0:
+                    System.exit(choice);
+            }
+        }
+
     }
 
     static void inputDataMatkul() {
+
+    }
+
+    static void cetakKHS() {
 
     }
 
