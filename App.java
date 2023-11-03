@@ -175,7 +175,7 @@ public class App {
                 System.out.println("NIM harus 10 digit");
             }
             if (isFind) {
-                String[][] newStudents = new String[students.length + 1][2];
+                String[][] newStudents = new String[students.length + 1][5];
                 for (int i = 0; i < students.length; i++) {
                     newStudents[i] = students[i];
                 }
