@@ -5,141 +5,68 @@ import java.util.Scanner;
 public class updateDataMahasiswa {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        String mahasiswa1 = "andi"; // data master
-        String nim1 = "0000000001"; // data master
-        String kelasMhs1 = "1A";
-        String mahasiswa2 = "Roy"; // data master
-        String nim2 = "0000000002"; // data master
-        String kelasMhs2 = "1A";
-        String mahasiswa3 = "Jessica"; // data master
-        String nim3 = "0000000003"; // data master
-        String kelasMhs3 = "1A";
-        String mahasiswa4 = "Jokowi"; // data master
-        String nim4 = "0000000004"; // data master
-        String kelasMhs4 = "1A";
-        String mahasiswa5 = "felice"; // data master
-        String nim5 = "0000000005"; // data master
-        String kelasMhs5 = "1A";
-        String nama;
-        String nim;
-        String kelas;
+
+        String[] mahasiswa = { "andi", "Roy", "Jessica", "Jokowi", "felice" };
+        String[] nim = { "0000000001", "0000000002", "0000000003", "0000000004", "0000000005" };
+        String[] classPlacement = { "1A", "1B", "2C", "3C", "4C" };
+
+        String namaInput = null;
+        String nimInput;
+        String nimBaru = null;
+        String classInput = null;
+        int indeks = 0;
         boolean isFind = false;
-        boolean isEqual = false;
 
         while (!isFind) {
+            System.out.println("+------+------------+----------------------+-------+");
+            System.out.println("| No.  |    NIM     |      Full Name       | Class |");
+            System.out.println("+------+------------+----------------------+-------+");
+            for (int i = 0; i < mahasiswa.length; i++) {
+                System.out.printf("| %-4d | %-10s | %-20s | %-5s |\n", (i + 1), nim[i], mahasiswa[i],
+                        classPlacement[i]);
+            }
+            System.out.println("+------+------------+----------------------+-------+");
+
             System.out.print("Masukkan NIM mahasiswa    : ");
-            nim = input.nextLine();
+            nimInput = input.nextLine();
 
-            if (nim.equals(nim1)) {
-                System.out.printf("nim dengan nomor     :%s\n", nim1);
-                System.out.printf("Nama                 :%s\n", mahasiswa1);
-                System.out.printf("Kelas                :%s\n", kelasMhs1);
-                System.out.print("Masukkan Nama baru    :");
-                nama = input.nextLine();
-                System.out.print("Masukkan Kelas baru   :");
-                kelas = input.nextLine();
-                System.out.print("Masukkan Nim baru     :");
-                nim = input.nextLine();
-
-                mahasiswa1 = nama;
-                nim1 = nim;
-                kelasMhs1 = kelas;
-
-                System.out.println("+-------------------------------------------+");
-                System.out.println("biodata mahasiswa yang telah diganti menjadi: ");
-                System.out.println("+-------------------------------------------+");
-                System.out.printf("Nama Mahasiswa       :%s \n", mahasiswa1);
-                System.out.printf("Nim Mahasiswa        :%s \n", nim1);
-                System.out.printf("Kelas Mahasiswa      :%s \n", kelasMhs1);
-
-                isFind = true;
-
-            } else if (nim.equals(nim2)) {
-                System.out.printf("nim dengan nomor     :%s\n", nim2);
-                System.out.printf("Nama                 :%s\n", mahasiswa2);
-                System.out.printf("Kelas                :%s\n", kelasMhs2);
-                System.out.print("Masukkan Nama baru    :");
-                nama = input.nextLine();
-                System.out.print("Masukkan Kelas baru   :");
-                kelas = input.nextLine();
-                System.out.print("Masukkan Nim baru     :");
-                nim = input.nextLine();
-                mahasiswa2 = nama;
-                nim2 = nim;
-                kelasMhs2 = kelas;
-                System.out.println("+-------------------------------------------+");
-                System.out.println("biodata mahasiswa yang telah diganti menjadi: ");
-                System.out.println("+-------------------------------------------+");
-                System.out.printf("Nama Mahasiswa       :%s \n", mahasiswa2);
-                System.out.printf("Nim Mahasiswa        :%s \n", nim2);
-                System.out.printf("Kelas Mahasiswa      :%s \n", kelasMhs2);
-                isFind = true;
-
-            } else if (nim.equals(nim3)) {
-                System.out.printf("nim dengan nomor     :%s\n", nim3);
-                System.out.printf("Nama                 :%s\n", mahasiswa3);
-                System.out.printf("Kelas                :%s\n", kelasMhs3);
-                System.out.print("Masukkan Nama baru    :");
-                nama = input.nextLine();
-                System.out.print("Masukkan Kelas baru   :");
-                kelas = input.nextLine();
-                System.out.print("Masukkan Nim baru     :");
-                mahasiswa3 = nama;
-                nim3 = nim;
-                kelasMhs3 = kelas;
-                System.out.println("+-------------------------------------------+");
-                System.out.println("biodata mahasiswa yang telah diganti menjadi: ");
-                System.out.println("+-------------------------------------------+");
-                System.out.printf("Nama Mahasiswa       :%s \n", mahasiswa3);
-                System.out.printf("Nim Mahasiswa        :%s \n", nim3);
-                System.out.printf("Kelas Mahasiswa      :%s \n", kelasMhs3);
-                nim = input.nextLine();
-                isFind = true;
-
-            } else if (nim.equals(nim4)) {
-                System.out.printf("nim dengan nomor     :%s\n ", nim4);
-                System.out.printf("Nama                 :%s\n", mahasiswa4);
-                System.out.printf("Kelas                :%s\n", kelasMhs4);
-                System.out.print("Masukkan Nama baru    :");
-                nama = input.nextLine();
-                System.out.print("Masukkan Kelas baru   :");
-                kelas = input.nextLine();
-                System.out.print("Masukkan Nim baru     :");
-                nim = input.nextLine();
-                mahasiswa4 = nama;
-                nim4 = nim;
-                kelasMhs4 = kelas;
-                System.out.println("+-------------------------------------------+");
-                System.out.println("biodata mahasiswa yang telah diganti menjadi: ");
-                System.out.println("+-------------------------------------------+");
-                System.out.printf("Nama Mahasiswa       :%s \n", mahasiswa4);
-                System.out.printf("Nim Mahasiswa        :%s \n", nim4);
-                System.out.printf("Kelas Mahasiswa      :%s \n", kelasMhs4);
-                isFind = true;
-
-            } else if (nim.equals(nim5)) {
-                System.out.printf("nim dengan nomor     :%s\n ", nim5);
-                System.out.printf("Nama                 :%s\n", mahasiswa5);
-                System.out.printf("Kelas                :%s\n", kelasMhs5);
-                System.out.print("Masukkan Nama baru    :");
-                nama = input.nextLine();
-                System.out.print("Masukkan Kelas baru   :");
-                kelas = input.nextLine();
-                System.out.print("Masukkan Nim baru     :");
-                nim = input.nextLine();
-                mahasiswa5 = nama;
-                nim5 = nim;
-                kelasMhs5 = kelas;
-                System.out.println("+-------------------------------------------+");
-                System.out.println("biodata mahasiswa yang telah diganti menjadi: ");
-                System.out.println("+-------------------------------------------+");
-                System.out.printf("Nama Mahasiswa       :%s \n", mahasiswa5);
-                System.out.printf("Nim Mahasiswa        :%s \n", nim5);
-                System.out.printf("Kelas Mahasiswa      :%s \n", kelasMhs5);
-                isFind = true;
+            if (nimInput.length() == 10) {
+                for (int i = 0; i < nim.length; i++) {
+                    if (nimInput.equals(nim[i])) {
+                        indeks = i;
+                        System.out.print("Masukkan nama mahasiswa   : ");
+                        namaInput = input.nextLine();
+                        System.out.print("Masukkan nim baru         : ");
+                        nimBaru = input.nextLine();
+                        System.out.print("Masukkan kelas mahasiswa  : ");
+                        classInput = input.nextLine();
+                        isFind = true;
+                        break;
+                    } else {
+                        System.out.println("Student with the NIM of " + nimInput + " doesn't exists!");
+                        System.out.println("Masukkan data lagi");
+                        isFind = false;
+                    }
+                }
             } else {
-                System.out.println("nim tidak ditemukan");
-                continue;
+                System.out.println("NIM harus 10 digit");
+            }
+
+            if (isFind) {
+
+                mahasiswa[indeks] = namaInput;
+                nim[indeks] = nimBaru;
+                classPlacement[indeks] = classInput;
+
+                System.out.println("+------+------------+----------------------+-------+");
+                System.out.println("| No.  |    NIM     |      Full Name       | Class |");
+                System.out.println("+------+------------+----------------------+-------+");
+                for (int i = 0; i < mahasiswa.length; i++) {
+                    System.out.printf("| %-4d | %-10s | %-20s | %-5s |\n", (i + 1), nim[i], mahasiswa[i],
+                            classPlacement[i]);
+                }
+                System.out.println("+------+------------+----------------------+-------+");
+
             }
         }
     }
