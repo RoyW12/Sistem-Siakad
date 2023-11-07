@@ -350,7 +350,61 @@ public class App {
     }
 
     static void inputNilai() {
+        int[] nilaiMataKuliah = new int[course.length];
+        String[] mataKuliah = new String[course.length];
+        String nama = "";
+        String nim = "";
+        String nimInput = "";
+        boolean isFind = false;
 
+        while (!isFind) {
+            System.out.print("Masukkan nama mahasiswa   : ");
+            nama = userInput.nextLine();
+            for (int i = 0; i < students.length; i++) {
+                if (nama.equalsIgnoreCase(students[i][1])) {
+                    nim = students[i][0];
+                    System.out.println("Data ditemukan");
+                    isFind = true;
+                    break;
+                }
+            }
+            if (!isFind) {
+                System.out.println("Data tidak ditemukan. Silakan coba lagi.");
+            }
+        }
+        
+        System.out.println(" ______________________");
+        System.out.println("|  Daftar Mata Kuliah  |");
+        System.out.println("|----------------------|");
+
+        for (int i = 0; i < course.length; i++) {
+            System.out.println(" " + (i + 1) + ". " + course[i][1]);
+        }
+
+        System.out.println("|______________________|");
+        System.out.print("\n");
+
+        for (int i = 0; i < course.length; i++) {
+            System.out.print("Nilai matkul ke " + (i + 1) + " : ");
+            nilaiMataKuliah[i] = userInput.nextInt();
+            userInput.nextLine();
+            System.out.println("------------------------------------");
+        }
+
+        System.out.print("\n");
+
+        System.out.println("-------------------------------------");
+        System.out.println("|          Data mahasiswa           |");
+        System.out.println("-------------------------------------");
+        System.out.println("| Nama        : " + nama);
+        System.out.println("| NIM         : " + nimInput);
+        System.out.println("-------------------------------------");
+
+        for (int i = 0; i < nilaiMataKuliah.length; i++) {
+            System.out.println("| Mata Kuliah : " + course[i][1]);
+            System.out.println("| Nilai       : " + nilaiMataKuliah[i]);
+            System.out.println("-------------------------------------");
+        }
     }
 
     static void updateDataMahasiswa() {
