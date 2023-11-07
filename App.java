@@ -100,9 +100,7 @@ public class App {
                     dashboardMahasiswa(username);
                 }
             }
-            if (isBreak) {
-                break;
-            }
+
         }
     }
 
@@ -304,7 +302,58 @@ public class App {
     }
 
     static void updateDataMahasiswa() {
-
+        String oldNim, fullName, classPlacement, studyProgram, nim;
+        boolean isFind = false;
+        int studentIndex = -1;
+        renderTitle("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+        while (!isFind) {
+            clearConsole();
+            renderStudentsTable("Data's Student", students);
+            System.out.print("Edit data mahasiswa dengan NIM :");
+            oldNim = userInput.nextLine();
+            System.out.println(oldNim);// tes
+            if (oldNim.length() == 10) {
+                for (int i = 0; i < students.length; i++) {
+                    if (oldNim.equals(students[i][0])) {
+                        clearConsole();
+                        studentIndex = i;
+                        isFind = true;
+                        break;
+                    } else if (oldNim.equals(students[i][0])) {
+                        isFind = false;
+                    }
+                }
+            } else {
+                clearConsole();
+                System.out.println("NIM harus 10 digit");
+            }
+            if (isFind) {
+                renderTitle("New Student Data");
+                System.out.print("input new nim             :");
+                nim = userInput.nextLine();
+                System.out.print("input new name            :");
+                fullName = userInput.nextLine();
+                System.out.print("input new class           :");
+                classPlacement = userInput.nextLine();
+                System.out.print("input new study program   :");
+                studyProgram = userInput.nextLine();
+                students[studentIndex][0] = nim;
+                students[studentIndex][1] = fullName;
+                students[studentIndex][2] = classPlacement;
+                students[studentIndex][3] = studyProgram;
+                clearConsole();
+                System.out.println("Students have been succesfully added!");
+                renderStudentsTable("Data's Student", students);
+                renderTitle("press enter to continue...");
+                userInput.nextLine().trim();
+                clearConsole();
+            } else {
+                System.out.println("Student with the NIM of " + oldNim + " doesn't exists!");
+                System.out.println("Masukkan data lagi");
+            }
+        }
     }
 
     static void clearConsole() {
