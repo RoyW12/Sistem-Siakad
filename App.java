@@ -9,7 +9,7 @@ public class App {
     static String[][] students = {
             { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
             { "1234560002", "Jessica Wongso", "1B", "Teknik Informatika", "P" },
-            { "1234560003", "Dina Rahmawati", "1C", "Teknik Informatika", "P" },
+            { "1234560003", "Joko Widodo", "1C", "Teknik Informatika", "L" },
             { "1234560004", "Ganjar Pranowo", "1D", "Teknik Informatika", "L" },
             { "1234560005", "Megawati", "1E", "Manajemen", "P" }
     };
@@ -100,9 +100,6 @@ public class App {
                     dashboardMahasiswa(username);
                 }
             }
-            if (isBreak) {
-                break;
-            }
         }
     }
 
@@ -114,7 +111,8 @@ public class App {
             System.out.println("2. Update data mahasiswa");
             System.out.println("3. Input data mata kuliah ke master");
             System.out.println("4. Input nilai");
-            System.out.println("5. Logout");
+            System.out.println("5. Pencarian Mahasiswa");
+            System.out.println("6. Logout");
             System.out.println("0. Keluar");
             System.out.print("pilih fitur: ");
             int choice = getUserChoice();
@@ -136,6 +134,10 @@ public class App {
                     inputNilai();
                     break;
                 case 5:
+                    clearConsole();
+                    pencarian();
+                    break;
+                case 6:
                     clearConsole();
                     loginView();
                     break;
@@ -209,30 +211,51 @@ public class App {
         System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
     }
 
-    static void dashboardMahasiswa(String user) {
+    static void pencarian() {
+        String nimInput;
+        boolean isFind = false;
+        int studentIndex = -1;
 
-        while (true) {
-            renderTitle("Selamat Datang " + user);
-            System.out.println("=== Dashboard Mahasiswa ===");
-            renderTitle("1. Cetak KHS");
-            renderTitle("2. Logout");
-            renderTitle("0. keluar");
-            System.out.print("pilih fitur: ");
-            int choice = getUserChoice();
-            switch (choice) {
-                case 1:
-                    clearConsole();
-                    cetakKHS();
-                    break;
-                case 2:
-                    clearConsole();
-                    loginView();
-                    break;
-                case 0:
-                    System.exit(choice);
+        while (!isFind) {
+            renderStudentsTable("Data's Student", students);
+            System.out.println("Cari mahasiswa dengan nim   :");
+            nimInput = userInput.nextLine();
+
+            if (nimInput.length() == 10) {
+                for (int i = 0; i < students.length; i++) {
+                    if (nimInput.equals(students[i][0])) {
+                        clearConsole();
+                        studentIndex = i;
+                        isFind = true;
+                        break;
+                    } else if (nimInput.equals(students[i][0])) {
+                        isFind = false;
+                    }
+                }
+            } else {
+                clearConsole();
+                System.out.println("NIM harus 10 digit");
             }
-        }
+            if (isFind) {
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                System.out.println("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
+                        students[studentIndex][0],
+                        students[studentIndex][1],
+                        students[studentIndex][2],
+                        students[studentIndex][3], students[studentIndex][4]);
 
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                renderTitle("press enter to continue...");
+                userInput.nextLine().trim();
+                clearConsole();
+            } else {
+                System.out.println("Student with the NIM of " + nimInput + " doesn't exists!");
+                System.out.println("Masukkan data lagi");
+            }
+
+        }
     }
 
     static void inputDataMatkul() {
@@ -295,6 +318,32 @@ public class App {
         System.out.println("+------+--------------------+----------------------------------------+-----+");
     }
 
+    static void dashboardMahasiswa(String user) {
+
+        while (true) {
+            renderTitle("Selamat Datang " + user);
+            System.out.println("=== Dashboard Mahasiswa ===");
+            renderTitle("1. Cetak KHS");
+            renderTitle("2. Logout");
+            renderTitle("0. keluar");
+            System.out.print("pilih fitur: ");
+            int choice = getUserChoice();
+            switch (choice) {
+                case 1:
+                    clearConsole();
+                    cetakKHS();
+                    break;
+                case 2:
+                    clearConsole();
+                    loginView();
+                    break;
+                case 0:
+                    System.exit(choice);
+            }
+        }
+
+    }
+
     static void cetakKHS() {
 
     }
@@ -304,7 +353,58 @@ public class App {
     }
 
     static void updateDataMahasiswa() {
-
+        String oldNim, fullName, classPlacement, studyProgram, nim;
+        boolean isFind = false;
+        int studentIndex = -1;
+        renderTitle("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+        while (!isFind) {
+            clearConsole();
+            renderStudentsTable("Data's Student", students);
+            System.out.print("Edit data mahasiswa dengan NIM :");
+            oldNim = userInput.nextLine();
+            System.out.println(oldNim);// tes
+            if (oldNim.length() == 10) {
+                for (int i = 0; i < students.length; i++) {
+                    if (oldNim.equals(students[i][0])) {
+                        clearConsole();
+                        studentIndex = i;
+                        isFind = true;
+                        break;
+                    } else if (oldNim.equals(students[i][0])) {
+                        isFind = false;
+                    }
+                }
+            } else {
+                clearConsole();
+                System.out.println("NIM harus 10 digit");
+            }
+            if (isFind) {
+                renderTitle("New Student Data");
+                System.out.print("input new nim             :");
+                nim = userInput.nextLine();
+                System.out.print("input new name            :");
+                fullName = userInput.nextLine();
+                System.out.print("input new class           :");
+                classPlacement = userInput.nextLine();
+                System.out.print("input new study program   :");
+                studyProgram = userInput.nextLine();
+                students[studentIndex][0] = nim;
+                students[studentIndex][1] = fullName;
+                students[studentIndex][2] = classPlacement;
+                students[studentIndex][3] = studyProgram;
+                clearConsole();
+                System.out.println("Students have been succesfully added!");
+                renderStudentsTable("Data's Student", students);
+                renderTitle("press enter to continue...");
+                userInput.nextLine().trim();
+                clearConsole();
+            } else {
+                System.out.println("Student with the NIM of " + oldNim + " doesn't exists!");
+                System.out.println("Masukkan data lagi");
+            }
+        }
     }
 
     static void clearConsole() {
