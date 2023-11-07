@@ -112,7 +112,8 @@ public class App {
             System.out.println("2. Update data mahasiswa");
             System.out.println("3. Input data mata kuliah ke master");
             System.out.println("4. Input nilai");
-            System.out.println("5. Logout");
+            System.out.println("5. Pencarian Mahasiswa");
+            System.out.println("6. Logout");
             System.out.println("0. Keluar");
             System.out.print("pilih fitur: ");
             int choice = getUserChoice();
@@ -134,6 +135,10 @@ public class App {
                     inputNilai();
                     break;
                 case 5:
+                    clearConsole();
+                    pencarian();
+                    break;
+                case 6:
                     clearConsole();
                     loginView();
                     break;
@@ -205,6 +210,53 @@ public class App {
                     student[3], student[4]);
         }
         System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+    }
+
+    static void pencarian() {
+        String nimInput;
+        boolean isFind = false;
+        int studentIndex = -1;
+
+        while (!isFind) {
+            renderStudentsTable("Data's Student", students);
+            System.out.println("Cari mahasiswa dengan nim   :");
+            nimInput = userInput.nextLine();
+
+            if (nimInput.length() == 10) {
+                for (int i = 0; i < students.length; i++) {
+                    if (nimInput.equals(students[i][0])) {
+                        clearConsole();
+                        studentIndex = i;
+                        isFind = true;
+                        break;
+                    } else if (nimInput.equals(students[i][0])) {
+                        isFind = false;
+                    }
+                }
+            } else {
+                clearConsole();
+                System.out.println("NIM harus 10 digit");
+            }
+            if (isFind) {
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                System.out.println("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
+                        students[studentIndex][0],
+                        students[studentIndex][1],
+                        students[studentIndex][2],
+                        students[studentIndex][3], students[studentIndex][4]);
+
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                renderTitle("press enter to continue...");
+                userInput.nextLine().trim();
+                clearConsole();
+            } else {
+                System.out.println("Student with the NIM of " + nimInput + " doesn't exists!");
+                System.out.println("Masukkan data lagi");
+            }
+
+        }
     }
 
     static void inputDataMatkul() {
