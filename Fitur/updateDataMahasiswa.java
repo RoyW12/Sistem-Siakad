@@ -43,8 +43,6 @@ public class updateDataMahasiswa {
                         isFind = true;
                         break;
                     } else {
-                        System.out.println("Student with the NIM of " + nimInput + " doesn't exists!");
-                        System.out.println("Masukkan data lagi");
                         isFind = false;
                     }
                 }
@@ -53,11 +51,9 @@ public class updateDataMahasiswa {
             }
 
             if (isFind) {
-
                 mahasiswa[indeks] = namaInput;
                 nim[indeks] = nimBaru;
                 classPlacement[indeks] = classInput;
-
                 System.out.println("+------+------------+----------------------+-------+");
                 System.out.println("| No.  |    NIM     |      Full Name       | Class |");
                 System.out.println("+------+------------+----------------------+-------+");
@@ -67,6 +63,9 @@ public class updateDataMahasiswa {
                 }
                 System.out.println("+------+------------+----------------------+-------+");
 
+            } else {
+                System.out.println("Student with the NIM of " + nimInput + " doesn't exists!");
+                System.out.println("Masukkan data lagi");
             }
         }
     }
