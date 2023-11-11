@@ -4,78 +4,78 @@ import java.util.Scanner;
 
 public class inputDataMahasiswa {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
 
-        String[] mahasiswa = { "andi", "Roy", "Jessica", "Jokowi", "felice" };
-        String[] nim = { "0000000001", "0000000002", "0000000003", "0000000004", "0000000005" };
-        String[] classPlacement = { "1A", "1B", "2C", "3C", "4C" };
+        Scanner sc28 = new Scanner(System.in);
+        String[][] students = {
+                { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
+                { "1234560002", "Berta Christabel", "1B", "Teknik Informatika", "P" }
 
-        String namaInput;
-        String nimInput;
-        String kelasInput;
+        };
 
+        String nim = null, fullName = null, classPlacement = null, studyProgram = null, sex = null;
         boolean isFind = false;
+        System.out.println("Press enter to continue");
+        sc28.nextLine().trim();
+        System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+        System.out.println("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+        System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+        for (int i = 0; i < students.length; i++) {
+            String[] student = students[i];
+            System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", (i + 1), student[0], student[1],
+                    student[2],
+                    student[3], student[4]);
+        }
+        System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
 
         while (!isFind) {
-            System.out.println("+------+------------+----------------------+-------+");
-            System.out.println("| No.  |    NIM     |      Full Name       | Class |");
-            System.out.println("+------+------------+----------------------+-------+");
-            for (int i = 0; i < mahasiswa.length; i++) {
-                System.out.printf("| %-4d | %-10s | %-20s | %-5s |\n", (i + 1), nim[i], mahasiswa[i],
-                        classPlacement[i]);
-            }
-            System.out.println("+------+------------+----------------------+-------+");
-
-            System.out.print("Masukkan nama mahasiswa   : ");
-            namaInput = input.nextLine();
-            System.out.print("Masukkan NIM mahasiswa    : ");
-            nimInput = input.nextLine();
-            System.out.print("Masukkan kelas mahasiswa: ");
-            kelasInput = input.nextLine();
-            if (nimInput.length() == 10) {
-                for (int i = 0; i < nim.length; i++) {
-                    if (nimInput.equals(nim[i])) {
+            System.out.print("NIM               :");
+            nim = sc28.nextLine();
+            if (nim.length() == 10) {
+                System.out.print("Full Name         :");
+                fullName = sc28.nextLine();
+                System.out.print("Class             :");
+                classPlacement = sc28.nextLine();
+                System.out.print("Study Program     :");
+                studyProgram = sc28.nextLine();
+                System.out.print("Sex               :");
+                sex = sc28.nextLine();
+                for (int i = 0; i < students.length; i++) {
+                    if (nim.equals(students[i][0])) {
                         System.out.println("Student with the NIM of " + nim + " already exists!");
                         System.out.println("Masukkan data lagi");
                         isFind = false;
                         break;
-
                     } else {
                         isFind = true;
                     }
+                    ;
                 }
             } else {
                 System.out.println("NIM harus 10 digit");
+                System.out.println("Masukkan NIM lagi");
             }
             if (isFind) {
-                String[] newMahasiswa = new String[mahasiswa.length + 1];
-                String[] newNIM = new String[nim.length + 1];
-                String[] newClassPlacement = new String[classPlacement.length + 1];
-
-                for (int i = 0; i < mahasiswa.length; i++) {
-                    newMahasiswa[i] = mahasiswa[i];
-                    newNIM[i] = nim[i];
-                    newClassPlacement[i] = classPlacement[i];
+                String[][] newStudents = new String[students.length + 1][5];
+                for (int i = 0; i < students.length; i++) {
+                    newStudents[i] = students[i];
                 }
-                newMahasiswa[newMahasiswa.length - 1] = namaInput;
-                newNIM[newNIM.length - 1] = nimInput;
-                newClassPlacement[newClassPlacement.length - 1] = kelasInput;
-                mahasiswa = newMahasiswa;
-                nim = newNIM;
-                classPlacement = newClassPlacement;
-
-                System.out.println("+------+------------+----------------------+-------+");
-                System.out.println("| No.  |    NIM     |      Full Name       | Class |");
-                System.out.println("+------+------------+----------------------+-------+");
-                for (int i = 0; i < mahasiswa.length; i++) {
-                    // String[] student = students[i];
-                    System.out.printf("| %-4d | %-10s | %-20s | %-5s |\n", (i + 1), nim[i], mahasiswa[i],
-                            classPlacement[i]);
+                newStudents[newStudents.length - 1] = new String[] { nim, fullName, classPlacement, studyProgram, sex };
+                students = newStudents;
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                System.out.println("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
+                for (int i = 0; i < students.length; i++) {
+                    String[] student = students[i];
+                    System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", (i + 1), student[0],
+                            student[1],
+                            student[2],
+                            student[3], student[4]);
                 }
-                System.out.println("+------+------------+----------------------+-------+");
+                System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
 
+                System.out.println("press enter to continue...");
+                sc28.nextLine().trim();
             }
         }
-
     }
 }
