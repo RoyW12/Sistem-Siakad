@@ -3,36 +3,38 @@ package Fitur;
 import java.util.Scanner;
 
 public class login {
+
     public static void main(String[] args) {
-        Scanner input28 = new Scanner(System.in);
-        String usernameAdmin = "admin";
-        String passwordAdmin = "admin123";
-        String usernameMahasiswa = "mahasiswa";
-        String passwordMahasiswa = "mahasiswa123";
-        String userInput, passInput;
-        String level = "";
-        boolean isFind = false;
-        while (!isFind) {
-            System.out.println("input username");
-            userInput = input28.nextLine();
-            System.out.println("input password");
-            passInput = input28.nextLine();
-            if (userInput.equals(usernameAdmin)) {
-                if (passInput.equals(passwordAdmin)) {
-                    level = "admin";
-                    isFind = true;
-                } else {
-                    System.out.println("password salah");
+        String[][] userAdmin = { { "admin", "admin123" }, { "admin", "admin456" } };
+        String[][] userMahasiswa = { { "mahasiswa", "mahasiswa" }, { "mahasiswa1", "mahasiswa1" } };
+        boolean isBreak = false;
+        String level = null;
+        Scanner sc28 = new Scanner(System.in);
+        while (!isBreak) {
+            System.out.println("masukkan username dan password");
+            System.out.print("username:");
+            String username = sc28.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
+            System.out.print("password:");
+            String password = sc28.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
+            if (username.equals("admin")) {
+                for (int i = 0; i < userAdmin.length; i++) {
+                    if (username.equalsIgnoreCase(userAdmin[i][0]) && password.equalsIgnoreCase(userAdmin[i][1])) {
+                        isBreak = true;
+                        level = "admin";
+                    }
                 }
-            } else if (userInput.equals(usernameMahasiswa)) {
-                if (passInput.equals(passwordMahasiswa)) {
-                    level = "mahasiswa";
-                    isFind = true;
-                } else {
-                    System.out.println("Password salah");
+
+            } else if (username.equals("mahasiswa")) {
+                for (int i = 0; i < userMahasiswa.length; i++) {
+                    if (username.equalsIgnoreCase(userMahasiswa[i][0])
+                            && password.equalsIgnoreCase(userMahasiswa[i][1])) {
+                        isBreak = true;
+                        level = "mahasiswa";
+                    }
                 }
             } else {
                 System.out.println("user tidak ditemukan");
+                isBreak = false;
             }
         }
         if (level == "admin") {
