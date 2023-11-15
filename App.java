@@ -20,7 +20,7 @@ public class App {
             { "RTI231003", "Critical Thinking dan Problem Solving", "2" }
     };
 
-    static String[][] value = new String[999][999];
+    static String[][][] grades = new String[students.length][course.length][3];
 
     public static void main(String[] args) {
 
@@ -247,7 +247,8 @@ public class App {
                         students[studentIndex][0],
                         students[studentIndex][1],
                         students[studentIndex][2],
-                        students[studentIndex][3], students[studentIndex][4]);
+                        students[studentIndex][3],
+                        students[studentIndex][4]);
 
                 System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
                 renderTitle("press enter to continue...");
@@ -300,6 +301,15 @@ public class App {
                 }
                 newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
                 course = newCourse;
+
+                String[][][] newGrades = new String[students.length][course.length][3];
+                for (int i = 0; i < grades.length; i++) {
+                    for (int j = 0; j < grades[0].length; j++) {
+                        newGrades[i][j] = grades[i][j];
+                    }
+                }
+                grades = newGrades;
+
                 renderCourseTable("Course data", course);
                 renderTitle("press enter to continue...");
                 userInput.nextLine().trim();
@@ -353,44 +363,46 @@ public class App {
 
     static void inputNilai() {
         String nama = "";
-        String nim = "";
-        boolean isFind = false;
+        int indexStudent = -1;
 
-        while (!isFind) {
+        while (indexStudent == -1) {
             System.out.print("Masukkan nama mahasiswa   : ");
             nama = userInput.nextLine();
             for (int i = 0; i < students.length; i++) {
                 if (nama.equalsIgnoreCase(students[i][1])) {
-                    nim = students[i][0];
+                    indexStudent = i;
                     System.out.println("Data ditemukan");
-                    System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
-                        System.out.println("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
-                        System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
-                        System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
-                                students[i][0],
-                                students[i][1],
-                                students[i][2],
-                                students[i][3], 
-                                students[i][4]);
-                        System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
-                    isFind = true;
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.println(
+                            "| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
+                            students[i][0],
+                            students[i][1],
+                            students[i][2],
+                            students[i][3],
+                            students[i][4]);
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
                     renderTitle("press enter to continue...");
                     userInput.nextLine().trim();
                     clearConsole();
                     break;
                 }
             }
-            if (!isFind) {
+            if (indexStudent == -1) {
                 System.out.println("Data tidak ditemukan. Silakan coba lagi.");
             }
         }
 
-        renderValueTable("Value's Dara", course, value);
+        renderValueTable("Value's Data", indexStudent, course, grades);
         renderTitle("press enter to continue...");
         userInput.nextLine().trim();
         clearConsole();
 
-        if (isFind) {
+        if (indexStudent != -1) {
             int i = 0;
             boolean isFindd = false;
             while (i < course.length) {
@@ -407,7 +419,7 @@ public class App {
                     } else {
                         break;
                     }
-                } 
+                }
 
                 System.out.println("------------------------------------");
 
@@ -437,20 +449,11 @@ public class App {
                 } else {
                     letterValue = "Tidak tersedia";
                 }
-                value[i][0] = String.valueOf(numerricValue);
-                value[i][1] = letterValue;
-                value[i][2] = predicate;
-
+                grades[indexStudent][i][0] = String.valueOf(numerricValue);
+                grades[indexStudent][i][1] = letterValue;
+                grades[indexStudent][i][2] = predicate;
                 i++;
-                if (!isFindd) {
-                    String[][] newValue = new String[value.length + 1][3];
-                    for (int j = 0; j < value.length; j++) {
-                        newValue[j] = value[j];
-                    }
-                    newValue[newValue.length - 1] = new String[] { String.valueOf(numerricValue), letterValue, predicate};
-                    value = newValue;
-                }
-            }   
+            }
         }
         System.out.print("\n");
 
@@ -458,28 +461,38 @@ public class App {
         System.out.println("|          Data mahasiswa           |");
         System.out.println("-------------------------------------");
         System.out.println("| Nama        : " + nama);
-        System.out.println("| NIM         : " + nim);
+        System.out.println("| NIM         : " + students[indexStudent][0]);
         System.out.println("-------------------------------------");
 
-        renderValueTable("Value's Table", course, value);
+        renderValueTable("Value's Table", indexStudent, course, grades);
         renderTitle("press enter to continue...");
         userInput.nextLine().trim();
         clearConsole();
-       
+
     }
 
-    static void renderValueTable(String title, String[][] course, String[][] value) {
+    static void renderValueTable(String title, int indexStudent, String[][] course, String[][][] value) {
         renderTitle(title);
-        System.out.println("+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
-        System.out.println("| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) |     Predicate    |");
-        System.out.println("+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
-        for (int i = 0; i < course.length; i++) { 
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        System.out.println(
+                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) |     Predicate    |");
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
-            String[] values = value[i];
-            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0], newCourse[1],
+            String[] values = value[indexStudent][i];
+            for (int j = 0; j < values.length; j++) {
+                if (values[j] == null){
+                    values[j] = "-";
+                }
+            }
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+                    newCourse[1],
                     newCourse[2], values[0], values[1], values[2]);
         }
-        System.out.println("+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
     }
 
     static void updateDataMahasiswa() {
