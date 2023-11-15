@@ -20,7 +20,7 @@ public class App {
             { "RTI231003", "Critical Thinking dan Problem Solving", "2" }
     };
 
-    static String[][][] grades = new String[students.length][course.length][3];
+    static String[][][] grades = new String[999][course.length][3];
 
     public static void main(String[] args) {
 
@@ -107,8 +107,8 @@ public class App {
     }
 
     static void dashboardAdmin(String user) {
+        renderTitle("Selamat Datang " + user);
         while (true) {
-            renderTitle("Selamat Datang " + user);
             System.out.println("=== Dashboard Admin ===");
             System.out.println("1. Input data mahasiswa ke master");
             System.out.println("2. Update data mahasiswa");
@@ -146,6 +146,10 @@ public class App {
                     break;
                 case 0:
                     System.exit(choice);
+                default:
+                    System.out.println("Fitur tidak tersedia");
+                    clearConsole();
+                    continue;
             }
         }
     }
@@ -332,9 +336,8 @@ public class App {
     }
 
     static void dashboardMahasiswa(String user) {
-
+        renderTitle("Selamat Datang " + user);
         while (true) {
-            renderTitle("Selamat Datang " + user);
             System.out.println("=== Dashboard Mahasiswa ===");
             renderTitle("1. Cetak KHS");
             renderTitle("2. Logout");
@@ -352,6 +355,9 @@ public class App {
                     break;
                 case 0:
                     System.exit(choice);
+                default:
+                    System.out.println("Fitur tidak tersedia");
+                    continue;
             }
         }
 
@@ -503,11 +509,9 @@ public class App {
         userInput.nextLine().trim();
         clearConsole();
         while (!isFind) {
-            clearConsole();
             renderStudentsTable("Data's Student", students);
             System.out.print("Edit data mahasiswa dengan NIM :");
             oldNim = userInput.nextLine();
-            System.out.println(oldNim);// tes
             if (oldNim.length() == 10) {
                 for (int i = 0; i < students.length; i++) {
                     if (oldNim.equals(students[i][0])) {
@@ -515,8 +519,6 @@ public class App {
                         studentIndex = i;
                         isFind = true;
                         break;
-                    } else if (oldNim.equals(students[i][0])) {
-                        isFind = false;
                     }
                 }
             } else {
@@ -546,6 +548,9 @@ public class App {
             } else {
                 System.out.println("Student with the NIM of " + oldNim + " doesn't exists!");
                 System.out.println("Masukkan data lagi");
+                renderTitle("press enter to continue...");
+                userInput.nextLine().trim();
+                clearConsole();
             }
         }
     }
@@ -561,7 +566,6 @@ public class App {
 
     static int getUserChoice() {
         int choice = -1;
-
         try {
             choice = userInput.nextInt();
             userInput.nextLine();
