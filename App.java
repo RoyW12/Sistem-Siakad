@@ -306,7 +306,7 @@ public class App {
                 newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
                 course = newCourse;
 
-                String[][][] newGrades = new String[students.length][course.length][3];
+                String[][][] newGrades = new String[999][course.length][3];
                 for (int i = 0; i < grades.length; i++) {
                     for (int j = 0; j < grades[0].length; j++) {
                         newGrades[i][j] = grades[i][j];
@@ -368,14 +368,14 @@ public class App {
     }
 
     static void inputNilai() {
-        String nama = "";
+        String name = "";
         int indexStudent = -1;
 
         while (indexStudent == -1) {
             System.out.print("Masukkan nama mahasiswa   : ");
-            nama = userInput.nextLine();
+            name = userInput.nextLine();
             for (int i = 0; i < students.length; i++) {
-                if (nama.equalsIgnoreCase(students[i][1])) {
+                if (name.equalsIgnoreCase(students[i][1])) {
                     indexStudent = i;
                     System.out.println("Data ditemukan");
                     System.out.println(
@@ -408,65 +408,64 @@ public class App {
         userInput.nextLine().trim();
         clearConsole();
 
-        if (indexStudent != -1) {
-            int i = 0;
-            boolean isFindd = false;
-            while (i < course.length) {
-                int numerricValue;
-                while (true) {
-                    System.out.print("Nilai matkul " + course[i][1] + " : ");
-                    numerricValue = userInput.nextInt();
-                    userInput.nextLine();
-                    if (numerricValue < 0 || numerricValue > 100) {
-                        System.out.println("The value must be in the range 1-100. Please try again.....");
-                        renderTitle("press enter to continue...");
-                        userInput.nextLine().trim();
-                        clearConsole();
-                    } else {
-                        break;
+        for (int i = 0; i < course.length; i++) {
+            if (grades[indexStudent][i][0] == "-") {
+                while (i < course.length) {
+                    int numericValue;
+                    while (true) {
+                        System.out.print("Nilai matkul " + course[i][1] + " : ");
+                        numericValue = userInput.nextInt();
+                        userInput.nextLine();
+                        if (numericValue < 0 || numericValue > 100) {
+                            System.out.println("The value must be in the range 1-100. Please try again.....");
+                            renderTitle("press enter to continue...");
+                            userInput.nextLine().trim();
+                            clearConsole();
+                        } else {
+                            break;
+                        }
                     }
+                    String letterValue;
+                    String predicate = "";
+                    if (numericValue > 80 && numericValue <= 100) {
+                        letterValue = "A";
+                        predicate = "Sangat baik";
+                    } else if (numericValue > 73 && numericValue <= 80) {
+                        letterValue = "B+";
+                        predicate = "Lebih dari baik";
+                    } else if (numericValue > 65 && numericValue <= 73) {
+                        letterValue = "B";
+                        predicate = "Baik";
+                    } else if (numericValue > 60 && numericValue <= 65) {
+                        letterValue = "C+";
+                        predicate = "Lebih dari cukup";
+                    } else if (numericValue > 50 && numericValue <= 60) {
+                        letterValue = "C";
+                        predicate = "Cukup";
+                    } else if (numericValue > 39 && numericValue <= 50) {
+                        letterValue = "D";
+                        predicate = "Kurang";
+                    } else if (numericValue > 0 && numericValue <= 39) {
+                        letterValue = "E";
+                        predicate = "Gagal";
+                    } else {
+                        letterValue = "Tidak tersedia";
+                    }
+                    grades[indexStudent][i][0] = String.valueOf(numericValue);
+                    grades[indexStudent][i][1] = letterValue;
+                    grades[indexStudent][i][2] = predicate;
+                    i++;
                 }
-
-                System.out.println("------------------------------------");
-
-                String letterValue;
-                String predicate = "";
-                if (numerricValue > 80 && numerricValue <= 100) {
-                    letterValue = "A";
-                    predicate = "Sangat baik";
-                } else if (numerricValue > 73 && numerricValue <= 80) {
-                    letterValue = "B+";
-                    predicate = "Lebih dari baik";
-                } else if (numerricValue > 65 && numerricValue <= 73) {
-                    letterValue = "B";
-                    predicate = "Baik";
-                } else if (numerricValue > 60 && numerricValue <= 65) {
-                    letterValue = "C+";
-                    predicate = "Lebih dari cukup";
-                } else if (numerricValue > 50 && numerricValue <= 60) {
-                    letterValue = "C";
-                    predicate = "Cukup";
-                } else if (numerricValue > 39 && numerricValue <= 50) {
-                    letterValue = "D";
-                    predicate = "Kurang";
-                } else if (numerricValue > 0 && numerricValue <= 39) {
-                    letterValue = "E";
-                    predicate = "Gagal";
-                } else {
-                    letterValue = "Tidak tersedia";
-                }
-                grades[indexStudent][i][0] = String.valueOf(numerricValue);
-                grades[indexStudent][i][1] = letterValue;
-                grades[indexStudent][i][2] = predicate;
-                i++;
             }
         }
+
+        
         System.out.print("\n");
 
         System.out.println("-------------------------------------");
         System.out.println("|          Data mahasiswa           |");
         System.out.println("-------------------------------------");
-        System.out.println("| Nama        : " + nama);
+        System.out.println("| Nama        : " + name);
         System.out.println("| NIM         : " + students[indexStudent][0]);
         System.out.println("-------------------------------------");
 
