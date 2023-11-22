@@ -16,8 +16,8 @@ public class App {
 
     static String[][] course = {
             { "RTI231001", "Pancasila", "2" },
-            { "RTI231002", "Konsep Teknologi Informasi", "2" },
-            { "RTI231003", "Critical Thinking dan Problem Solving", "2" }
+            { "RTI231002", "KTI", "2" },
+            { "RTI231003", "CTPS", "2" }
     };
 
     static String[][][] grades = new String[999][course.length][3];
@@ -115,7 +115,8 @@ public class App {
             renderString("3. Input data mata kuliah ke master");
             renderString("4. Input nilai");
             renderString("5. Pencarian Mahasiswa");
-            renderString("6. Logout");
+            renderString("6. Pelaporan Nilai Mahasiswa");
+            renderString("7. Logout");
             renderString("0. Keluar");
             System.out.print("pilih fitur: ");
             int choice = getUserChoiceInt();
@@ -141,6 +142,10 @@ public class App {
                     pencarian();
                     break;
                 case 6:
+                    clearConsole();
+                    pelaporanNilai();
+                    break;
+                case 7:
                     clearConsole();
                     loginView();
                     break;
@@ -554,6 +559,48 @@ public class App {
                 clearConsole();
             }
         }
+    }
+
+    static void pelaporanNilai() {
+
+        System.out.println("-------------------------------------");
+        System.out.println("|      Laporan Nilai Mahasiswa       |");
+        System.out.println("-------------------------------------");
+        
+        System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.format("| %-10s | %-17s | %-7s | %-22s |", "NIM", "Nama", "Kelas", "Program Studi");
+    
+        // Untuk menampilkan jadwal mata kuliah
+        for (int j = 0; j < course.length; j++) {
+            System.out.format(" %-10s |", course[j][1]);
+        }
+    
+        System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+    
+        // untuk menampilkan kolom
+        for (int i = 0; i < students.length; i++) {
+            System.out.format("| %-10s | %-17s | %-7s | %-22s |",
+                    students[i][0], students[i][1], students[i][2], students[i][3], students[i][4]);
+    
+            // menampilkan nilai
+            for (int j = 0; j < course.length; j++) {
+                String grade = grades[i][j][0];
+                String comment = grades[i][j][1];
+    
+                if (grade == null) {
+                    System.out.format(" %-10s |", "-");
+                } else {
+                    System.out.format(" %-10s |", grade + " (" + comment + ")");
+                }
+            }
+            System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+        System.out.println();
+        
+        renderString("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+    
     }
 
     static void clearConsole() {
