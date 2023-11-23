@@ -27,7 +27,7 @@ public class InputNilai {
 
         };
 
-        String[][] grades = new String[students.length][course.length * 3]; 
+        String[][] grades = new String[students.length][course.length * 3];
 
         while (indexStudent == -1) {
             System.out.print("Masukkan nama mahasiswa   : ");
@@ -70,7 +70,8 @@ public class InputNilai {
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
             int baseIndex = i * 3; // Mulai dari indeks yang sesuai di array grades
-            String[] values = {grades[indexStudent][baseIndex], grades[indexStudent][baseIndex + 1], grades[indexStudent][baseIndex + 2]};
+            String[] values = { grades[indexStudent][baseIndex], grades[indexStudent][baseIndex + 1],
+                    grades[indexStudent][baseIndex + 2] };
             for (int j = 0; j < values.length; j++) {
                 if (values[j] == null) {
                     values[j] = "-";
@@ -103,27 +104,35 @@ public class InputNilai {
 
                 String letterValue;
                 String predicate = "";
+                double equivalentValue = 0.0;
                 if (numericValue > 80 && numericValue <= 100) {
                     letterValue = "A";
                     predicate = "Sangat baik";
+                    equivalentValue = 4;
                 } else if (numericValue > 73 && numericValue <= 80) {
                     letterValue = "B+";
                     predicate = "Lebih dari baik";
+                    equivalentValue = 3.5;
                 } else if (numericValue > 65 && numericValue <= 73) {
                     letterValue = "B";
                     predicate = "Baik";
+                    equivalentValue = 3;
                 } else if (numericValue > 60 && numericValue <= 65) {
                     letterValue = "C+";
                     predicate = "Lebih dari cukup";
+                    equivalentValue = 2.5;
                 } else if (numericValue > 50 && numericValue <= 60) {
                     letterValue = "C";
                     predicate = "Cukup";
+                    equivalentValue = 2;
                 } else if (numericValue > 39 && numericValue <= 50) {
                     letterValue = "D";
                     predicate = "Kurang";
+                    equivalentValue = 1;
                 } else if (numericValue > 0 && numericValue <= 39) {
                     letterValue = "E";
                     predicate = "Gagal";
+                    equivalentValue = 0;
                 } else {
                     letterValue = "Tidak tersedia";
                 }
@@ -131,6 +140,8 @@ public class InputNilai {
                 grades[indexStudent][baseIndex] = String.valueOf(numericValue);
                 grades[indexStudent][baseIndex + 1] = letterValue;
                 grades[indexStudent][baseIndex + 2] = predicate;
+                grades[indexStudent][baseIndex + 3] = Double.toString(equivalentValue);
+                i++;
                 i++;
             }
         }
@@ -155,7 +166,8 @@ public class InputNilai {
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
             int baseIndex = i * 3; // Mulai dari indeks yang sesuai di array grades
-            String[] values = {grades[indexStudent][baseIndex], grades[indexStudent][baseIndex + 1], grades[indexStudent][baseIndex + 2]};
+            String[] values = { grades[indexStudent][baseIndex], grades[indexStudent][baseIndex + 1],
+                    grades[indexStudent][baseIndex + 2] };
             for (int j = 0; j < values.length; j++) {
                 if (values[j] == null) {
                     values[j] = "-";
