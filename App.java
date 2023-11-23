@@ -18,7 +18,7 @@ public class App {
             { "RTI231003", "CTPS", "2" }
     };
 
-    static String[][][] grades = new String[999][course.length][3];
+    static String[][][] grades = new String[999][course.length][4];
 
     public static void main(String[] args) {
         loginView();
