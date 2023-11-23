@@ -435,33 +435,42 @@ public class App {
                     }
                     String letterValue;
                     String predicate = "";
+                    double equivalentValue = 0.0;
                     if (numericValue > 80 && numericValue <= 100) {
                         letterValue = "A";
                         predicate = "Sangat baik";
+                        equivalentValue = 4;
                     } else if (numericValue > 73 && numericValue <= 80) {
                         letterValue = "B+";
                         predicate = "Lebih dari baik";
+                        equivalentValue = 3.5;
                     } else if (numericValue > 65 && numericValue <= 73) {
                         letterValue = "B";
                         predicate = "Baik";
+                        equivalentValue = 3;
                     } else if (numericValue > 60 && numericValue <= 65) {
                         letterValue = "C+";
                         predicate = "Lebih dari cukup";
+                        equivalentValue = 2.5;
                     } else if (numericValue > 50 && numericValue <= 60) {
                         letterValue = "C";
                         predicate = "Cukup";
+                        equivalentValue = 2;
                     } else if (numericValue > 39 && numericValue <= 50) {
                         letterValue = "D";
                         predicate = "Kurang";
+                        equivalentValue = 1;
                     } else if (numericValue > 0 && numericValue <= 39) {
                         letterValue = "E";
                         predicate = "Gagal";
+                        equivalentValue = 0;
                     } else {
                         letterValue = "Tidak tersedia";
                     }
                     grades[indexStudent][i][0] = String.valueOf(numericValue);
                     grades[indexStudent][i][1] = letterValue;
                     grades[indexStudent][i][2] = predicate;
+                    grades[indexStudent][i][3] = Double.toString(equivalentValue);
                     i++;
                 }
             }
@@ -563,46 +572,49 @@ public class App {
 
     static void pelaporanNilai() {
 
-        //pelaporan nilai mahasiswa
+        // pelaporan nilai mahasiswa
 
         System.out.println("-------------------------------------");
         System.out.println("|      Laporan Nilai Mahasiswa       |");
         System.out.println("-------------------------------------");
-        
-        System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+        System.out.println(
+                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.format("| %-10s | %-17s | %-7s | %-22s |", "NIM", "Nama", "Kelas", "Program Studi");
-    
+
         // Untuk menampilkan jadwal mata kuliah
         for (int j = 0; j < course.length; j++) {
             System.out.format(" %-10s |", course[j][1]);
         }
-    
-        System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-    
+
+        System.out.println(
+                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+
         // untuk menampilkan kolom
         for (int i = 0; i < students.length; i++) {
             System.out.format("| %-10s | %-17s | %-7s | %-22s |",
                     students[i][0], students[i][1], students[i][2], students[i][3], students[i][4]);
-    
+
             // menampilkan nilai
             for (int j = 0; j < course.length; j++) {
                 String grade = grades[i][j][0];
                 String comment = grades[i][j][1];
-    
+
                 if (grade == null) {
                     System.out.format(" %-10s |", "-");
                 } else {
                     System.out.format(" %-10s |", grade + " (" + comment + ")");
                 }
             }
-            System.out.println("\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(
+                    "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
         System.out.println();
-        
+
         renderString("press enter to continue...");
         userInput.nextLine().trim();
         clearConsole();
-    
+
     }
 
     static void clearConsole() {
