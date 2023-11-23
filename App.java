@@ -3,15 +3,13 @@ import java.util.Scanner;
 
 public class App {
     static Scanner userInput = new Scanner(System.in);
-    static String[][] userAdmin = { { "admin1", "admin1" }, { "admin2", "admin2" }, { "admin3", "admin3" } };
-    static String[][] userMahasiswa = { { "mahasiswa1", "mahasiswa1" }, { "mahasiswa2", "mahasiswa2" },
-            { "mahasiswa3", "mahasiswa3" } };
+    static String[][] admin = { { "admin1", "admin1" }, { "admin2", "admin2" }, { "admin3", "admin3" } };
     static String[][] students = {
-            { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
-            { "1234560002", "Jessica Wongso", "1B", "Teknik Informatika", "P" },
-            { "1234560003", "Joko Widodo", "1C", "Teknik Informatika", "L" },
-            { "1234560004", "Ganjar Pranowo", "1D", "Teknik Informatika", "L" },
-            { "1234560005", "Megawati", "1E", "Manajemen", "P" }
+            { "1234560001", "Roy wijaya", "1A", "TI", "L" },
+            { "1234560002", "Prabowo Subianto", "1B", "TI", "P" },
+            { "1234560003", "Joko Widodo", "1C", "TI", "L" },
+            { "1234560004", "Ganjar Pranowo", "1D", "SIB", "L" },
+            { "1234560005", "Megawati", "1E", "SIB", "P" }
     };
 
     static String[][] course = {
@@ -23,7 +21,6 @@ public class App {
     static String[][][] grades = new String[999][course.length][3];
 
     public static void main(String[] args) {
-
         loginView();
     }
 
@@ -50,36 +47,38 @@ public class App {
                     System.exit(choice);
                     break;
                 default:
-                    System.out.println("user can't be found");
-                    continue;
+                    clearConsole();
+                    renderString("user can't be found");
+                    renderString("press enter to continue...");
+                    userInput.nextLine().trim();
+                    clearConsole();
             }
-            break;
         }
     }
 
     static boolean checkUsernamePassword(String username, String password, String[][] userArray) {
         boolean isLoggedIn = true;
         for (int i = 0; i < userArray.length; i++) {
-            if (username.equals(userArray[i][0]) && password.equals(userArray[i][1])) {
-                isLoggedIn = false;
-                clearConsole();
-                return true;
+            if (userArray == admin) {
+                if (username.equals(userArray[i][0]) && password.equals(userArray[i][1])) {
+                    isLoggedIn = false;
+                    clearConsole();
+                    return true;
+                }
+            } else if (userArray == students) {
+                if (username.equals(userArray[i][0]) && password.equals(userArray[i][0])) {
+                    isLoggedIn = false;
+                    clearConsole();
+                    return true;
+                }
             }
+
         }
         if (isLoggedIn) {
             clearConsole();
             System.out.println("incorrect username and password ");
-
         }
         return false;
-    }
-
-    static boolean adminLogin(String username, String password) {
-        return checkUsernamePassword(username, password, userAdmin);
-    }
-
-    static boolean mahasiswaLogin(String username, String password) {
-        return checkUsernamePassword(username, password, userMahasiswa);
     }
 
     static void login(int choice) {
@@ -92,17 +91,16 @@ public class App {
             String password = userInput.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
 
             if (choice == 1) {
-                isBreak = adminLogin(username, password);
+                isBreak = checkUsernamePassword(username, password, admin);
                 if (isBreak) {
                     dashboardAdmin(username);
                 }
             } else if (choice == 2) {
-                isBreak = mahasiswaLogin(username, password);
+                isBreak = checkUsernamePassword(username, password, students);
                 if (isBreak) {
                     dashboardMahasiswa(username);
                 }
             }
-
         }
     }
 
@@ -157,7 +155,6 @@ public class App {
                     renderString("press enter to continue...");
                     userInput.nextLine().trim();
                     clearConsole();
-                    continue;
             }
         }
     }
@@ -364,8 +361,11 @@ public class App {
                 case 0:
                     System.exit(choice);
                 default:
+                    clearConsole();
                     renderString("Fitur tidak tersedia");
-                    continue;
+                    renderString("press enter to continue...");
+                    userInput.nextLine().trim();
+                    clearConsole();
             }
         }
 
@@ -606,6 +606,11 @@ public class App {
     static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        /*
+         * \033[H: Mengatur kursor ke awal layar (baris 1, kolom 1).
+         * \033[2J: Membersihkan layar dari isi sebelumnya.
+         * System.out.flush(): Memastikan bahwa perubahan pada konsol segera diterapkan.
+         */
     }
 
     static void renderString(String string) {
