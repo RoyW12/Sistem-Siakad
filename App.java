@@ -3,36 +3,37 @@ import java.util.Scanner;
 
 public class App {
     static Scanner userInput = new Scanner(System.in);
-    static String[][] userAdmin = { { "admin1", "admin1" }, { "admin2", "admin2" }, { "admin3", "admin3" } };
-    static String[][] userMahasiswa = { { "mahasiswa1", "mahasiswa1" }, { "mahasiswa2", "mahasiswa2" },
-            { "mahasiswa3", "mahasiswa3" } };
+    static String user = null;
+    static int kolomStudent = 0;
+    static String[][] admin = { { "admin1", "admin1" }, { "admin2", "admin2" }, { "admin3", "admin3" } };
     static String[][] students = {
-            { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
-            { "1234560002", "Jessica Wongso", "1B", "Teknik Informatika", "P" },
-            { "1234560003", "Joko Widodo", "1C", "Teknik Informatika", "L" },
-            { "1234560004", "Ganjar Pranowo", "1D", "Teknik Informatika", "L" },
-            { "1234560005", "Megawati", "1E", "Manajemen", "P" }
+            { "1234560001", "Roy wijaya", "1A", "TI", "L" },
+            { "1234560002", "Prabowo Subianto", "1B", "TI", "P" },
+            { "1234560003", "Joko Widodo", "1C", "TI", "L" },
+            { "1234560004", "Ganjar Pranowo", "1D", "SIB", "L" },
+            { "1234560005", "Megawati", "1E", "SIB", "P" }
     };
 
     static String[][] course = {
             { "RTI231001", "Pancasila", "2" },
-            { "RTI231002", "Konsep Teknologi Informasi", "2" },
-            { "RTI231003", "Critical Thinking dan Problem Solving", "2" }
+            { "RTI231002", "KTI", "2" },
+            { "RTI231003", "CTPS", "2" }
     };
 
-    public static void main(String[] args) {
+    static String[][][] grades = new String[999][course.length][4];
 
+    public static void main(String[] args) {
         loginView();
     }
 
     static void loginView() {
         while (true) {
-            renderTitle("SISTEM SIAKAD");
-            renderTitle("1. admin");
-            renderTitle("2. mahasiswa");
-            renderTitle("0. keluar");
-            renderTitle("Pilih login sebagai => 1.admin 2.mahasiswa atau keluar pilih 0");
-            int choice = getUserChoice();
+            renderString("SISTEM SIAKAD");
+            renderString("1. admin");
+            renderString("2. mahasiswa");
+            renderString("0. keluar");
+            renderString("Pilih login sebagai => 1.admin 2.mahasiswa atau keluar pilih 0");
+            int choice = getUserChoiceInt();
 
             switch (choice) {
                 case 1:
@@ -48,36 +49,42 @@ public class App {
                     System.exit(choice);
                     break;
                 default:
-                    System.out.println("user can't be found");
-                    continue;
+                    clearConsole();
+                    renderString("user can't be found");
+                    renderString("press enter to continue...");
+                    userInput.nextLine().trim();
+                    clearConsole();
             }
-            break;
         }
     }
 
     static boolean checkUsernamePassword(String username, String password, String[][] userArray) {
         boolean isLoggedIn = true;
         for (int i = 0; i < userArray.length; i++) {
-            if (username.equals(userArray[i][0]) && password.equals(userArray[i][1])) {
-                isLoggedIn = false;
-                clearConsole();
-                return true;
+            if (userArray == admin) {
+                if (username.equals(userArray[i][0]) && password.equals(userArray[i][1])) {
+                    isLoggedIn = false;
+                    clearConsole();
+                    return true;
+                }
+            } else if (userArray == students) {
+                if (username.equals(userArray[i][0]) && password.equals(userArray[i][0])) {
+                    isLoggedIn = false;
+                    clearConsole();
+                    return true;
+                }
+            }
+            for (int j = 0; j < students.length; j++) {
+                if (students[i][j] == username) {
+                    kolomStudent = j;
+                }
             }
         }
         if (isLoggedIn) {
             clearConsole();
             System.out.println("incorrect username and password ");
-
         }
         return false;
-    }
-
-    static boolean adminLogin(String username, String password) {
-        return checkUsernamePassword(username, password, userAdmin);
-    }
-
-    static boolean mahasiswaLogin(String username, String password) {
-        return checkUsernamePassword(username, password, userMahasiswa);
     }
 
     static void login(int choice) {
@@ -90,12 +97,12 @@ public class App {
             String password = userInput.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
 
             if (choice == 1) {
-                isBreak = adminLogin(username, password);
+                isBreak = checkUsernamePassword(username, password, admin);
                 if (isBreak) {
                     dashboardAdmin(username);
                 }
             } else if (choice == 2) {
-                isBreak = mahasiswaLogin(username, password);
+                isBreak = checkUsernamePassword(username, password, students);
                 if (isBreak) {
                     dashboardMahasiswa(username);
                 }
@@ -104,18 +111,19 @@ public class App {
     }
 
     static void dashboardAdmin(String user) {
+        renderString("Selamat Datang " + user);
         while (true) {
-            renderTitle("Selamat Datang " + user);
-            System.out.println("=== Dashboard Admin ===");
-            System.out.println("1. Input data mahasiswa ke master");
-            System.out.println("2. Update data mahasiswa");
-            System.out.println("3. Input data mata kuliah ke master");
-            System.out.println("4. Input nilai");
-            System.out.println("5. Pencarian Mahasiswa");
-            System.out.println("6. Logout");
-            System.out.println("0. Keluar");
+            renderString("=== Dashboard Admin ===");
+            renderString("1. Input data mahasiswa ke master");
+            renderString("2. Update data mahasiswa");
+            renderString("3. Input data mata kuliah ke master");
+            renderString("4. Input nilai");
+            renderString("5. Pencarian Mahasiswa");
+            renderString("6. Pelaporan Nilai Mahasiswa");
+            renderString("7. Logout");
+            renderString("0. Keluar");
             System.out.print("pilih fitur: ");
-            int choice = getUserChoice();
+            int choice = getUserChoiceInt();
             switch (choice) {
                 case 1:
                     clearConsole();
@@ -139,10 +147,20 @@ public class App {
                     break;
                 case 6:
                     clearConsole();
+                    pelaporanNilai();
+                    break;
+                case 7:
+                    clearConsole();
                     loginView();
                     break;
                 case 0:
                     System.exit(choice);
+                default:
+                    clearConsole();
+                    renderString("Fitur tidak tersedia");
+                    renderString("press enter to continue...");
+                    userInput.nextLine().trim();
+                    clearConsole();
             }
         }
     }
@@ -150,7 +168,7 @@ public class App {
     static void inputDataMahasiswa() {
         String nim, fullName, classPlacement, studyProgram, sex;
         boolean isFind = false;
-        renderTitle("press enter to continue...");
+        renderString("press enter to continue...");
         userInput.nextLine().trim();
         clearConsole();
         renderStudentsTable("Data's Student", students);
@@ -169,8 +187,8 @@ public class App {
                 for (int i = 0; i < students.length; i++) {
                     if (nim.equals(students[i][0])) {
                         clearConsole();
-                        System.out.println("Student with the NIM of " + nim + " already exists!");
-                        System.out.println("Masukkan data lagi");
+                        renderString("Student with the NIM of " + nim + " already exists!");
+                        renderString("Masukkan data lagi");
                         isFind = false;
                         break;
                     } else {
@@ -180,7 +198,7 @@ public class App {
                 }
             } else {
                 clearConsole();
-                System.out.println("NIM harus 10 digit");
+                renderString("NIM harus 10 digit");
             }
             if (isFind) {
                 String[][] newStudents = new String[students.length + 1][5];
@@ -190,7 +208,7 @@ public class App {
                 newStudents[newStudents.length - 1] = new String[] { nim, fullName, classPlacement, studyProgram, sex };
                 students = newStudents;
                 renderStudentsTable("Data's Student", students);
-                renderTitle("press enter to continue...");
+                renderString("press enter to continue...");
                 userInput.nextLine().trim();
                 clearConsole();
             }
@@ -198,7 +216,7 @@ public class App {
     }
 
     static void renderStudentsTable(String title, String[][] students) {
-        renderTitle(title);
+        renderString(title);
         System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
         System.out.println("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
         System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
@@ -218,7 +236,7 @@ public class App {
 
         while (!isFind) {
             renderStudentsTable("Data's Student", students);
-            System.out.println("Cari mahasiswa dengan nim   :");
+            renderString("Cari mahasiswa dengan nim   :");
             nimInput = userInput.nextLine();
 
             if (nimInput.length() == 10) {
@@ -234,7 +252,7 @@ public class App {
                 }
             } else {
                 clearConsole();
-                System.out.println("NIM harus 10 digit");
+                renderString("NIM harus 10 digit");
             }
             if (isFind) {
                 System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
@@ -244,15 +262,16 @@ public class App {
                         students[studentIndex][0],
                         students[studentIndex][1],
                         students[studentIndex][2],
-                        students[studentIndex][3], students[studentIndex][4]);
+                        students[studentIndex][3],
+                        students[studentIndex][4]);
 
                 System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
-                renderTitle("press enter to continue...");
+                renderString("press enter to continue...");
                 userInput.nextLine().trim();
                 clearConsole();
             } else {
-                System.out.println("Student with the NIM of " + nimInput + " doesn't exists!");
-                System.out.println("Masukkan data lagi");
+                renderString("Student with the NIM of " + nimInput + " doesn't exists!");
+                renderString("Masukkan data lagi");
             }
 
         }
@@ -261,7 +280,7 @@ public class App {
     static void inputDataMatkul() {
         String courseCode, courseName, sks;
         boolean isFind = false;
-        renderTitle("Press enter to continue...");
+        renderString("Press enter to continue...");
         userInput.nextLine().trim();
         clearConsole();
         renderCourseTable("Course data", course);
@@ -277,8 +296,8 @@ public class App {
                 for (int i = 0; i < course.length; i++) {
                     if (courseCode.equals(course[i][0])) {
                         clearConsole();
-                        System.out.println("Course with the Course code of " + courseCode + " already exists!");
-                        System.out.println("Masukkan data kembali");
+                        renderString("Course with the Course code of " + courseCode + " already exists!");
+                        renderString("Masukkan data kembali");
                         isFind = false;
                         break;
                     } else {
@@ -297,8 +316,17 @@ public class App {
                 }
                 newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
                 course = newCourse;
+
+                String[][][] newGrades = new String[999][course.length][4];
+                for (int i = 0; i < grades.length; i++) {
+                    for (int j = 0; j < grades[0].length; j++) {
+                        newGrades[i][j] = grades[i][j];
+                    }
+                }
+                grades = newGrades;
+
                 renderCourseTable("Course data", course);
-                renderTitle("press enter to continue...");
+                renderString("press enter to continue...");
                 userInput.nextLine().trim();
                 clearConsole();
             }
@@ -306,7 +334,7 @@ public class App {
     }
 
     static void renderCourseTable(String title, String[][] course) {
-        renderTitle(title);
+        renderString(title);
         System.out.println("+------+--------------------+----------------------------------------+-----+");
         System.out.println("| No.  |    Course Code     |               Course Name              | SKS |");
         System.out.println("+------+--------------------+----------------------------------------+-----+");
@@ -319,15 +347,14 @@ public class App {
     }
 
     static void dashboardMahasiswa(String user) {
-
+        renderString("Selamat Datang " + students[kolomStudent][1]);
         while (true) {
-            renderTitle("Selamat Datang " + user);
-            System.out.println("=== Dashboard Mahasiswa ===");
-            renderTitle("1. Cetak KHS");
-            renderTitle("2. Logout");
-            renderTitle("0. keluar");
+            renderString("=== Dashboard Mahasiswa ===");
+            renderString("1. Cetak KHS");
+            renderString("2. Logout");
+            renderString("0. keluar");
             System.out.print("pilih fitur: ");
-            int choice = getUserChoice();
+            int choice = getUserChoiceInt();
             switch (choice) {
                 case 1:
                     clearConsole();
@@ -339,32 +366,226 @@ public class App {
                     break;
                 case 0:
                     System.exit(choice);
+                default:
+                    clearConsole();
+                    renderString("Fitur tidak tersedia");
+                    renderString("press enter to continue...");
+                    userInput.nextLine().trim();
+                    clearConsole();
             }
         }
 
     }
 
-    static void cetakKHS() {
+    // static void cetakKHS() {
+    // }
 
+    static void cetakKHS() {
+        boolean isFind = true;
+
+        renderString("Selamat Datang " + students[kolomStudent][1]);
+        // System.out.println("-------------------------------------");
+        // System.out.println("| Data mahasiswa |");
+        // System.out.println("-------------------------------------");
+        // System.out.println("| Nama : " + user);
+        // System.out.println("| NIM : " + students[kolomStudent][0]);
+        // System.out.println("| Kelas : " + students[kolomStudent][2]);
+        // System.out.println("| Program Studi : " + students[kolomStudent][3]);
+        // System.out.println("-------------------------------------");
+        if (isFind) {
+            user = students[kolomStudent][1];
+            System.out.println("---------------------------------------------");
+            System.out.println("|              Data mahasiswa                |");
+            System.out.println("---------------------------------------------");
+            System.out.println("| Nama          : " + students[kolomStudent][1]);
+            System.out.println("| NIM           : " + students[kolomStudent][0]);
+            System.out.println("| Kelas         : " + students[kolomStudent][2]);
+            System.out.println("| Program Studi : " + students[kolomStudent][3]);
+            System.out.println("---------------------------------------------");
+            renderKhsTable("Value's Table", kolomStudent, course, grades);
+            renderString("press enter to continue...");
+            userInput.nextLine().trim();
+            clearConsole();
+        }
+    }
+
+    static void renderKhsTable(String title, int indexStudent, String[][] course,
+            String[][][] value) {
+        renderString(title);
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        System.out.println(
+                "| No.  |    Course Code     |               Course Name              | SKS | Value (equivalent) | Value (Letter) |   N X SKS  |");
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        for (int i = 0; i < course.length; i++) {
+            String[] newCourse = course[i];
+            String[] values = value[indexStudent][i];
+            for (int j = 0; j < values.length; j++) {
+                if (values[j] == null) {
+                    values[j] = "-";
+                }
+            }
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+                    newCourse[1],
+                    newCourse[2], values[3], values[1], values[4]);
+        }
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
     }
 
     static void inputNilai() {
+        String name = "";
+        int indexStudent = -1;
 
+        while (indexStudent == -1) {
+            System.out.print("Masukkan nama mahasiswa   : ");
+            name = userInput.nextLine();
+            for (int i = 0; i < students.length; i++) {
+                if (name.equalsIgnoreCase(students[i][1])) {
+                    indexStudent = i;
+                    renderString("Data ditemukan");
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.println(
+                            "| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
+                            students[i][0],
+                            students[i][1],
+                            students[i][2],
+                            students[i][3],
+                            students[i][4]);
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    renderString("press enter to continue...");
+                    userInput.nextLine().trim();
+                    clearConsole();
+                    break;
+                }
+            }
+            if (indexStudent == -1) {
+                renderString("Data tidak ditemukan. Silakan coba lagi.");
+            }
+        }
+
+        renderValueTable("Value's Data", indexStudent, course, grades);
+        renderString("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+
+        for (int i = 0; i < course.length; i++) {
+            if (grades[indexStudent][i][0] == "-") {
+                while (i < course.length) {
+                    int numericValue;
+                    while (true) {
+                        System.out.print("Nilai matkul " + course[i][1] + " : ");
+                        numericValue = userInput.nextInt();
+                        userInput.nextLine();
+                        if (numericValue < 0 || numericValue > 100) {
+                            renderString("The value must be in the range 1-100. Please try again.....");
+                            renderString("press enter to continue...");
+                            userInput.nextLine().trim();
+                            clearConsole();
+                        } else {
+                            break;
+                        }
+                    }
+                    String letterValue;
+                    String predicate = "";
+                    double equivalentValue = 0.0;
+                    if (numericValue > 80 && numericValue <= 100) {
+                        letterValue = "A";
+                        predicate = "Sangat baik";
+                        equivalentValue = 4;
+                    } else if (numericValue > 73 && numericValue <= 80) {
+                        letterValue = "B+";
+                        predicate = "Lebih dari baik";
+                        equivalentValue = 3.5;
+                    } else if (numericValue > 65 && numericValue <= 73) {
+                        letterValue = "B";
+                        predicate = "Baik";
+                        equivalentValue = 3;
+                    } else if (numericValue > 60 && numericValue <= 65) {
+                        letterValue = "C+";
+                        predicate = "Lebih dari cukup";
+                        equivalentValue = 2.5;
+                    } else if (numericValue > 50 && numericValue <= 60) {
+                        letterValue = "C";
+                        predicate = "Cukup";
+                        equivalentValue = 2;
+                    } else if (numericValue > 39 && numericValue <= 50) {
+                        letterValue = "D";
+                        predicate = "Kurang";
+                        equivalentValue = 1;
+                    } else if (numericValue > 0 && numericValue <= 39) {
+                        letterValue = "E";
+                        predicate = "Gagal";
+                        equivalentValue = 0;
+                    } else {
+                        letterValue = "Tidak tersedia";
+                    }
+                    grades[indexStudent][i][0] = String.valueOf(numericValue);
+                    grades[indexStudent][i][1] = letterValue;
+                    grades[indexStudent][i][2] = predicate;
+                    grades[indexStudent][i][3] = Double.toString(equivalentValue);
+                    i++;
+                }
+            }
+        }
+
+        System.out.print("\n");
+
+        System.out.println("-------------------------------------");
+        System.out.println("|          Data mahasiswa           |");
+        System.out.println("-------------------------------------");
+        System.out.println("| Nama        : " + name);
+        System.out.println("| NIM         : " + students[indexStudent][0]);
+        System.out.println("-------------------------------------");
+
+        renderValueTable("Value's Table", indexStudent, course, grades);
+        renderString("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+
+    }
+
+    static void renderValueTable(String title, int indexStudent, String[][] course, String[][][] value) {
+        renderString(title);
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        System.out.println(
+                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) |     Predicate    |");
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        for (int i = 0; i < course.length; i++) {
+            String[] newCourse = course[i];
+            String[] values = value[indexStudent][i];
+            for (int j = 0; j < values.length; j++) {
+                if (values[j] == null) {
+                    values[j] = "-";
+                }
+            }
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+                    newCourse[1],
+                    newCourse[2], values[0], values[1], values[2]);
+        }
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
     }
 
     static void updateDataMahasiswa() {
         String oldNim, fullName, classPlacement, studyProgram, nim;
         boolean isFind = false;
         int studentIndex = -1;
-        renderTitle("press enter to continue...");
+        renderString("press enter to continue...");
         userInput.nextLine().trim();
         clearConsole();
         while (!isFind) {
-            clearConsole();
             renderStudentsTable("Data's Student", students);
             System.out.print("Edit data mahasiswa dengan NIM :");
             oldNim = userInput.nextLine();
-            System.out.println(oldNim);// tes
             if (oldNim.length() == 10) {
                 for (int i = 0; i < students.length; i++) {
                     if (oldNim.equals(students[i][0])) {
@@ -372,8 +593,6 @@ public class App {
                         studentIndex = i;
                         isFind = true;
                         break;
-                    } else if (oldNim.equals(students[i][0])) {
-                        isFind = false;
                     }
                 }
             } else {
@@ -381,7 +600,7 @@ public class App {
                 System.out.println("NIM harus 10 digit");
             }
             if (isFind) {
-                renderTitle("New Student Data");
+                renderString("New Student Data");
                 System.out.print("input new nim             :");
                 nim = userInput.nextLine();
                 System.out.print("input new name            :");
@@ -395,38 +614,93 @@ public class App {
                 students[studentIndex][2] = classPlacement;
                 students[studentIndex][3] = studyProgram;
                 clearConsole();
-                System.out.println("Students have been succesfully added!");
+                renderString("Students have been succesfully added!");
                 renderStudentsTable("Data's Student", students);
-                renderTitle("press enter to continue...");
+                renderString("press enter to continue...");
                 userInput.nextLine().trim();
                 clearConsole();
             } else {
-                System.out.println("Student with the NIM of " + oldNim + " doesn't exists!");
-                System.out.println("Masukkan data lagi");
+                renderString("Student with the NIM of " + oldNim + " doesn't exists!");
+                renderString("Masukkan data lagi");
+                renderString("press enter to continue...");
+                userInput.nextLine().trim();
+                clearConsole();
             }
         }
+    }
+
+    static void pelaporanNilai() {
+
+        // pelaporan nilai mahasiswa
+
+        System.out.println("-------------------------------------");
+        System.out.println("|      Laporan Nilai Mahasiswa       |");
+        System.out.println("-------------------------------------");
+
+        System.out.println(
+                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.format("| %-10s | %-17s | %-7s | %-22s |", "NIM", "Nama", "Kelas", "Program Studi");
+
+        // Untuk menampilkan jadwal mata kuliah
+        for (int j = 0; j < course.length; j++) {
+            System.out.format(" %-10s |", course[j][1]);
+        }
+
+        System.out.println(
+                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+        // untuk menampilkan kolom
+        for (int i = 0; i < students.length; i++) {
+            System.out.format("| %-10s | %-17s | %-7s | %-22s |",
+                    students[i][0], students[i][1], students[i][2], students[i][3], students[i][4]);
+
+            // menampilkan nilai
+            for (int j = 0; j < course.length; j++) {
+                String grade = grades[i][j][0];
+                String comment = grades[i][j][1];
+
+                if (grade == null) {
+                    System.out.format(" %-10s |", "-");
+                } else {
+                    System.out.format(" %-10s |", grade + " (" + comment + ")");
+                }
+            }
+            System.out.println(
+                    "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+        System.out.println();
+
+        renderString("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+
     }
 
     static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        /*
+         * \033[H: Mengatur kursor ke awal layar (baris 1, kolom 1).
+         * \033[2J: Membersihkan layar dari isi sebelumnya.
+         * System.out.flush(): Memastikan bahwa perubahan pada konsol segera diterapkan.
+         */
     }
 
-    static void renderTitle(String title) {
-        System.out.println(title);
+    static void renderString(String string) {
+        System.out.println(string);
     }
 
-    static int getUserChoice() {
-        int choice = -1;
-
-        try {
-            choice = userInput.nextInt();
-            userInput.nextLine();
-        } catch (Exception e) {
-            System.out.println("Inputan salah");
-            userInput.nextLine();
-        }
+    static int getUserChoiceInt() {
+        int choice;
+        choice = userInput.nextInt();
+        userInput.nextLine();
         return choice;
+    }
+
+    static String getUserString() {
+        String input;
+        input = userInput.nextLine();
+        return input;
     }
 
 }
