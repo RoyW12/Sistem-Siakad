@@ -311,7 +311,7 @@ public class App {
                 newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
                 course = newCourse;
 
-                String[][][] newGrades = new String[999][course.length][3];
+                String[][][] newGrades = new String[999][course.length][4];
                 for (int i = 0; i < grades.length; i++) {
                     for (int j = 0; j < grades[0].length; j++) {
                         newGrades[i][j] = grades[i][j];
