@@ -56,34 +56,34 @@ public class App {
         }
     }
 
-    static boolean checkUsernamePassword(String username, String password, String[][] userArray) {
-        boolean isLoggedIn = true;
+    static int checkUsernamePassword(String username, String password, String[][] userArray) {
+        int userIndex = -1;
         for (int i = 0; i < userArray.length; i++) {
             if (userArray == admin) {
                 if (username.equals(userArray[i][0]) && password.equals(userArray[i][1])) {
-                    isLoggedIn = false;
+                    userIndex = i;
                     clearConsole();
-                    return true;
+                    return userIndex;
                 }
             } else if (userArray == students) {
                 if (username.equals(userArray[i][0]) && password.equals(userArray[i][0])) {
-                    isLoggedIn = false;
+                    userIndex = i;
                     clearConsole();
-                    return true;
+                    return userIndex;
                 }
             }
 
         }
-        if (isLoggedIn) {
+        if (userIndex == -1) {
             clearConsole();
             System.out.println("incorrect username and password ");
         }
-        return false;
+        return -1;
     }
 
     static void login(int choice) {
         while (true) {
-            boolean isBreak = false;
+            int user;
             System.out.println("input username and password");
             System.out.print("username:");
             String username = userInput.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
@@ -91,21 +91,21 @@ public class App {
             String password = userInput.nextLine().trim(); // trim menghapus spasi di awal dan akhir string
 
             if (choice == 1) {
-                isBreak = checkUsernamePassword(username, password, admin);
-                if (isBreak) {
-                    dashboardAdmin(username);
+                user = checkUsernamePassword(username, password, admin);
+                if (user >= 0) {
+                    dashboardAdmin(user);
                 }
             } else if (choice == 2) {
-                isBreak = checkUsernamePassword(username, password, students);
-                if (isBreak) {
-                    dashboardMahasiswa(username);
+                user = checkUsernamePassword(username, password, students);
+                if (user >= 0) {
+                    dashboardMahasiswa(user);
                 }
             }
         }
     }
 
-    static void dashboardAdmin(String user) {
-        renderString("Welcome " + user);
+    static void dashboardAdmin(int user) {
+        renderString("Welcome " + admin[user][0]);
         while (true) {
             renderString("=== Dashboard Admin ===");
             renderString("1. Input data mahasiswa ke master");
@@ -341,8 +341,8 @@ public class App {
         System.out.println("+------+--------------------+----------------------------------------+-----+");
     }
 
-    static void dashboardMahasiswa(String user) {
-        renderString("Welcome " + user);
+    static void dashboardMahasiswa(int user) {
+        renderString("Welcome " + students[user][1]);
         while (true) {
             renderString("=== Dashboard Mahasiswa ===");
             renderString("1. Cetak KHS");
