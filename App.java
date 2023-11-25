@@ -351,7 +351,20 @@ public class App {
     }
 
     static void profile(int user) {
-        System.out.println(user);
+        renderStringWithLn("+------------------------------------------------------------------------+");
+        renderStringWithLn("|                                PROFILE                                 |");
+        renderStringWithLn("+------------+----------------------+-------+----------------------+-----+");
+        renderStringWithLn("|    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+        renderStringWithLn("+------------+----------------------+-------+----------------------+-----+");
+        System.out.printf("| %-10s | %-20s | %-5s | %-20s |  %s  |\n",
+                students[user][0],
+                students[user][1],
+                students[user][2],
+                students[user][3],
+                students[user][4]);
+        renderStringWithLn("+------------+----------------------+-------+----------------------+-----+");
+        renderStringWithLn("press enter to continue...");
+        userInput.nextLine().trim();
     }
 
     static void cetakKHS() {
