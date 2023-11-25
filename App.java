@@ -345,17 +345,22 @@ public class App {
         renderString("Welcome " + students[user][1]);
         while (true) {
             renderString("=== Dashboard Mahasiswa ===");
-            renderString("1. Cetak KHS");
-            renderString("2. Logout");
+            renderString("1. Profile");
+            renderString("2. Cetak KHS");
+            renderString("3. Logout");
             renderString("0. Exit");
             System.out.print("Select Feature: ");
             int choice = getUserChoiceInt();
             switch (choice) {
                 case 1:
                     clearConsole();
-                    cetakKHS();
+                    profile(user);
                     break;
                 case 2:
+                    clearConsole();
+                    cetakKHS();
+                    break;
+                case 3:
                     clearConsole();
                     loginView();
                     break;
@@ -370,6 +375,10 @@ public class App {
             }
         }
 
+    }
+
+    static void profile(int user) {
+        System.out.println(user);
     }
 
     static void cetakKHS() {
@@ -509,7 +518,7 @@ public class App {
     }
 
     static void updateDataMahasiswa() {
-        String oldNim, fullName, classPlacement, studyProgram, nim;
+        String oldNim, fullName, classPlacement, studyProgram;
         boolean isFind = false;
         int studentIndex = -1;
         renderString("press enter to continue...");
@@ -534,15 +543,12 @@ public class App {
             }
             if (isFind) {
                 renderString("New Student Data");
-                System.out.print("input new nim             :");
-                nim = userInput.nextLine();
                 System.out.print("input new name            :");
                 fullName = userInput.nextLine();
                 System.out.print("input new class           :");
                 classPlacement = userInput.nextLine();
                 System.out.print("input new study program   :");
                 studyProgram = userInput.nextLine();
-                students[studentIndex][0] = nim;
                 students[studentIndex][1] = fullName;
                 students[studentIndex][2] = classPlacement;
                 students[studentIndex][3] = studyProgram;
