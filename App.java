@@ -372,13 +372,13 @@ public class App {
     }
 
     static void inputNilai() {
-        String name = "";
+        String nim = "";
         int indexStudent = -1;
 
         while (indexStudent == -1) {
-            name = getNonEmptyString("Student Name");
+            nim = getNonEmptyString("Student NIM");
             for (int i = 0; i < students.length; i++) {
-                if (name.equalsIgnoreCase(students[i][1])) {
+                if (nim.equalsIgnoreCase(students[i][0])) {
                     indexStudent = i;
                     renderStringWithLn("Data found");
                     renderStringWithLn(
@@ -467,7 +467,7 @@ public class App {
         renderStringWithLn("-------------------------------------");
         renderStringWithLn("|          Data mahasiswa           |");
         renderStringWithLn("-------------------------------------");
-        renderStringWithLn("| Nama        : " + name);
+        renderStringWithLn("| Nama        : " + students[indexStudent][1]);
         renderStringWithLn("| NIM         : " + students[indexStudent][0]);
         renderStringWithLn("-------------------------------------");
 
