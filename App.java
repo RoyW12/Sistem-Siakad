@@ -18,7 +18,7 @@ public class App {
             { "RTI231003", "CTPS", "2" }
     };
 
-    static String[][][] grades = new String[999][course.length][3];
+    static String[][][] grades = new String[999][course.length][4];
 
     public static void main(String[] args) {
         loginView();
@@ -430,33 +430,42 @@ public class App {
                     }
                     String letterValue;
                     String predicate = "";
+                    double equivalentValue = 0.0;
                     if (numericValue > 80 && numericValue <= 100) {
                         letterValue = "A";
-                        predicate = "Sangat baik";
+                        predicate = "Exellent";
+                        equivalentValue = 4;
                     } else if (numericValue > 73 && numericValue <= 80) {
                         letterValue = "B+";
-                        predicate = "Lebih dari baik";
+                        predicate = "Very Good";
+                        equivalentValue = 3.5;
                     } else if (numericValue > 65 && numericValue <= 73) {
                         letterValue = "B";
-                        predicate = "Baik";
+                        predicate = "Good";
+                        equivalentValue = 3;
                     } else if (numericValue > 60 && numericValue <= 65) {
                         letterValue = "C+";
-                        predicate = "Lebih dari cukup";
+                        predicate = "Above Avarage";
+                        equivalentValue = 2.5;
                     } else if (numericValue > 50 && numericValue <= 60) {
                         letterValue = "C";
-                        predicate = "Cukup";
+                        predicate = "Avarage";
+                        equivalentValue = 2;
                     } else if (numericValue > 39 && numericValue <= 50) {
                         letterValue = "D";
-                        predicate = "Kurang";
+                        predicate = "Below Avarage";
+                        equivalentValue = 1;
                     } else if (numericValue > 0 && numericValue <= 39) {
                         letterValue = "E";
-                        predicate = "Gagal";
+                        predicate = "Fail";
+                        equivalentValue = 0;
                     } else {
-                        letterValue = "Tidak tersedia";
+                        letterValue = "Not Available";
                     }
                     grades[indexStudent][i][0] = String.valueOf(numericValue);
                     grades[indexStudent][i][1] = letterValue;
-                    grades[indexStudent][i][2] = predicate;
+                    grades[indexStudent][i][2] = Double.toString(equivalentValue);
+                    grades[indexStudent][i][3] = predicate;
                     i++;
                 }
             }
@@ -481,11 +490,11 @@ public class App {
     static void renderValueTable(String title, int indexStudent, String[][] course, String[][][] value) {
         renderStringWithLn(title);
         renderStringWithLn(
-                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
         renderStringWithLn(
-                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) |     Predicate    |");
+                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) | Value (Weight) |     Predicate    |");
         renderStringWithLn(
-                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
             String[] values = value[indexStudent][i];
@@ -494,12 +503,17 @@ public class App {
                     values[j] = "-";
                 }
             }
-            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
                     newCourse[1],
-                    newCourse[2], values[0], values[1], values[2]);
+                    newCourse[2], 
+                    values[0], 
+                    values[1], 
+                    values[2],
+                    values[3]);
+                    
         }
         renderStringWithLn(
-                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
     }
 
     static void updateDataMahasiswa() {
