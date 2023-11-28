@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class App {
@@ -18,7 +17,7 @@ public class App {
             { "RTI231003", "CTPS", "2" }
     };
 
-    static String[][][] grades = new String[999][course.length][3];
+    static String[][][] grades = new String[999][course.length][4];
 
     public static void main(String[] args) {
         loginView();
@@ -274,6 +273,15 @@ public class App {
                 } else {
                     isFind = true;
                 }
+                if (courseName.equalsIgnoreCase(course[i][1])) {
+                    clearConsole();
+                    renderStringWithLn("Course with the Course Name of " + courseName + " already exists!");
+                    renderStringWithLn("Input Data again");
+                    isFind = false;
+                    break;
+                } else {
+                    isFind = true;
+                }
                 ;
             }
 
@@ -285,7 +293,7 @@ public class App {
                 newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
                 course = newCourse;
 
-                String[][][] newGrades = new String[999][course.length][3];
+                String[][][] newGrades = new String[999][course.length][4];
                 for (int i = 0; i < grades.length; i++) {
                     for (int j = 0; j < grades[0].length; j++) {
                         newGrades[i][j] = grades[i][j];
@@ -430,33 +438,42 @@ public class App {
                     }
                     String letterValue;
                     String predicate = "";
+                    double equivalentValue = 0.0;
                     if (numericValue > 80 && numericValue <= 100) {
                         letterValue = "A";
                         predicate = "Sangat baik";
+                        equivalentValue = 4;
                     } else if (numericValue > 73 && numericValue <= 80) {
                         letterValue = "B+";
                         predicate = "Lebih dari baik";
+                        equivalentValue = 3.5;
                     } else if (numericValue > 65 && numericValue <= 73) {
                         letterValue = "B";
                         predicate = "Baik";
+                        equivalentValue = 3;
                     } else if (numericValue > 60 && numericValue <= 65) {
                         letterValue = "C+";
                         predicate = "Lebih dari cukup";
+                        equivalentValue = 2.5;
                     } else if (numericValue > 50 && numericValue <= 60) {
                         letterValue = "C";
                         predicate = "Cukup";
+                        equivalentValue = 2;
                     } else if (numericValue > 39 && numericValue <= 50) {
                         letterValue = "D";
                         predicate = "Kurang";
+                        equivalentValue = 1;
                     } else if (numericValue > 0 && numericValue <= 39) {
                         letterValue = "E";
                         predicate = "Gagal";
+                        equivalentValue = 0;
                     } else {
                         letterValue = "Tidak tersedia";
                     }
                     grades[indexStudent][i][0] = String.valueOf(numericValue);
                     grades[indexStudent][i][1] = letterValue;
                     grades[indexStudent][i][2] = predicate;
+                    grades[indexStudent][i][3] = Double.toString(equivalentValue);
                     i++;
                 }
             }
