@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class App {
@@ -268,6 +267,15 @@ public class App {
                 if (courseCode.equals(course[i][0])) {
                     clearConsole();
                     renderStringWithLn("Course with the Course code of " + courseCode + " already exists!");
+                    renderStringWithLn("Input Data again");
+                    isFind = false;
+                    break;
+                } else {
+                    isFind = true;
+                }
+                if (courseName.equalsIgnoreCase(course[i][1])) {
+                    clearConsole();
+                    renderStringWithLn("Course with the Course Name of " + courseName + " already exists!");
                     renderStringWithLn("Input Data again");
                     isFind = false;
                     break;
