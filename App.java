@@ -17,7 +17,7 @@ public class App {
             { "RTI231003", "CTPS", "2" }
     };
 
-    static String[][][] grades = new String[999][course.length][4];
+    static String[][][] grades = new String[students.length + 1][course.length][4];
 
     public static void main(String[] args) {
         loginView();
@@ -571,17 +571,22 @@ public class App {
 
         // pelaporan nilai mahasiswa
 
-        renderStringWithLn("-------------------------------------");
-        renderStringWithLn("|      Laporan Nilai Mahasiswa       |");
-        renderStringWithLn("-------------------------------------");
+        String blueColor = "\u001B[34m";
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+
+        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
+        renderStringWithLn(redColor + "|      Laporan Nilai Mahasiswa       |" + resetColor);
+        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
 
         renderStringWithLn(
                 "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.format("| %-10s | %-17s | %-7s | %-22s |", "NIM", "Nama", "Kelas", "Program Studi");
+                System.out.format("| %-19s | %-26s | %-16s | %-31s |", blueColor + "NIM" + resetColor, blueColor + "Nama" + resetColor,
+                blueColor + "Kelas" + resetColor, blueColor + "Program Studi" + resetColor);
 
         // Untuk menampilkan jadwal mata kuliah
         for (int j = 0; j < course.length; j++) {
-            System.out.format(" %-10s |", course[j][1]);
+            System.out.format(" %-19s |", blueColor + course[j][1] + resetColor);
         }
 
         renderStringWithLn(
