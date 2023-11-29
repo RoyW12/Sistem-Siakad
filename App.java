@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class App {
@@ -18,7 +17,7 @@ public class App {
             { "RTI231003", "CTPS", "2" }
     };
 
-    static String[][][] grades = new String[999][course.length][3];
+    static String[][][] grades = new String[999][course.length][4];
 
     public static void main(String[] args) {
         loginView();
@@ -274,6 +273,15 @@ public class App {
                 } else {
                     isFind = true;
                 }
+                if (courseName.equalsIgnoreCase(course[i][1])) {
+                    clearConsole();
+                    renderStringWithLn("Course with the Course Name of " + courseName + " already exists!");
+                    renderStringWithLn("Input Data again");
+                    isFind = false;
+                    break;
+                } else {
+                    isFind = true;
+                }
                 ;
             }
 
@@ -285,7 +293,7 @@ public class App {
                 newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
                 course = newCourse;
 
-                String[][][] newGrades = new String[999][course.length][3];
+                String[][][] newGrades = new String[999][course.length][4];
                 for (int i = 0; i < grades.length; i++) {
                     for (int j = 0; j < grades[0].length; j++) {
                         newGrades[i][j] = grades[i][j];
