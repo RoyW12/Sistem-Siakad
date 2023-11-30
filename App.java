@@ -339,7 +339,7 @@ public class App {
                     break;
                 case 2:
                     clearConsole();
-                    cetakKHS();
+                    cetakKHS(user);
                     break;
                 case 3:
                     clearConsole();
@@ -375,8 +375,57 @@ public class App {
         userInput.nextLine().trim();
     }
 
-    static void cetakKHS() {
+    static void cetakKHS(int user) {
+        renderStringWithLn("---------------------------------------------");
+        renderStringWithLn("|             Study Results Card             |");
+        renderStringWithLn("---------------------------------------------");
+        renderStringWithLn("| Full Name     : " + students[user][1]);
+        renderStringWithLn("| NIM           : " + students[user][0]);
+        renderStringWithLn("| Class         : " + students[user][2]);
+        renderStringWithLn("| Study Program : " + students[user][3]);
+        renderStringWithLn("---------------------------------------------");
+        renderKhsTable("Value's Table", user, course, grades);
+        renderString("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+    }
 
+    static void renderKhsTable(String title, int indexStudent, String[][] course, String[][][] value) {
+
+        renderStringWithLn(title);
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        renderStringWithLn(
+                "| No.  |    Course Code     |               Course Name              | Value (equivalent) | Value (Letter) |  SKS |   N X SKS  |");
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        Double totResult = 0.0, totSks = 0.0, ip = 0.0;
+        String val = "", status = "";
+        for (int i = 0; i < course.length; i++) {
+            String[] newCourse = course[i];
+            String[] values = value[indexStudent][i];
+            Double result = Double.parseDouble(newCourse[2]) * Double.parseDouble(values[2]);
+            totSks += Double.parseDouble(newCourse[2]);
+            totResult += result;
+            if (values[i] == "E" && ip < 2.00) {
+                status = "Tidak Lulus";
+            } else {
+                status = "Lulus";
+            }
+            System.out.printf("| %-4d | %-18s | %-38s | %-18s | %-14s | %-4s | %-10s |\n", (i + 1), newCourse[0],
+                    newCourse[1],
+                    values[2], values[1], newCourse[2], result);
+        }
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        System.out.printf("| %-104s | %-4s | %-10s |\n", "Jumlah", totSks, totResult);
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        ip = totResult / totSks;
+        System.out.printf("| %-124s |\n", "IP = " + ip);
+        System.out.printf("| %-124s |\n", "Status = " + status);
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
     }
 
     static void inputNilai() {
@@ -511,14 +560,15 @@ public class App {
                     values[j] = "-";
                 }
             }
-            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-14s | %-16s |\n", (i + 1),
+                    newCourse[0],
                     newCourse[1],
-                    newCourse[2], 
-                    values[0], 
-                    values[1], 
+                    newCourse[2],
+                    values[0],
+                    values[1],
                     values[2],
                     values[3]);
-                    
+
         }
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
@@ -581,7 +631,8 @@ public class App {
 
         renderStringWithLn(
                 "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-                System.out.format("| %-19s | %-26s | %-16s | %-31s |", blueColor + "NIM" + resetColor, blueColor + "Nama" + resetColor,
+        System.out.format("| %-19s | %-26s | %-16s | %-31s |", blueColor + "NIM" + resetColor,
+                blueColor + "Nama" + resetColor,
                 blueColor + "Kelas" + resetColor, blueColor + "Program Studi" + resetColor);
 
         // Untuk menampilkan jadwal mata kuliah
