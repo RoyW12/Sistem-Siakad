@@ -17,7 +17,7 @@ public class App {
             { "RTI231003", "CTPS", "2" }
     };
 
-    static String[][][] grades = new String[999][course.length][4];
+    static String[][][] grades = new String[students.length + 1][course.length][4];
 
     public static void main(String[] args) {
         loginView();
@@ -339,7 +339,7 @@ public class App {
                     break;
                 case 2:
                     clearConsole();
-                    cetakKHS();
+                    cetakKHS(user);
                     break;
                 case 3:
                     clearConsole();
@@ -375,18 +375,67 @@ public class App {
         userInput.nextLine().trim();
     }
 
-    static void cetakKHS() {
+    static void cetakKHS(int user) {
+        renderStringWithLn("---------------------------------------------");
+        renderStringWithLn("|             Study Results Card             |");
+        renderStringWithLn("---------------------------------------------");
+        renderStringWithLn("| Full Name     : " + students[user][1]);
+        renderStringWithLn("| NIM           : " + students[user][0]);
+        renderStringWithLn("| Class         : " + students[user][2]);
+        renderStringWithLn("| Study Program : " + students[user][3]);
+        renderStringWithLn("---------------------------------------------");
+        renderKhsTable("Value's Table", user, course, grades);
+        renderString("press enter to continue...");
+        userInput.nextLine().trim();
+        clearConsole();
+    }
 
+    static void renderKhsTable(String title, int indexStudent, String[][] course, String[][][] value) {
+
+        renderStringWithLn(title);
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        renderStringWithLn(
+                "| No.  |    Course Code     |               Course Name              | Value (equivalent) | Value (Letter) |  SKS |   N X SKS  |");
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        Double totResult = 0.0, totSks = 0.0, ip = 0.0;
+        String val = "", status = "";
+        for (int i = 0; i < course.length; i++) {
+            String[] newCourse = course[i];
+            String[] values = value[indexStudent][i];
+            Double result = Double.parseDouble(newCourse[2]) * Double.parseDouble(values[2]);
+            totSks += Double.parseDouble(newCourse[2]);
+            totResult += result;
+            if (values[i] == "E" && ip < 2.00) {
+                status = "Tidak Lulus";
+            } else {
+                status = "Lulus";
+            }
+            System.out.printf("| %-4d | %-18s | %-38s | %-18s | %-14s | %-4s | %-10s |\n", (i + 1), newCourse[0],
+                    newCourse[1],
+                    values[2], values[1], newCourse[2], result);
+        }
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        System.out.printf("| %-104s | %-4s | %-10s |\n", "Jumlah", totSks, totResult);
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
+        ip = totResult / totSks;
+        System.out.printf("| %-124s |\n", "IP = " + ip);
+        System.out.printf("| %-124s |\n", "Status = " + status);
+        renderStringWithLn(
+                "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
     }
 
     static void inputNilai() {
-        String name = "";
+        String nim = "";
         int indexStudent = -1;
 
         while (indexStudent == -1) {
-            name = getNonEmptyString("Student Name");
+            nim = getNonEmptyString("Student NIM");
             for (int i = 0; i < students.length; i++) {
-                if (name.equalsIgnoreCase(students[i][1])) {
+                if (nim.equalsIgnoreCase(students[i][0])) {
                     indexStudent = i;
                     renderStringWithLn("Data found");
                     renderStringWithLn(
@@ -441,39 +490,39 @@ public class App {
                     double equivalentValue = 0.0;
                     if (numericValue > 80 && numericValue <= 100) {
                         letterValue = "A";
-                        predicate = "Sangat baik";
+                        predicate = "Exellent";
                         equivalentValue = 4;
                     } else if (numericValue > 73 && numericValue <= 80) {
                         letterValue = "B+";
-                        predicate = "Lebih dari baik";
+                        predicate = "Very Good";
                         equivalentValue = 3.5;
                     } else if (numericValue > 65 && numericValue <= 73) {
                         letterValue = "B";
-                        predicate = "Baik";
+                        predicate = "Good";
                         equivalentValue = 3;
                     } else if (numericValue > 60 && numericValue <= 65) {
                         letterValue = "C+";
-                        predicate = "Lebih dari cukup";
+                        predicate = "Above Avarage";
                         equivalentValue = 2.5;
                     } else if (numericValue > 50 && numericValue <= 60) {
                         letterValue = "C";
-                        predicate = "Cukup";
+                        predicate = "Avarage";
                         equivalentValue = 2;
                     } else if (numericValue > 39 && numericValue <= 50) {
                         letterValue = "D";
-                        predicate = "Kurang";
+                        predicate = "Below Avarage";
                         equivalentValue = 1;
                     } else if (numericValue > 0 && numericValue <= 39) {
                         letterValue = "E";
-                        predicate = "Gagal";
+                        predicate = "Fail";
                         equivalentValue = 0;
                     } else {
-                        letterValue = "Tidak tersedia";
+                        letterValue = "Not Available";
                     }
                     grades[indexStudent][i][0] = String.valueOf(numericValue);
                     grades[indexStudent][i][1] = letterValue;
-                    grades[indexStudent][i][2] = predicate;
-                    grades[indexStudent][i][3] = Double.toString(equivalentValue);
+                    grades[indexStudent][i][2] = Double.toString(equivalentValue);
+                    grades[indexStudent][i][3] = predicate;
                     i++;
                 }
             }
@@ -484,7 +533,7 @@ public class App {
         renderStringWithLn("-------------------------------------");
         renderStringWithLn("|          Data mahasiswa           |");
         renderStringWithLn("-------------------------------------");
-        renderStringWithLn("| Nama        : " + name);
+        renderStringWithLn("| Nama        : " + students[indexStudent][1]);
         renderStringWithLn("| NIM         : " + students[indexStudent][0]);
         renderStringWithLn("-------------------------------------");
 
@@ -498,11 +547,11 @@ public class App {
     static void renderValueTable(String title, int indexStudent, String[][] course, String[][][] value) {
         renderStringWithLn(title);
         renderStringWithLn(
-                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
         renderStringWithLn(
-                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) |     Predicate    |");
+                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) | Value (Weight) |     Predicate    |");
         renderStringWithLn(
-                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
             String[] values = value[indexStudent][i];
@@ -511,12 +560,18 @@ public class App {
                     values[j] = "-";
                 }
             }
-            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-14s | %-16s |\n", (i + 1),
+                    newCourse[0],
                     newCourse[1],
-                    newCourse[2], values[0], values[1], values[2]);
+                    newCourse[2],
+                    values[0],
+                    values[1],
+                    values[2],
+                    values[3]);
+
         }
         renderStringWithLn(
-                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
     }
 
     static void updateDataMahasiswa() {
@@ -566,17 +621,23 @@ public class App {
 
         // pelaporan nilai mahasiswa
 
-        renderStringWithLn("-------------------------------------");
-        renderStringWithLn("|      Laporan Nilai Mahasiswa       |");
-        renderStringWithLn("-------------------------------------");
+        String blueColor = "\u001B[34m";
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+
+        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
+        renderStringWithLn(redColor + "|      Laporan Nilai Mahasiswa       |" + resetColor);
+        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
 
         renderStringWithLn(
                 "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.format("| %-10s | %-17s | %-7s | %-22s |", "NIM", "Nama", "Kelas", "Program Studi");
+        System.out.format("| %-19s | %-26s | %-16s | %-31s |", blueColor + "NIM" + resetColor,
+                blueColor + "Nama" + resetColor,
+                blueColor + "Kelas" + resetColor, blueColor + "Program Studi" + resetColor);
 
         // Untuk menampilkan jadwal mata kuliah
         for (int j = 0; j < course.length; j++) {
-            System.out.format(" %-10s |", course[j][1]);
+            System.out.format(" %-19s |", blueColor + course[j][1] + resetColor);
         }
 
         renderStringWithLn(
