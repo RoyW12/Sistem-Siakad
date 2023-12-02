@@ -3,15 +3,18 @@ package Fitur;
 import java.util.Scanner;
 
 public class inputDataMahasiswa {
+    static Scanner sc28 = new Scanner(System.in);
+    static String[][] students = {
+            { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
+            { "1234560002", "Berta Christabel", "1B", "Teknik Informatika", "P" }
+
+    };
+
     public static void main(String[] args) {
+        inputDataMahasiswa();
+    }
 
-        Scanner sc28 = new Scanner(System.in);
-        String[][] students = {
-                { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
-                { "1234560002", "Berta Christabel", "1B", "Teknik Informatika", "P" }
-
-        };
-
+    static void inputDataMahasiswa() {
         String nim = null, fullName = null, classPlacement = null, studyProgram = null, sex = null;
         boolean isFind = false;
         System.out.println("Press enter to continue");
