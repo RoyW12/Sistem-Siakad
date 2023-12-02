@@ -17,8 +17,6 @@ public class inputDataMahasiswa {
     static void inputDataMahasiswa() {
         String nim = null, fullName = null, classPlacement = null, studyProgram = null, sex = null;
         boolean isFind = false;
-        System.out.println("Press enter to continue");
-        sc28.nextLine().trim();
         System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
         System.out.println("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
         System.out.println("+------+------------+----------------------+-------+----------------------+-----+");
