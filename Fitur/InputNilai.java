@@ -6,95 +6,179 @@ public class InputNilai {
 
     public static void main(String[] args) {
 
-        Scanner input = new Scanner(System.in);
-        String[] mahasiswa = {"Hizkia Elsadanta", "Roy Wijaya", "Dina Rahmawati", "Engel Khen", "Andreas Nathanael"};
-        String[] nim = {"1234567890", "1234567891", "1234567892", "1234567893", "1234567894"};
-        String[] mataKuliah = new String[8];
-        int[] nilaiMataKuliah = new int[8];
-        String[] daftarMataKuliah = { "Praktikum Daspro", "Daspro", "Pancasila", "CTPS", "Matdas", "Bahasa Inggris", "KTI", "K3" };
+        Scanner userInput = new Scanner(System.in);
         String nama = "";
-        String nimInput = "";
-        boolean isFind = false;
+        int indexStudent = -1;
 
-        while (!isFind) {
+        String[][] students = {
+                { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
+                { "1234560002", "Jessica Wongso", "1B", "Teknik Informatika", "P" },
+                { "1234560003", "Joko Widodo", "1C", "Teknik Informatika", "L" },
+                { "1234560004", "Ganjar Pranowo", "1D", "Teknik Informatika", "L" },
+                { "1234560005", "Megawati", "1E", "Manajemen", "P" }
+        };
+
+        String[][] course = {
+                { "RTI231001", "Pancasila", "2" },
+                { "RTI231002", "Konsep Teknologi Informasi", "2" },
+                { "RTI231003", "Critical Thinking dan Problem Solving", "2" },
+                { "RTI231004", "Matematika Dasar", "2" },
+                { "RTI231005", "Dasar Pemrograman", "3" }
+
+        };
+
+        String[][] grades = new String[students.length][course.length * 3];
+
+        while (indexStudent == -1) {
             System.out.print("Masukkan nama mahasiswa   : ");
-            nama = input.nextLine();
-            System.out.print("Masukkan NIM mahasiswa    : ");
-            nimInput = input.nextLine();
-
-            for (int i = 0; i < mahasiswa.length; i++) {
-                if (nama.equalsIgnoreCase(mahasiswa[i]) && nimInput.equals(nim[i])) {
+            nama = userInput.nextLine();
+            for (int i = 0; i < students.length; i++) {
+                if (nama.equalsIgnoreCase(students[i][1])) {
+                    indexStudent = i;
                     System.out.println("Data ditemukan");
-                    isFind = true;
-                    break;
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.println(
+                            "| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
+                            students[i][0],
+                            students[i][1],
+                            students[i][2],
+                            students[i][3],
+                            students[i][4]);
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
                 }
             }
-            
-            if (!isFind) {
+            if (indexStudent == -1) {
                 System.out.println("Data tidak ditemukan. Silakan coba lagi.");
             }
         }
-        
-        System.out.println(" ______________________");
-        System.out.println("|  Daftar Mata Kuliah  |");
-        System.out.println("|----------------------|");
+        System.out.println("press enter to continue...");
+        userInput.nextLine().trim();
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 
-        for (int i = 0; i < daftarMataKuliah.length; i++) {
-            System.out.println(" " + (i + 1) + ". " + daftarMataKuliah[i]);
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        System.out.println(
+                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) |     Predicate    |");
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        for (int i = 0; i < course.length; i++) {
+            String[] newCourse = course[i];
+            int baseIndex = i * 3; // Mulai dari indeks yang sesuai di array grades
+            String[] values = { grades[indexStudent][baseIndex], grades[indexStudent][baseIndex + 1],
+                    grades[indexStudent][baseIndex + 2] };
+            for (int j = 0; j < values.length; j++) {
+                if (values[j] == null) {
+                    values[j] = "-";
+                }
+            }
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+                    newCourse[1],
+                    newCourse[2], values[0], values[1], values[2]);
         }
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
 
-        System.out.println("|______________________|");
+        if (indexStudent != -1) {
+            int i = 0;
+            while (i < course.length) {
+                int numericValue;
+                while (true) {
+                    System.out.print("Nilai matkul " + course[i][1] + " : ");
+                    numericValue = userInput.nextInt();
+                    userInput.nextLine();
+                    if (numericValue < 0 || numericValue > 100) {
+                        System.out.println("The value must be in the range 1-100. Please try again.....");
+
+                    } else {
+                        break;
+                    }
+                }
+
+                System.out.println("------------------------------------");
+
+                String letterValue;
+                String predicate = "";
+                double equivalentValue = 0.0;
+                if (numericValue > 80 && numericValue <= 100) {
+                    letterValue = "A";
+                    predicate = "Sangat baik";
+                    equivalentValue = 4;
+                } else if (numericValue > 73 && numericValue <= 80) {
+                    letterValue = "B+";
+                    predicate = "Lebih dari baik";
+                    equivalentValue = 3.5;
+                } else if (numericValue > 65 && numericValue <= 73) {
+                    letterValue = "B";
+                    predicate = "Baik";
+                    equivalentValue = 3;
+                } else if (numericValue > 60 && numericValue <= 65) {
+                    letterValue = "C+";
+                    predicate = "Lebih dari cukup";
+                    equivalentValue = 2.5;
+                } else if (numericValue > 50 && numericValue <= 60) {
+                    letterValue = "C";
+                    predicate = "Cukup";
+                    equivalentValue = 2;
+                } else if (numericValue > 39 && numericValue <= 50) {
+                    letterValue = "D";
+                    predicate = "Kurang";
+                    equivalentValue = 1;
+                } else if (numericValue > 0 && numericValue <= 39) {
+                    letterValue = "E";
+                    predicate = "Gagal";
+                    equivalentValue = 0;
+                } else {
+                    letterValue = "Tidak tersedia";
+                }
+                int baseIndex = i * 3; // Mulai dari indeks yang sesuai di array grades
+                grades[indexStudent][baseIndex] = String.valueOf(numericValue);
+                grades[indexStudent][baseIndex + 1] = letterValue;
+                grades[indexStudent][baseIndex + 2] = predicate;
+                grades[indexStudent][baseIndex + 3] = Double.toString(equivalentValue);
+                i++;
+                i++;
+            }
+        }
         System.out.print("\n");
 
-        for (int i = 0; i < mataKuliah.length; i++) {
-            System.out.println("Mata Kuliah       : " + daftarMataKuliah[i]);
-            mataKuliah[i] = daftarMataKuliah[i];
-
-            System.out.print("Nilai matkul ke " + (i + 1) + " : ");
-            nilaiMataKuliah[i] = input.nextInt();
-            input.nextLine();
-            System.out.println("------------------------------------");
-        }
-
-        System.out.print("\n");
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 
         System.out.println("-------------------------------------");
         System.out.println("|          Data mahasiswa           |");
         System.out.println("-------------------------------------");
         System.out.println("| Nama        : " + nama);
-        System.out.println("| NIM         : " + nimInput);
+        System.out.println("| NIM         : " + students[indexStudent][0]);
         System.out.println("-------------------------------------");
 
-        for (int i = 0; i < nilaiMataKuliah.length; i++) {
-            System.out.println("| Mata Kuliah : " + mataKuliah[i]);
-            System.out.println("| Nilai       : " + nilaiMataKuliah[i]);
-            System.out.println("-------------------------------------");
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        System.out.println(
+                "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) |     Predicate    |");
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
+        for (int i = 0; i < course.length; i++) {
+            String[] newCourse = course[i];
+            int baseIndex = i * 3; // Mulai dari indeks yang sesuai di array grades
+            String[] values = { grades[indexStudent][baseIndex], grades[indexStudent][baseIndex + 1],
+                    grades[indexStudent][baseIndex + 2] };
+            for (int j = 0; j < values.length; j++) {
+                if (values[j] == null) {
+                    values[j] = "-";
+                }
+            }
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-16s |\n", (i + 1), newCourse[0],
+                    newCourse[1],
+                    newCourse[2], values[0], values[1], values[2]);
         }
+        System.out.println(
+                "+------+--------------------+----------------------------------------+-----+----------------+----------------+------------------+");
 
-        // String nilaiHuruf;
-        // if (nilai > 80 && nilai <= 100) {
-        // nilaiHuruf = "A";
-        // } else if (nilai > 73 && nilai <= 80) {
-        // nilaiHuruf = "B+";
-        // } else if (nilai > 65 && nilai <= 73) {
-        // nilaiHuruf = "B";
-        // } else if (nilai > 60 && nilai <= 65) {
-        // nilaiHuruf = "C+";
-        // } else if (nilai > 50 && nilai <= 60) {
-        // nilaiHuruf = "C";
-        // } else if (nilai > 39 && nilai <= 50) {
-        // nilaiHuruf = "D";
-        // } else if (nilai > 0 && nilai <= 39) {
-        // nilaiHuruf = "E";
-        // } else {
-        // nilaiHuruf = "Tidak tersedia";
-        // }
-
-        input.close();
     }
 }
-
-
-
-
-       

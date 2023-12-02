@@ -5,77 +5,242 @@ import java.util.Scanner;
 public class InputMatkul {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        String[] kode = { "RTI231001", "RTI231002", "RTI231003", "RTI231004", "RTI231005" };
-        String[] matkul = { "Pancasila", "Konsep Teknologi Informasi", "Critical Thinking dan Problem Solving",
-                "Matdas", "Bahasa Inggris" };
-        String[] sks = { "2", "2", "2", "3", "2" };
 
-        String kodeInput;
-        String matkulInput;
-        String sksInput;
+        String[][] courses = {
+                { "RTI231001", "Pancasila", "2" },
+                { "RTI231002", "Konsep Teknologi Informasi", "2" },
+                { "RTI231003", "Critical Thinking dan Problem Solving", "2" },
+                { "RTI231004", "Matematika Dasar", "2" },
+                { "RTI231005", "Dasar Pemrograman", "3" }
+        };
 
+        String courseCode = null, courseName = null, sks = null;
         boolean isFind = false;
+        System.out.println("Press enter to continue");
+        input.nextLine().trim();
+        System.out.println("+------+--------------------+----------------------------------------+-----+");
+        System.out.println("| No.  |    Course Code     |               Course Name              | SKS |");
+        System.out.println("+------+--------------------+----------------------------------------+-----+");
+        for (int i = 0; i < courses.length; i++) {
+            String[] Course = courses[i];
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), Course[0], Course[1],
+                    Course[2]);
+        }
+        System.out.println("+------+--------------------+----------------------------------------+-----+");
 
         while (!isFind) {
-            System.out.println("+------+--------------------+----------------------------------------+-----+");
-            System.out.println("| No.  |    Course Code     |               Course Name              | SKS |");
-            System.out.println("+------+--------------------+----------------------------------------+-----+");
-            for (int i = 0; i < matkul.length; i++) {
-                System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), kode[i], matkul[i],
-                        sks[i]);
-            }
-            System.out.println("+------+--------------------+----------------------------------------+-----+");
-
-            System.out.print("Masukkan kode mata kuliah  : ");
-            kodeInput = input.nextLine();
-            System.out.print("Masukkan nama mata kuliah  : ");
-            matkulInput = input.nextLine();
-            System.out.print("Masukkan sks               : ");
-            sksInput = input.nextLine();
-            if (kodeInput.length() == 9) {
-                for (int i = 0; i < kode.length; i++) {
-                    if (kodeInput.equals(kode[i])) {
-                        System.out.println("Student with the Course code of " + kodeInput + " already exists!");
-                        System.out.println("Masukkan data lagi");
+            System.out.print("Course Code       :");
+            courseCode = input.nextLine();
+            if (courseCode.length() == 9) {
+                System.out.print("Course Name       :");
+                courseName = input.nextLine();
+                System.out.print("SKS               :");
+                sks = input.nextLine();
+                for (int i = 0; i < courses.length; i++) {
+                    if (courseCode.equals(courses[i][0])) {
+                        System.out.println("Course with the Course code of " + courseCode + " already exists!");
+                        System.out.println("Masukkan data kembali");
                         isFind = false;
                         break;
-
                     } else {
                         isFind = true;
                     }
+                    ;
                 }
-
             } else {
                 System.out.println("Kode Mata Kuliah harus 9 digit");
+                System.out.println("Masukkan Kode Mata Kuliah lagi");
             }
+
             if (isFind) {
-                String[] newKode = new String[kode.length + 1];
-                String[] newMatkul = new String[matkul.length + 1];
-                String[] newSks = new String[sks.length + 1];
-
-                for (int i = 0; i < kode.length; i++) {
-                    newKode[i] = kode[i];
-                    newMatkul[i] = matkul[i];
-                    newSks[i] = sks[i];
+                String[][] newCourse = new String[courses.length + 1][3];
+                for (int i = 0; i < courses.length; i++) {
+                    newCourse[i] = courses[i];
                 }
-                newKode[newKode.length - 1] = kodeInput;
-                newMatkul[newMatkul.length - 1] = matkulInput;
-                newSks[newSks.length - 1] = sksInput;
-                kode = newKode;
-                matkul = newMatkul;
-                sks = newSks;
-
+                newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
+                courses = newCourse;
                 System.out.println("+------+--------------------+----------------------------------------+-----+");
                 System.out.println("| No.  |    Course Code     |               Course Name              | SKS |");
                 System.out.println("+------+--------------------+----------------------------------------+-----+");
-                for (int i = 0; i < matkul.length; i++) {
-                    System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), kode[i], matkul[i],
-                            sks[i]);
+                for (int i = 0; i < courses.length; i++) {
+                    String[] Course = courses[i];
+                    System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), Course[0], Course[1],
+                            Course[2]);
                 }
                 System.out.println("+------+--------------------+----------------------------------------+-----+");
 
+                System.out.println("press enter to continue...");
+                input.nextLine().trim();
             }
         }
+
+        // String[][] coursesRti = {
+        // { "RTI231001", "Pancasila", "2" },
+        // { "RTI231002", "Konsep Teknologi Informasi", "2" },
+        // { "RTI231003", "Critical Thinking dan Problem Solving", "2" },
+        // { "RTI231004", "Matematika Dasar", "2" },
+        // { "RTI231005", "Dasar Pemrograman", "3" }
+        // };
+
+        // String[][] coursesSib = {
+        // { "SIB231001", "Agama", "2" },
+        // { "SIB231002", "Konsep Teknologi Informasi", "2" },
+        // { "SIB231003", "Critical Thinking dan Problem Solving", "2" },
+        // { "SIB231004", "Matematika Dasar", "2" },
+        // { "SIB231005", "Bahasa Indonesia", "3" }
+        // };
+
+        // int pilihProdi;
+        // String courseCode = null, courseName = null, sks = null;
+
+        // boolean isContinue = true;
+        // boolean isFind = false;
+
+        // while (isContinue) {
+        // System.out.println("=======================================");
+        // System.out.println("Pilih Program Studi :");
+        // System.out.println("1. Teknik Informatika");
+        // System.out.println("2. Sistem Informasi Bisnis");
+        // System.out.println("=======================================");
+        // System.out.print("Prodi ke- : ");
+        // pilihProdi = input.nextInt();
+        // input.nextLine();
+
+        // switch (pilihProdi) {
+        // case 1:
+        // System.out.println("Press enter to continue");
+        // input.nextLine().trim();
+        // System.out.println("+------+--------------------+----------------------------------------+-----+");
+        // System.out.println("| No. | Course Code | Course Name | SKS |");
+        // System.out.println("+------+--------------------+----------------------------------------+-----+");
+        // for (int i = 0; i < coursesRti.length; i++) {
+        // String[] CourseRti = coursesRti[i];
+        // System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), CourseRti[0],
+        // CourseRti[1],
+        // CourseRti[2]);
+        // }
+        // System.out.println("+------+--------------------+----------------------------------------+-----+");
+        // if (!isFind) {
+        // System.out.print("Course Code :");
+        // courseCode = input.nextLine();
+        // if (courseCode.length() == 9) {
+        // System.out.print("Course Name :");
+        // courseName = input.nextLine();
+        // System.out.print("SKS :");
+        // sks = input.nextLine();
+        // for (int i = 0; i < coursesRti.length; i++) {
+        // if (courseCode.equals(coursesRti[i][0])) {
+        // System.out.println(
+        // "Course with the Course code of " + courseCode + " already exists!");
+        // System.out.println("Masukkan data kembali");
+        // isFind = false;
+        // break;
+        // } else {
+        // isFind = true;
+        // }
+        // ;
+        // }
+        // } else {
+        // System.out.println("Kode Mata Kuliah harus 9 digit");
+        // System.out.println("Masukkan Kode Mata Kuliah lagi");
+        // isContinue = true;
+        // break;
+        // }
+
+        // if (isFind) {
+        // String[][] newCourseRti = new String[coursesRti.length + 1][3];
+        // for (int i = 0; i < coursesRti.length; i++) {
+        // newCourseRti[i] = coursesRti[i];
+        // }
+        // newCourseRti[newCourseRti.length - 1] = new String[] { courseCode,
+        // courseName, sks };
+        // coursesRti = newCourseRti;
+        // System.out.println(
+        // "+------+--------------------+----------------------------------------+-----+");
+        // System.out.println(
+        // "| No. | Course Code | Course Name | SKS |");
+        // System.out.println(
+        // "+------+--------------------+----------------------------------------+-----+");
+        // for (int i = 0; i < coursesRti.length; i++) {
+        // String[] CourseRti = coursesRti[i];
+        // System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), CourseRti[0],
+        // CourseRti[1],
+        // CourseRti[2]);
+        // }
+        // System.out.println(
+        // "+------+--------------------+----------------------------------------+-----+");
+        // }
+        // }
+        // isFind = false;
+        // break;
+        // case 2:
+        // System.out.println("Press enter to continue");
+        // input.nextLine().trim();
+        // System.out.println("+------+--------------------+----------------------------------------+-----+");
+        // System.out.println("| No. | Course Code | Course Name | SKS |");
+        // System.out.println("+------+--------------------+----------------------------------------+-----+");
+        // for (int i = 0; i < coursesSib.length; i++) {
+        // String[] CourseSib = coursesSib[i];
+        // System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), CourseSib[0],
+        // CourseSib[1],
+        // CourseSib[2]);
+        // }
+        // System.out.println("+------+--------------------+----------------------------------------+-----+");
+        // if (!isFind) {
+        // System.out.print("Course Code :");
+        // courseCode = input.nextLine();
+        // if (courseCode.length() == 9) {
+        // System.out.print("Course Name :");
+        // courseName = input.nextLine();
+        // System.out.print("SKS :");
+        // sks = input.nextLine();
+        // for (int i = 0; i < coursesSib.length; i++) {
+        // if (courseCode.equals(coursesSib[i][0])) {
+        // System.out.println(
+        // "Course with the Course code of " + courseCode + " already exists!");
+        // System.out.println("Masukkan data kembali");
+        // isFind = false;
+        // break;
+        // } else {
+        // isFind = true;
+        // }
+        // ;
+        // }
+        // } else {
+        // System.out.println("Kode Mata Kuliah harus 9 digit");
+        // System.out.println("Masukkan Kode Mata Kuliah lagi");
+        // isContinue = true;
+        // break;
+        // }
+        // if (isFind) {
+        // String[][] newCourseSib = new String[coursesSib.length + 1][3];
+        // for (int i = 0; i < coursesSib.length; i++) {
+        // newCourseSib[i] = coursesSib[i];
+        // }
+        // newCourseSib[newCourseSib.length - 1] = new String[] { courseCode,
+        // courseName, sks };
+        // coursesSib = newCourseSib;
+        // System.out.println(
+        // "+------+--------------------+----------------------------------------+-----+");
+        // System.out.println(
+        // "| No. | Course Code | Course Name | SKS |");
+        // System.out.println(
+        // "+------+--------------------+----------------------------------------+-----+");
+        // for (int i = 0; i < coursesSib.length; i++) {
+        // String[] CourseSib = coursesSib[i];
+        // System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), CourseSib[0],
+        // CourseSib[1],
+        // CourseSib[2]);
+        // }
+        // System.out.println(
+        // "+------+--------------------+----------------------------------------+-----+");
+
+        // }
+        // }
+        // isFind = false;
+        // break;
+        // }
+        // }
 
     }
 }

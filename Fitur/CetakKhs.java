@@ -5,6 +5,26 @@ import java.util.Scanner;
 public class CetakKhs {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
+
+        int indexStudent = -1;
+
+        String[][] students = {
+            { "1234560001", "Roy wijaya", "1A", "Teknik Informatika", "L" },
+            { "1234560002", "Jessica Wongso", "1B", "Teknik Informatika", "P" },
+            { "1234560003", "Joko Widodo", "1C", "Teknik Informatika", "L" },
+            { "1234560004", "Ganjar Pranowo", "1D", "Teknik Informatika", "L" },
+            { "1234560005", "Megawati", "1E", "Manajemen", "P" }
+        };
+
+        String[][] course = {
+                { "RTI231001", "Pancasila", "2" },
+                { "RTI231002", "Konsep Teknologi Informasi", "2" },
+                { "RTI231003", "Critical Thinking dan Problem Solving", "2" },
+                { "RTI231004", "Matematika Dasar", "2" },
+                { "RTI231005", "Dasar Pemrograman", "3" }
+
+        };
+
         String nama = "", matkul = "", matkul1, matkul2, matkul3, matkul4, matkul5, predikat = "";
         matkul1 = "PrakDaspro";
         matkul2 = "Daspro";
@@ -20,6 +40,39 @@ public class CetakKhs {
         int[] totSKS = new int[1];
         double[] ips = new double[1];
         boolean isFind = false;
+
+        while (indexStudent == -1) {
+            System.out.print("Masukkan nama mahasiswa   : ");
+            nama = input.nextLine();
+            for (int i = 0; i < students.length; i++) {
+                if (nama.equalsIgnoreCase(students[i][1])) {
+                    indexStudent = i;
+                    System.out.println("Data ditemukan");
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.println(
+                            "| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
+                            students[i][0],
+                            students[i][1],
+                            students[i][2],
+                            students[i][3],
+                            students[i][4]);
+                    System.out.println(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                }
+            }
+            if (indexStudent == -1) {
+                System.out.println("Data tidak ditemukan. Silakan coba lagi.");
+            }
+        }
+        System.out.println("press enter to continue...");
+        // userInput.nextLine().trim();
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
 
         while (!isFind) {
             System.out.print("Masukkan nama    : ");
