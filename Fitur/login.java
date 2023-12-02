@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class login {
     static String[][] userAdmin = { { "admin", "admin123" }, { "admin", "admin456" } };
     static String[][] userMahasiswa = { { "mahasiswa", "mahasiswa" }, { "mahasiswa1", "mahasiswa1" } };
+    static Scanner sc28 = new Scanner(System.in);
 
     public static void main(String[] args) {
 
@@ -14,7 +15,6 @@ public class login {
     static void login() {
         boolean isBreak = false;
         String level = null;
-        Scanner sc28 = new Scanner(System.in);
         while (!isBreak) {
             System.out.println("masukkan username dan password");
             System.out.print("username:");
