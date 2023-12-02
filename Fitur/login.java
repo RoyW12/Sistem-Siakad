@@ -3,10 +3,15 @@ package Fitur;
 import java.util.Scanner;
 
 public class login {
+    static String[][] userAdmin = { { "admin", "admin123" }, { "admin", "admin456" } };
+    static String[][] userMahasiswa = { { "mahasiswa", "mahasiswa" }, { "mahasiswa1", "mahasiswa1" } };
 
     public static void main(String[] args) {
-        String[][] userAdmin = { { "admin", "admin123" }, { "admin", "admin456" } };
-        String[][] userMahasiswa = { { "mahasiswa", "mahasiswa" }, { "mahasiswa1", "mahasiswa1" } };
+
+        login();
+    }
+
+    static void login() {
         boolean isBreak = false;
         String level = null;
         Scanner sc28 = new Scanner(System.in);
@@ -38,18 +43,25 @@ public class login {
             }
         }
         if (level == "admin") {
-            System.out.println("selamat datang admin");
-            System.out.println("pilih fitur: ");
-            System.out.println("1. edit bio");
-            System.out.println("2. input nilai");
-            System.out.println("3. input data nata kuliah");
-            System.out.println("4. keluar");
+            dashboardAdmin();
         } else if (level == "mahasiswa") {
-            System.out.println("selamat datang mahasiswa");
-            System.out.println("pilih fitur: ");
-            System.out.println("1. cetak khs");
-            System.out.println("2. keluar");
+            dashboardMahasiswa();
         }
+    }
 
+    static void dashboardAdmin() {
+        System.out.println("selamat datang admin");
+        System.out.println("pilih fitur: ");
+        System.out.println("1. edit bio");
+        System.out.println("2. input nilai");
+        System.out.println("3. input data nata kuliah");
+        System.out.println("4. keluar");
+    }
+
+    static void dashboardMahasiswa() {
+        System.out.println("selamat datang mahasiswa");
+        System.out.println("pilih fitur: ");
+        System.out.println("1. cetak khs");
+        System.out.println("2. keluar");
     }
 }
