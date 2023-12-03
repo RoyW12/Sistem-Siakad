@@ -20,7 +20,6 @@ public class updateDataMahasiswa {
     static void updateDataMahasiswa() {
         String newName = null;
         String nimInput;
-        String newNIM = null;
         String newClass = null;
         String newStudyProgram = null;
         int indexStudent = 0;
