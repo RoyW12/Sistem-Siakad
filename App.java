@@ -16,6 +16,10 @@ public class App {
             { "RTI231002", "KTI", "2" },
             { "RTI231003", "CTPS", "2" }
     };
+    static String CONTINUE = "\u001B[34m";
+    static String SUCCESS = "\u001B[32m";
+    static String ERROR = "\u001B[31m";
+    static String RESETCOLOR = "\u001B[0m";
 
     static String[][][] grades = new String[students.length + 1][course.length][4];
 
@@ -47,8 +51,8 @@ public class App {
                     break;
                 default:
                     clearConsole();
-                    renderStringWithLn("user can't be found");
-                    renderStringWithLn("press enter to continue...");
+                    renderStringWithLn(ERROR + "user can't be found" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                     userInput.nextLine().trim();
                     clearConsole();
             }
@@ -75,7 +79,7 @@ public class App {
         }
         if (userIndex == -1) {
             clearConsole();
-            renderStringWithLn("incorrect username and password ");
+            renderStringWithLn(ERROR + "incorrect username and password " + RESETCOLOR);
         }
         return -1;
     }
@@ -148,8 +152,8 @@ public class App {
                     System.exit(choice);
                 default:
                     clearConsole();
-                    renderStringWithLn("Feature is not available");
-                    renderStringWithLn("press enter to continue...");
+                    renderStringWithLn(ERROR + "Feature is not available" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                     userInput.nextLine().trim();
                     clearConsole();
             }
@@ -172,8 +176,8 @@ public class App {
             for (int i = 0; i < students.length; i++) {
                 if (nim.equals(students[i][0])) {
                     clearConsole();
-                    renderStringWithLn("Student with the NIM of " + nim + " already exists!");
-                    renderStringWithLn("Input Data again");
+                    renderStringWithLn(ERROR + "Student with the NIM of " + nim + " already exists!" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
                     isFind = false;
                     break;
                 } else {
@@ -189,7 +193,7 @@ public class App {
                 newStudents[newStudents.length - 1] = new String[] { nim, fullName, classPlacement, studyProgram, sex };
                 students = newStudents;
                 renderStudentsTable("Data's Student", students);
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             }
@@ -240,12 +244,12 @@ public class App {
                         students[studentIndex][3],
                         students[studentIndex][4]);
                 renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             } else {
-                renderStringWithLn("Student with the NIM of " + nimInput + " doesn't exists!");
-                renderStringWithLn("Input Data again");
+                renderStringWithLn(ERROR + "Student with the NIM of " + nimInput + " doesn't exists!" + RESETCOLOR);
+                renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
             }
 
         }
@@ -254,7 +258,7 @@ public class App {
     static void inputDataMatkul() {
         String courseCode, courseName, sks;
         boolean isFind = false;
-        renderStringWithLn("Press enter to continue...");
+        renderStringWithLn(CONTINUE + "Press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
         renderCourseTable("Course data", course);
@@ -266,8 +270,9 @@ public class App {
             for (int i = 0; i < course.length; i++) {
                 if (courseCode.equals(course[i][0])) {
                     clearConsole();
-                    renderStringWithLn("Course with the Course code of " + courseCode + " already exists!");
-                    renderStringWithLn("Input Data again");
+                    renderStringWithLn(
+                            ERROR + "Course with the Course code of " + courseCode + " already exists!" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
                     isFind = false;
                     break;
                 } else {
@@ -275,8 +280,9 @@ public class App {
                 }
                 if (courseName.equalsIgnoreCase(course[i][1])) {
                     clearConsole();
-                    renderStringWithLn("Course with the Course Name of " + courseName + " already exists!");
-                    renderStringWithLn("Input Data again");
+                    renderStringWithLn(
+                            ERROR + "Course with the Course Name of " + courseName + " already exists!" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
                     isFind = false;
                     break;
                 } else {
@@ -302,7 +308,7 @@ public class App {
                 grades = newGrades;
 
                 renderCourseTable("Course data", course);
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             }
@@ -349,8 +355,8 @@ public class App {
                     System.exit(choice);
                 default:
                     clearConsole();
-                    renderStringWithLn("Feature is not available");
-                    renderStringWithLn("press enter to continue...");
+                    renderStringWithLn(ERROR + "Feature is not available" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                     userInput.nextLine().trim();
                     clearConsole();
             }
@@ -371,8 +377,9 @@ public class App {
                 students[user][3],
                 students[user][4]);
         renderStringWithLn("+------------+----------------------+-------+----------------------+-----+");
-        renderStringWithLn("press enter to continue...");
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
+        clearConsole();
     }
 
     static void cetakKHS(int user) {
@@ -385,7 +392,7 @@ public class App {
         renderStringWithLn("| Study Program : " + students[user][3]);
         renderStringWithLn("---------------------------------------------");
         renderKhsTable("Value's Table", user, course, grades);
-        renderString("press enter to continue...");
+        renderString(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
     }
@@ -400,7 +407,7 @@ public class App {
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
         Double totResult = 0.0, totSks = 0.0, ip = 0.0;
-        String val = "", status = "";
+        String status = "";
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
             String[] values = value[indexStudent][i];
@@ -437,7 +444,7 @@ public class App {
             for (int i = 0; i < students.length; i++) {
                 if (nim.equalsIgnoreCase(students[i][0])) {
                     indexStudent = i;
-                    renderStringWithLn("Data found");
+                    renderStringWithLn(SUCCESS + "Data found" + RESETCOLOR);
                     renderStringWithLn(
                             "+------+------------+----------------------+-------+----------------------+-----+");
                     renderStringWithLn(
@@ -452,19 +459,19 @@ public class App {
                             students[i][4]);
                     renderStringWithLn(
                             "+------+------------+----------------------+-------+----------------------+-----+");
-                    renderStringWithLn("press enter to continue...");
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                     userInput.nextLine().trim();
                     clearConsole();
                     break;
                 }
             }
             if (indexStudent == -1) {
-                renderStringWithLn("Data is not found. Try again");
+                renderStringWithLn(ERROR + "Data is not found. Try again" + RESETCOLOR);
             }
         }
 
         renderValueTable("Value's Data", indexStudent, course, grades);
-        renderStringWithLn("press enter to continue...");
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
 
@@ -477,8 +484,9 @@ public class App {
                         numericValue = userInput.nextInt();
                         userInput.nextLine();
                         if (numericValue < 0 || numericValue > 100) {
-                            renderStringWithLn("The value must be in the range 1-100. Please try again.....");
-                            renderStringWithLn("press enter to continue...");
+                            renderStringWithLn(
+                                    ERROR + "The value must be in the range 1-100. Please try again....." + RESETCOLOR);
+                            renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                             userInput.nextLine().trim();
                             clearConsole();
                         } else {
@@ -538,7 +546,7 @@ public class App {
         renderStringWithLn("-------------------------------------");
 
         renderValueTable("Value's Table", indexStudent, course, grades);
-        renderStringWithLn("press enter to continue...");
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
 
@@ -578,7 +586,7 @@ public class App {
         String oldNim, fullName, classPlacement, studyProgram;
         boolean isFind = false;
         int studentIndex = -1;
-        renderStringWithLn("press enter to continue...");
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
         while (!isFind) {
@@ -602,15 +610,15 @@ public class App {
                 students[studentIndex][2] = classPlacement;
                 students[studentIndex][3] = studyProgram;
                 clearConsole();
-                renderStringWithLn("Students have been succesfully added!");
+                renderStringWithLn(SUCCESS + "Students have been succesfully updated!" + RESETCOLOR);
                 renderStudentsTable("Data's Student", students);
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             } else {
-                renderStringWithLn("Student with the NIM of " + oldNim + " doesn't exists!");
+                renderStringWithLn(ERROR + "Student with the NIM of " + oldNim + " doesn't exists!" + RESETCOLOR);
                 renderStringWithLn("Input data again");
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             }
@@ -664,7 +672,7 @@ public class App {
         }
         renderStringWithLn("");
 
-        renderStringWithLn("press enter to continue...");
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
 
@@ -701,15 +709,15 @@ public class App {
             } else if (input.length() < min) {
                 if (input.length() == 0) {
                     clearConsole();
-                    renderStringWithLn(string + " doesn't have to be empty");
+                    renderStringWithLn(ERROR + string + " doesn't have to be empty" + RESETCOLOR);
                 }
                 renderStringWithLn(string + " has to be " + min + " digit");
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             } else {
                 clearConsole();
-                renderStringWithLn(string + " cannot be more than " + max + " digit");
+                renderStringWithLn(ERROR + string + " cannot be more than " + max + " digit" + RESETCOLOR);
             }
         }
     }
@@ -721,10 +729,11 @@ public class App {
             input = userInput.nextLine();
             if (input.isEmpty()) {
                 clearConsole();
-                renderStringWithLn(string + " doesn't have to be empty");
+                renderStringWithLn(ERROR + string + " doesn't have to be empty" + RESETCOLOR);
             } else {
                 return input;
             }
         }
     }
+
 }
