@@ -414,11 +414,6 @@ public class App {
             Double result = Double.parseDouble(newCourse[2]) * Double.parseDouble(values[2]);
             totSks += Double.parseDouble(newCourse[2]);
             totResult += result;
-            if (values[i] == "E" && ip < 2.00) {
-                status = "Tidak Lulus";
-            } else {
-                status = "Lulus";
-            }
             System.out.printf("| %-4d | %-18s | %-38s | %-18s | %-14s | %-4s | %-10s |\n", (i + 1), newCourse[0],
                     newCourse[1],
                     values[2], values[1], newCourse[2], result);
@@ -430,6 +425,15 @@ public class App {
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
         ip = totResult / totSks;
         System.out.printf("| %-124s |\n", "IP = " + ip);
+        for (int i = 0; i < course.length; i++) {
+            String[] values = value[indexStudent][i];
+            if (values[1] == "E") {
+                status = "Tidak Lulus";
+                break;
+            } else {
+                status = "Lulus";
+            }
+        }
         System.out.printf("| %-124s |\n", "Status = " + status);
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
