@@ -480,25 +480,21 @@ public class App {
     }
 
     static void studentsGradeReport() {
-        String blueColor = "\u001B[34m";
-        String redColor = "\u001B[31m";
-        String resetColor = "\u001B[0m";
+
         Arrays.sort(students, Comparator.comparing(student -> student[1]));
-        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
-        renderStringWithLn(redColor + "|       Student Grade Reports       |" + resetColor);
-        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
+        renderStringWithLn("-------------------------------------");
+        renderStringWithLn("|       Student Grade Reports       |");
+        renderStringWithLn("-------------------------------------");
         renderStringWithLn(
                 "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.format("| %-19s | %-26s | %-16s | %-31s |", blueColor + "NIM" + resetColor,
-                blueColor + "Name" + resetColor,
-                blueColor + "Class" + resetColor, blueColor + "Study Program" + resetColor);
+        System.out.format("| %-10s | %-17s | %-7s | %-21s |", "NIM", "Name", "Class", "Study Program");
         for (int j = 0; j < course.length; j++) {
-            System.out.format(" %-19s |", blueColor + course[j][1] + resetColor);
+            System.out.format(" %-10s |", course[j][1]);
         }
         renderStringWithLn(
                 "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < students.length; i++) {
-            System.out.format("| %-10s | %-17s | %-7s | %-22s |",
+            System.out.format("| %-10s | %-17s | %-7s | %-21s |",
                     students[i][0], students[i][1], students[i][2], students[i][3], students[i][4]);
             for (int j = 0; j < course.length; j++) {
                 int numeric = gradesNumeric[i][j];
