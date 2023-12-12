@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class App {
     static Scanner userInput = new Scanner(System.in);
@@ -481,6 +483,7 @@ public class App {
         String blueColor = "\u001B[34m";
         String redColor = "\u001B[31m";
         String resetColor = "\u001B[0m";
+        Arrays.sort(students, Comparator.comparing(student -> student[1]));
         renderStringWithLn(redColor + "-------------------------------------" + resetColor);
         renderStringWithLn(redColor + "|       Student Grade Reports       |" + resetColor);
         renderStringWithLn(redColor + "-------------------------------------" + resetColor);
