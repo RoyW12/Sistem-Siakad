@@ -197,10 +197,10 @@ public class App {
                 newStudents[newStudents.length - 1] = new String[] { nim, fullName, classPlacement, studyProgram, sex };
                 students = newStudents;
 
-                int[][] newGradesNumeric = new int[students.length + 1][course.length];
-                String[][] newGradesLetter = new String[students.length + 1][course.length];
-                String[][] newPredicate = new String[students.length + 1][course.length];
-                double[][] newEquivalentValue = new double[students.length + 1][course.length];
+                int[][] newGradesNumeric = new int[students.length][course.length];
+                String[][] newGradesLetter = new String[students.length][course.length];
+                String[][] newPredicate = new String[students.length][course.length];
+                double[][] newEquivalentValue = new double[students.length][course.length];
                 double[] newIp = new double[students.length + 1];
                 for (int i = 0; i < students.length - 1; i++) {
                     newIp[i] = ip[i];
@@ -305,10 +305,10 @@ public class App {
                 }
                 newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
                 course = newCourse;
-                int[][] newGradesNumeric = new int[students.length][course.length + 1];
-                String[][] newGradesLetter = new String[students.length][course.length + 1];
-                String[][] newPredicate = new String[students.length][course.length + 1];
-                double[][] newEquivalentValue = new double[students.length][course.length + 1];
+                int[][] newGradesNumeric = new int[students.length][course.length];
+                String[][] newGradesLetter = new String[students.length][course.length];
+                String[][] newPredicate = new String[students.length][course.length];
+                double[][] newEquivalentValue = new double[students.length][course.length];
                 for (int i = 0; i < students.length; i++) {
                     for (int j = 0; j < course.length - 1; j++) {
                         newGradesNumeric[i][j] = gradesNumeric[i][j];
