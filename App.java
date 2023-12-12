@@ -10,14 +10,21 @@ public class App {
             { "1234560004", "Ganjar Pranowo", "1D", "TI", "L" },
             { "1234560005", "Megawati", "1E", "TI", "P" }
     };
-
     static String[][] course = {
             { "RTI231001", "Pancasila", "2" },
             { "RTI231002", "KTI", "2" },
             { "RTI231003", "CTPS", "2" }
     };
+    static String CONTINUE = "\u001B[34m";
+    static String SUCCESS = "\u001B[32m";
+    static String ERROR = "\u001B[31m";
+    static String RESETCOLOR = "\u001B[0m";
 
-    static String[][][] grades = new String[students.length + 1][course.length][4];
+    static int[][] gradesNumeric = new int[students.length][course.length];
+    static String[][] gradesLetter = new String[students.length][course.length];
+    static String[][] predicate = new String[students.length][course.length];
+    static double[][] equivalentValue = new double[students.length][course.length];
+    static double[] ip = new double[students.length];
 
     public static void main(String[] args) {
         loginView();
@@ -31,7 +38,6 @@ public class App {
             renderStringWithLn("0. exit");
             renderStringWithLn("Choose login as => 1.admin 2.mahasiswa or exit choose 0");
             int choice = getUserChoiceInt();
-
             switch (choice) {
                 case 1:
                     login(choice);
@@ -47,8 +53,8 @@ public class App {
                     break;
                 default:
                     clearConsole();
-                    renderStringWithLn("user can't be found");
-                    renderStringWithLn("press enter to continue...");
+                    renderStringWithLn(ERROR + "user can't be found" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                     userInput.nextLine().trim();
                     clearConsole();
             }
@@ -75,7 +81,7 @@ public class App {
         }
         if (userIndex == -1) {
             clearConsole();
-            renderStringWithLn("incorrect username and password ");
+            renderStringWithLn(ERROR + "incorrect username and password " + RESETCOLOR);
         }
         return -1;
     }
@@ -84,33 +90,33 @@ public class App {
         while (true) {
             int user;
             renderStringWithLn("input username and password");
-            String username = getNonEmptyString("Username"); // trim menghapus spasi di awal dan akhir string
-            String password = getNonEmptyString("Password"); // trim menghapus spasi di awal dan akhir string
+            String username = getNonEmptyString("Username");
+            String password = getNonEmptyString("Password");
 
             if (choice == 1) {
                 user = checkUsernamePassword(username, password, admin);
                 if (user >= 0) {
-                    dashboardAdmin(user);
+                    adminDashboard(user);
                 }
             } else if (choice == 2) {
                 user = checkUsernamePassword(username, password, students);
                 if (user >= 0) {
-                    dashboardMahasiswa(user);
+                    studentDashboard(user);
                 }
             }
         }
     }
 
-    static void dashboardAdmin(int user) {
+    static void adminDashboard(int user) {
         renderStringWithLn("Welcome " + admin[user][0]);
         while (true) {
             renderStringWithLn("=== Dashboard Admin ===");
-            renderStringWithLn("1. Input data mahasiswa ke master");
-            renderStringWithLn("2. Update data mahasiswa");
-            renderStringWithLn("3. Input data mata kuliah ke master");
-            renderStringWithLn("4. Input nilai");
-            renderStringWithLn("5. Pencarian Mahasiswa");
-            renderStringWithLn("6. Pelaporan Nilai Mahasiswa");
+            renderStringWithLn("1. Input Student Data");
+            renderStringWithLn("2. Update Student Data");
+            renderStringWithLn("3. Input Course Data into master");
+            renderStringWithLn("4. Input Grade");
+            renderStringWithLn("5. Search Student");
+            renderStringWithLn("6. Students Grade Report");
             renderStringWithLn("7. Logout");
             renderStringWithLn("0. Exit");
             renderString("Select Feature: ");
@@ -118,27 +124,27 @@ public class App {
             switch (choice) {
                 case 1:
                     clearConsole();
-                    inputDataMahasiswa();
+                    inputStudentData();
                     break;
                 case 2:
                     clearConsole();
-                    updateDataMahasiswa();
+                    updateStudentData();
                     break;
                 case 3:
                     clearConsole();
-                    inputDataMatkul();
+                    inputCourseData();
                     break;
                 case 4:
                     clearConsole();
-                    inputNilai();
+                    inputGrade();
                     break;
                 case 5:
                     clearConsole();
-                    pencarian();
+                    searchStudent();
                     break;
                 case 6:
                     clearConsole();
-                    pelaporanNilai();
+                    studentsGradeReport();
                     break;
                 case 7:
                     clearConsole();
@@ -148,15 +154,15 @@ public class App {
                     System.exit(choice);
                 default:
                     clearConsole();
-                    renderStringWithLn("Feature is not available");
-                    renderStringWithLn("press enter to continue...");
+                    renderStringWithLn(ERROR + "Feature is not available" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                     userInput.nextLine().trim();
                     clearConsole();
             }
         }
     }
 
-    static void inputDataMahasiswa() {
+    static void inputStudentData() {
         String nim, fullName, classPlacement, studyProgram, sex;
         boolean isFind = false;
         renderStringWithLn("press enter to continue...");
@@ -172,8 +178,8 @@ public class App {
             for (int i = 0; i < students.length; i++) {
                 if (nim.equals(students[i][0])) {
                     clearConsole();
-                    renderStringWithLn("Student with the NIM of " + nim + " already exists!");
-                    renderStringWithLn("Input Data again");
+                    renderStringWithLn(ERROR + "Student with the NIM of " + nim + " already exists!" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
                     isFind = false;
                     break;
                 } else {
@@ -188,33 +194,254 @@ public class App {
                 }
                 newStudents[newStudents.length - 1] = new String[] { nim, fullName, classPlacement, studyProgram, sex };
                 students = newStudents;
+
+                int[][] newGradesNumeric = new int[students.length + 1][course.length];
+                String[][] newGradesLetter = new String[students.length + 1][course.length];
+                String[][] newPredicate = new String[students.length + 1][course.length];
+                double[][] newEquivalentValue = new double[students.length + 1][course.length];
+                double[] newIp = new double[students.length + 1];
+                for (int i = 0; i < students.length - 1; i++) {
+                    newIp[i] = ip[i];
+                    for (int j = 0; j < course.length; j++) {
+                        newGradesNumeric[i][j] = gradesNumeric[i][j];
+                        newGradesLetter[i][j] = gradesLetter[i][j];
+                        newPredicate[i][j] = predicate[i][j];
+                        newEquivalentValue[i][j] = equivalentValue[i][j];
+                    }
+                }
+                ip = newIp;
+                gradesNumeric = newGradesNumeric;
+                gradesLetter = newGradesLetter;
+                predicate = newPredicate;
+                equivalentValue = newEquivalentValue;
                 renderStudentsTable("Data's Student", students);
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             }
         }
     }
 
-    static void renderStudentsTable(String title, String[][] students) {
-        renderStringWithLn(title);
-        renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
-        renderStringWithLn("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
-        renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
-        for (int i = 0; i < students.length; i++) {
-            String[] student = students[i];
-            System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", (i + 1), student[0], student[1],
-                    student[2],
-                    student[3], student[4]);
+    static void updateStudentData() {
+        String oldNim, fullName, classPlacement, studyProgram;
+        boolean isFind = false;
+        int studentIndex = -1;
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+        userInput.nextLine().trim();
+        clearConsole();
+        while (!isFind) {
+            renderStudentsTable("Data's Student", students);
+            renderStringWithLn("Find student by NIM");
+            oldNim = getStringLimit(10, "NIM", 10);
+            for (int i = 0; i < students.length; i++) {
+                if (oldNim.equals(students[i][0])) {
+                    clearConsole();
+                    studentIndex = i;
+                    isFind = true;
+                    break;
+                }
+            }
+            if (isFind) {
+                renderStringWithLn("New Student Data");
+                fullName = getNonEmptyString("New Name");
+                classPlacement = getStringLimit(2, "New Class", 2).toUpperCase();
+                studyProgram = getStringLimit(2, "New Study Program", 2).toUpperCase();
+                students[studentIndex][1] = fullName;
+                students[studentIndex][2] = classPlacement;
+                students[studentIndex][3] = studyProgram;
+                clearConsole();
+                renderStringWithLn(SUCCESS + "Students have been succesfully updated!" + RESETCOLOR);
+                renderStudentsTable("Data's Student", students);
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                userInput.nextLine().trim();
+                clearConsole();
+            } else {
+                renderStringWithLn(ERROR + "Student with the NIM of " + oldNim + " doesn't exists!" + RESETCOLOR);
+                renderStringWithLn("Input data again");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                userInput.nextLine().trim();
+                clearConsole();
+            }
         }
-        renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
     }
 
-    static void pencarian() {
+    static void inputCourseData() {
+        String courseCode, courseName, sks;
+        boolean isFind = false;
+        renderStringWithLn(CONTINUE + "Press enter to continue..." + RESETCOLOR);
+        userInput.nextLine().trim();
+        clearConsole();
+        renderCourseTable("Course data", course);
+        while (!isFind) {
+            courseCode = getStringLimit(9, "Course Code", 9).toUpperCase();
+            courseName = getNonEmptyString("Course Name");
+            sks = getStringLimit(1, "sks", 1);
+            for (int i = 0; i < course.length; i++) {
+                if (courseCode.equals(course[i][0])) {
+                    clearConsole();
+                    renderStringWithLn(
+                            ERROR + "Course with the Course code of " + courseCode + " already exists!" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
+                    isFind = false;
+                    break;
+                } else if (courseName.equalsIgnoreCase(course[i][1])) {
+                    clearConsole();
+                    renderStringWithLn(
+                            ERROR + "Course with the Course Name of " + courseName + " already exists!" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
+                    isFind = false;
+                    break;
+                } else {
+                    isFind = true;
+                }
+            }
+
+            if (isFind) {
+                String[][] newCourse = new String[course.length + 1][3];
+                for (int i = 0; i < course.length; i++) {
+                    newCourse[i] = course[i];
+                }
+                newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
+                course = newCourse;
+                int[][] newGradesNumeric = new int[students.length][course.length + 1];
+                String[][] newGradesLetter = new String[students.length][course.length + 1];
+                String[][] newPredicate = new String[students.length][course.length + 1];
+                double[][] newEquivalentValue = new double[students.length][course.length + 1];
+                for (int i = 0; i < students.length; i++) {
+                    for (int j = 0; j < course.length - 1; j++) {
+                        newGradesNumeric[i][j] = gradesNumeric[i][j];
+                        newGradesLetter[i][j] = gradesLetter[i][j];
+                        newPredicate[i][j] = predicate[i][j];
+                        newEquivalentValue[i][j] = equivalentValue[i][j];
+                    }
+                }
+                gradesNumeric = newGradesNumeric;
+                gradesLetter = newGradesLetter;
+                predicate = newPredicate;
+                equivalentValue = newEquivalentValue;
+                renderCourseTable("Course data", course);
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                userInput.nextLine().trim();
+                clearConsole();
+            }
+        }
+    }
+
+    static void inputGrade() {
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+        userInput.nextLine().trim();
+        String nim = "";
+        int indexStudent = -1;
+        while (indexStudent == -1) {
+            nim = getNonEmptyString("Student NIM");
+            for (int i = 0; i < students.length; i++) {
+                if (nim.equalsIgnoreCase(students[i][0])) {
+                    indexStudent = i;
+                    renderStringWithLn(SUCCESS + "Data found" + RESETCOLOR);
+                    renderStringWithLn(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    renderStringWithLn(
+                            "| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+                    renderStringWithLn(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
+                            students[i][0],
+                            students[i][1],
+                            students[i][2],
+                            students[i][3],
+                            students[i][4]);
+                    renderStringWithLn(
+                            "+------+------------+----------------------+-------+----------------------+-----+");
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                    userInput.nextLine().trim();
+                    clearConsole();
+                    break;
+                }
+            }
+            if (indexStudent == -1) {
+                renderStringWithLn(ERROR + "Data is not found. Try again" + RESETCOLOR);
+            }
+        }
+        renderValueTable("Value's Tabel", indexStudent, course, gradesNumeric, equivalentValue, gradesLetter,
+                predicate);
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+        userInput.nextLine().trim();
+        clearConsole();
+        for (int i = 0; i < course.length; i++) {
+            if ((gradesLetter[indexStudent][i] == "-") && (predicate[indexStudent][i] == "-")) {
+                int numericValue;
+                while (true) {
+                    renderString("Course Grade " + course[i][1] + " : ");
+                    numericValue = userInput.nextInt();
+                    userInput.nextLine();
+                    if (numericValue < 0 || numericValue > 100) {
+                        renderStringWithLn(
+                                ERROR + "The value must be in the range 1-100. Please try again....." + RESETCOLOR);
+                        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                        userInput.nextLine().trim();
+                        clearConsole();
+                    } else {
+                        break;
+                    }
+                }
+                String letterValue;
+                String predicateStatus = "";
+                double numericEquivalentValue = 0.0;
+                if (numericValue > 80 && numericValue <= 100) {
+                    letterValue = "A";
+                    predicateStatus = "Exellent";
+                    numericEquivalentValue = 4;
+                } else if (numericValue > 73 && numericValue <= 80) {
+                    letterValue = "B+";
+                    predicateStatus = "Very Good";
+                    numericEquivalentValue = 3.5;
+                } else if (numericValue > 65 && numericValue <= 73) {
+                    letterValue = "B";
+                    predicateStatus = "Good";
+                    numericEquivalentValue = 3;
+                } else if (numericValue > 60 && numericValue <= 65) {
+                    letterValue = "C+";
+                    predicateStatus = "Above Avarage";
+                    numericEquivalentValue = 2.5;
+                } else if (numericValue > 50 && numericValue <= 60) {
+                    letterValue = "C";
+                    predicateStatus = "Avarage";
+                    numericEquivalentValue = 2;
+                } else if (numericValue > 39 && numericValue <= 50) {
+                    letterValue = "D";
+                    predicateStatus = "Below Avarage";
+                    numericEquivalentValue = 1;
+                } else if (numericValue > 0 && numericValue <= 39) {
+                    letterValue = "E";
+                    predicateStatus = "Fail";
+                    numericEquivalentValue = 0;
+                } else {
+                    letterValue = "Not Available";
+                }
+                gradesNumeric[indexStudent][i] = numericValue;
+                gradesLetter[indexStudent][i] = letterValue;
+                equivalentValue[indexStudent][i] = numericEquivalentValue;
+                predicate[indexStudent][i] = predicateStatus;
+            }
+        }
+        renderString("\n");
+        renderStringWithLn("-------------------------------------");
+        renderStringWithLn("|          Data mahasiswa           |");
+        renderStringWithLn("-------------------------------------");
+        renderStringWithLn("| Name        : " + students[indexStudent][1]);
+        renderStringWithLn("| NIM         : " + students[indexStudent][0]);
+        renderStringWithLn("-------------------------------------");
+        renderValueTable("Value's Table", indexStudent, course, gradesNumeric, equivalentValue, gradesLetter,
+                predicate);
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+        userInput.nextLine().trim();
+        clearConsole();
+    }
+
+    static void searchStudent() {
         String nimInput;
         boolean isFind = false;
         int studentIndex = -1;
-
         while (!isFind) {
             renderStudentsTable("Data's Student", students);
             renderStringWithLn("Find student by NIM");
@@ -240,94 +467,60 @@ public class App {
                         students[studentIndex][3],
                         students[studentIndex][4]);
                 renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             } else {
-                renderStringWithLn("Student with the NIM of " + nimInput + " doesn't exists!");
-                renderStringWithLn("Input Data again");
+                renderStringWithLn(ERROR + "Student with the NIM of " + nimInput + " doesn't exists!" + RESETCOLOR);
+                renderStringWithLn(CONTINUE + "Input Data again" + RESETCOLOR);
             }
-
         }
     }
 
-    static void inputDataMatkul() {
-        String courseCode, courseName, sks;
-        boolean isFind = false;
-        renderStringWithLn("Press enter to continue...");
+    static void studentsGradeReport() {
+        String blueColor = "\u001B[34m";
+        String redColor = "\u001B[31m";
+        String resetColor = "\u001B[0m";
+        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
+        renderStringWithLn(redColor + "|       Student Grade Reports       |" + resetColor);
+        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
+        renderStringWithLn(
+                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.format("| %-19s | %-26s | %-16s | %-31s |", blueColor + "NIM" + resetColor,
+                blueColor + "Name" + resetColor,
+                blueColor + "Class" + resetColor, blueColor + "Study Program" + resetColor);
+        for (int j = 0; j < course.length; j++) {
+            System.out.format(" %-19s |", blueColor + course[j][1] + resetColor);
+        }
+        renderStringWithLn(
+                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+        for (int i = 0; i < students.length; i++) {
+            System.out.format("| %-10s | %-17s | %-7s | %-22s |",
+                    students[i][0], students[i][1], students[i][2], students[i][3], students[i][4]);
+            for (int j = 0; j < course.length; j++) {
+                int numeric = gradesNumeric[i][j];
+                String comment = gradesLetter[i][j];
+                if (numeric == 0) {
+                    System.out.format(" %-10s |", "-");
+                } else {
+                    System.out.format(" %-10s |", numeric + " (" + comment + ")");
+                }
+            }
+            renderStringWithLn(
+                    "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
+        }
+        renderStringWithLn("");
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
-        renderCourseTable("Course data", course);
-        while (!isFind) {
-            courseCode = getStringLimit(9, "Course Code", 9);
-            courseName = getNonEmptyString("Course Name");
-            sks = getStringLimit(1, "sks", 1);
-
-            for (int i = 0; i < course.length; i++) {
-                if (courseCode.equals(course[i][0])) {
-                    clearConsole();
-                    renderStringWithLn("Course with the Course code of " + courseCode + " already exists!");
-                    renderStringWithLn("Input Data again");
-                    isFind = false;
-                    break;
-                } else {
-                    isFind = true;
-                }
-                if (courseName.equalsIgnoreCase(course[i][1])) {
-                    clearConsole();
-                    renderStringWithLn("Course with the Course Name of " + courseName + " already exists!");
-                    renderStringWithLn("Input Data again");
-                    isFind = false;
-                    break;
-                } else {
-                    isFind = true;
-                }
-                ;
-            }
-
-            if (isFind) {
-                String[][] newCourse = new String[course.length + 1][3];
-                for (int i = 0; i < course.length; i++) {
-                    newCourse[i] = course[i];
-                }
-                newCourse[newCourse.length - 1] = new String[] { courseCode, courseName, sks };
-                course = newCourse;
-
-                String[][][] newGrades = new String[999][course.length][4];
-                for (int i = 0; i < grades.length; i++) {
-                    for (int j = 0; j < grades[0].length; j++) {
-                        newGrades[i][j] = grades[i][j];
-                    }
-                }
-                grades = newGrades;
-
-                renderCourseTable("Course data", course);
-                renderStringWithLn("press enter to continue...");
-                userInput.nextLine().trim();
-                clearConsole();
-            }
-        }
     }
 
-    static void renderCourseTable(String title, String[][] course) {
-        renderStringWithLn(title);
-        renderStringWithLn("+------+--------------------+----------------------------------------+-----+");
-        renderStringWithLn("| No.  |    Course Code     |               Course Name              | SKS |");
-        renderStringWithLn("+------+--------------------+----------------------------------------+-----+");
-        for (int i = 0; i < course.length; i++) {
-            String[] newCourse = course[i];
-            System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), newCourse[0], newCourse[1],
-                    newCourse[2]);
-        }
-        renderStringWithLn("+------+--------------------+----------------------------------------+-----+");
-    }
-
-    static void dashboardMahasiswa(int user) {
+    static void studentDashboard(int user) {
         renderStringWithLn("Welcome " + students[user][1]);
         while (true) {
             renderStringWithLn("=== Dashboard Mahasiswa ===");
             renderStringWithLn("1. Profile");
-            renderStringWithLn("2. Cetak KHS");
+            renderStringWithLn("2. Print KHS");
             renderStringWithLn("3. Logout");
             renderStringWithLn("0. Exit");
             renderString("Select Feature: ");
@@ -339,7 +532,7 @@ public class App {
                     break;
                 case 2:
                     clearConsole();
-                    cetakKHS(user);
+                    printKHS(user);
                     break;
                 case 3:
                     clearConsole();
@@ -349,13 +542,12 @@ public class App {
                     System.exit(choice);
                 default:
                     clearConsole();
-                    renderStringWithLn("Feature is not available");
-                    renderStringWithLn("press enter to continue...");
+                    renderStringWithLn(ERROR + "Feature is not available" + RESETCOLOR);
+                    renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                     userInput.nextLine().trim();
                     clearConsole();
             }
         }
-
     }
 
     static void profile(int user) {
@@ -371,11 +563,12 @@ public class App {
                 students[user][3],
                 students[user][4]);
         renderStringWithLn("+------------+----------------------+-------+----------------------+-----+");
-        renderStringWithLn("press enter to continue...");
+        renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
+        clearConsole();
     }
 
-    static void cetakKHS(int user) {
+    static void printKHS(int user) {
         renderStringWithLn("---------------------------------------------");
         renderStringWithLn("|             Study Results Card             |");
         renderStringWithLn("---------------------------------------------");
@@ -384,13 +577,14 @@ public class App {
         renderStringWithLn("| Class         : " + students[user][2]);
         renderStringWithLn("| Study Program : " + students[user][3]);
         renderStringWithLn("---------------------------------------------");
-        renderKhsTable("Value's Table", user, course, grades);
-        renderString("press enter to continue...");
+        renderKhsTable("Value's Table", user, course, equivalentValue, gradesLetter, ip);
+        renderString(CONTINUE + "press enter to continue..." + RESETCOLOR);
         userInput.nextLine().trim();
         clearConsole();
     }
 
-    static void renderKhsTable(String title, int indexStudent, String[][] course, String[][][] value) {
+    static void renderKhsTable(String title, int indexStudent, String[][] course,
+            double[][] equivalentValue, String[][] gradesLetter, double[] ipData) {
 
         renderStringWithLn(title);
         renderStringWithLn(
@@ -400,155 +594,78 @@ public class App {
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
         Double totResult = 0.0, totSks = 0.0, ip = 0.0;
-        String val = "", status = "";
+        String status = "";
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
-            String[] values = value[indexStudent][i];
-            Double result = Double.parseDouble(newCourse[2]) * Double.parseDouble(values[2]);
+            Double result = Double.parseDouble(newCourse[2]) * equivalentValue[indexStudent][i];
             totSks += Double.parseDouble(newCourse[2]);
             totResult += result;
+
             System.out.printf("| %-4d | %-18s | %-38s | %-18s | %-14s | %-4s | %-10s |\n", (i + 1), newCourse[0],
                     newCourse[1],
-                    values[2], values[1], newCourse[2], result);
+                    equivalentValue[indexStudent][i], gradesLetter[indexStudent][i], newCourse[2], result);
         }
+
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
-        System.out.printf("| %-104s | %-4s | %-10s |\n", "Jumlah", totSks, totResult);
+
+        System.out.printf("| %-104s | %-4s | %-10s |\n", "Sum", totSks, totResult);
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
         ip = totResult / totSks;
-        System.out.printf("| %-124s |\n", "IP = " + ip);
+        int decimalForm = 2;
+        double pembulatanFaktor = Math.pow(10, decimalForm);
+        double ipDecimal = Math.round(ip * pembulatanFaktor) / pembulatanFaktor;
+        ipData[indexStudent] = ipDecimal;
+        System.out.printf("| %-124s |\n", "IP = " + ipDecimal);
         for (int i = 0; i < course.length; i++) {
-            String[] values = value[indexStudent][i];
-            if (values[1] == "E") {
+            if (gradesLetter[indexStudent][i] == null) {
+                status = null;
+                break;
+            }
+            if (gradesLetter[indexStudent][i] == "E") {
                 status = "Tidak Lulus";
                 break;
             } else {
                 status = "Lulus";
+
             }
+
         }
         System.out.printf("| %-124s |\n", "Status = " + status);
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
     }
 
-    static void inputNilai() {
-        String nim = "";
-        int indexStudent = -1;
-
-        while (indexStudent == -1) {
-            nim = getNonEmptyString("Student NIM");
-            for (int i = 0; i < students.length; i++) {
-                if (nim.equalsIgnoreCase(students[i][0])) {
-                    indexStudent = i;
-                    renderStringWithLn("Data found");
-                    renderStringWithLn(
-                            "+------+------------+----------------------+-------+----------------------+-----+");
-                    renderStringWithLn(
-                            "| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
-                    renderStringWithLn(
-                            "+------+------------+----------------------+-------+----------------------+-----+");
-                    System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", 1,
-                            students[i][0],
-                            students[i][1],
-                            students[i][2],
-                            students[i][3],
-                            students[i][4]);
-                    renderStringWithLn(
-                            "+------+------------+----------------------+-------+----------------------+-----+");
-                    renderStringWithLn("press enter to continue...");
-                    userInput.nextLine().trim();
-                    clearConsole();
-                    break;
-                }
-            }
-            if (indexStudent == -1) {
-                renderStringWithLn("Data is not found. Try again");
-            }
+    static void renderStudentsTable(String title, String[][] students) {
+        renderStringWithLn(title);
+        renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
+        renderStringWithLn("| No.  |    NIM     |      Full Name       | Class |     Study Program    | Sex |");
+        renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
+        for (int i = 0; i < students.length; i++) {
+            String[] student = students[i];
+            System.out.printf("| %-4d | %-10s | %-20s | %-5s | %-20s |  %s  |\n", (i + 1), student[0], student[1],
+                    student[2],
+                    student[3], student[4]);
         }
-
-        renderValueTable("Value's Data", indexStudent, course, grades);
-        renderStringWithLn("press enter to continue...");
-        userInput.nextLine().trim();
-        clearConsole();
-
-        for (int i = 0; i < course.length; i++) {
-            if (grades[indexStudent][i][0] == "-") {
-                while (i < course.length) {
-                    int numericValue;
-                    while (true) {
-                        System.out.print("Nilai matkul " + course[i][1] + " : ");
-                        numericValue = userInput.nextInt();
-                        userInput.nextLine();
-                        if (numericValue < 0 || numericValue > 100) {
-                            renderStringWithLn("The value must be in the range 1-100. Please try again.....");
-                            renderStringWithLn("press enter to continue...");
-                            userInput.nextLine().trim();
-                            clearConsole();
-                        } else {
-                            break;
-                        }
-                    }
-                    String letterValue;
-                    String predicate = "";
-                    double equivalentValue = 0.0;
-                    if (numericValue > 80 && numericValue <= 100) {
-                        letterValue = "A";
-                        predicate = "Exellent";
-                        equivalentValue = 4;
-                    } else if (numericValue > 73 && numericValue <= 80) {
-                        letterValue = "B+";
-                        predicate = "Very Good";
-                        equivalentValue = 3.5;
-                    } else if (numericValue > 65 && numericValue <= 73) {
-                        letterValue = "B";
-                        predicate = "Good";
-                        equivalentValue = 3;
-                    } else if (numericValue > 60 && numericValue <= 65) {
-                        letterValue = "C+";
-                        predicate = "Above Avarage";
-                        equivalentValue = 2.5;
-                    } else if (numericValue > 50 && numericValue <= 60) {
-                        letterValue = "C";
-                        predicate = "Avarage";
-                        equivalentValue = 2;
-                    } else if (numericValue > 39 && numericValue <= 50) {
-                        letterValue = "D";
-                        predicate = "Below Avarage";
-                        equivalentValue = 1;
-                    } else if (numericValue > 0 && numericValue <= 39) {
-                        letterValue = "E";
-                        predicate = "Fail";
-                        equivalentValue = 0;
-                    } else {
-                        letterValue = "Not Available";
-                    }
-                    grades[indexStudent][i][0] = String.valueOf(numericValue);
-                    grades[indexStudent][i][1] = letterValue;
-                    grades[indexStudent][i][2] = Double.toString(equivalentValue);
-                    grades[indexStudent][i][3] = predicate;
-                    i++;
-                }
-            }
-        }
-
-        renderString("\n");
-
-        renderStringWithLn("-------------------------------------");
-        renderStringWithLn("|          Data mahasiswa           |");
-        renderStringWithLn("-------------------------------------");
-        renderStringWithLn("| Nama        : " + students[indexStudent][1]);
-        renderStringWithLn("| NIM         : " + students[indexStudent][0]);
-        renderStringWithLn("-------------------------------------");
-
-        renderValueTable("Value's Table", indexStudent, course, grades);
-        renderStringWithLn("press enter to continue...");
-        userInput.nextLine().trim();
-        clearConsole();
-
+        renderStringWithLn("+------+------------+----------------------+-------+----------------------+-----+");
     }
 
-    static void renderValueTable(String title, int indexStudent, String[][] course, String[][][] value) {
+    static void renderCourseTable(String title, String[][] course) {
+        renderStringWithLn(title);
+        renderStringWithLn("+------+--------------------+----------------------------------------+-----+");
+        renderStringWithLn("| No.  |    Course Code     |               Course Name              | SKS |");
+        renderStringWithLn("+------+--------------------+----------------------------------------+-----+");
+        for (int i = 0; i < course.length; i++) {
+            String[] newCourse = course[i];
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s |\n", (i + 1), newCourse[0], newCourse[1],
+                    newCourse[2]);
+        }
+        renderStringWithLn("+------+--------------------+----------------------------------------+-----+");
+    }
+
+    static void renderValueTable(String title, int indexStudent, String[][] course, int[][] gradesNumeric,
+            double[][] equivalentValue, String[][] gradesLetter, String[][] predicate) {
         renderStringWithLn(title);
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
@@ -556,122 +673,24 @@ public class App {
                 "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) | Value (Weight) |     Predicate    |");
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
+
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
-            String[] values = value[indexStudent][i];
-            for (int j = 0; j < values.length; j++) {
-                if (values[j] == null) {
-                    values[j] = "-";
-                }
+            if ((gradesLetter[indexStudent][i] == null) && (predicate[indexStudent][i] == null)) {
+                gradesLetter[indexStudent][i] = "-";
+                predicate[indexStudent][i] = "-";
             }
-            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14s | %-14s | %-14s | %-16s |\n", (i + 1),
+            System.out.printf("| %-4d | %-18s | %-38s | %-3s | %-14d | %-14s | %-14f | %-16s |\n", (i + 1),
                     newCourse[0],
                     newCourse[1],
                     newCourse[2],
-                    values[0],
-                    values[1],
-                    values[2],
-                    values[3]);
-
+                    gradesNumeric[indexStudent][i],
+                    gradesLetter[indexStudent][i],
+                    equivalentValue[indexStudent][i],
+                    predicate[indexStudent][i]);
         }
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
-    }
-
-    static void updateDataMahasiswa() {
-        String oldNim, fullName, classPlacement, studyProgram;
-        boolean isFind = false;
-        int studentIndex = -1;
-        renderStringWithLn("press enter to continue...");
-        userInput.nextLine().trim();
-        clearConsole();
-        while (!isFind) {
-            renderStudentsTable("Data's Student", students);
-            renderStringWithLn("Find student by NIM");
-            oldNim = getStringLimit(10, "NIM", 10);
-            for (int i = 0; i < students.length; i++) {
-                if (oldNim.equals(students[i][0])) {
-                    clearConsole();
-                    studentIndex = i;
-                    isFind = true;
-                    break;
-                }
-            }
-            if (isFind) {
-                renderStringWithLn("New Student Data");
-                fullName = getNonEmptyString("New Name");
-                classPlacement = getStringLimit(2, "New Class", 2).toUpperCase();
-                studyProgram = getStringLimit(2, "New Study Program", 2).toUpperCase();
-                students[studentIndex][1] = fullName;
-                students[studentIndex][2] = classPlacement;
-                students[studentIndex][3] = studyProgram;
-                clearConsole();
-                renderStringWithLn("Students have been succesfully added!");
-                renderStudentsTable("Data's Student", students);
-                renderStringWithLn("press enter to continue...");
-                userInput.nextLine().trim();
-                clearConsole();
-            } else {
-                renderStringWithLn("Student with the NIM of " + oldNim + " doesn't exists!");
-                renderStringWithLn("Input data again");
-                renderStringWithLn("press enter to continue...");
-                userInput.nextLine().trim();
-                clearConsole();
-            }
-        }
-    }
-
-    static void pelaporanNilai() {
-
-        // pelaporan nilai mahasiswa
-
-        String blueColor = "\u001B[34m";
-        String redColor = "\u001B[31m";
-        String resetColor = "\u001B[0m";
-
-        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
-        renderStringWithLn(redColor + "|      Laporan Nilai Mahasiswa       |" + resetColor);
-        renderStringWithLn(redColor + "-------------------------------------" + resetColor);
-
-        renderStringWithLn(
-                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.format("| %-19s | %-26s | %-16s | %-31s |", blueColor + "NIM" + resetColor,
-                blueColor + "Nama" + resetColor,
-                blueColor + "Kelas" + resetColor, blueColor + "Program Studi" + resetColor);
-
-        // Untuk menampilkan jadwal mata kuliah
-        for (int j = 0; j < course.length; j++) {
-            System.out.format(" %-19s |", blueColor + course[j][1] + resetColor);
-        }
-
-        renderStringWithLn(
-                "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-
-        // untuk menampilkan kolom
-        for (int i = 0; i < students.length; i++) {
-            System.out.format("| %-10s | %-17s | %-7s | %-22s |",
-                    students[i][0], students[i][1], students[i][2], students[i][3], students[i][4]);
-
-            // menampilkan nilai
-            for (int j = 0; j < course.length; j++) {
-                String grade = grades[i][j][0];
-                String comment = grades[i][j][1];
-
-                if (grade == null) {
-                    System.out.format(" %-10s |", "-");
-                } else {
-                    System.out.format(" %-10s |", grade + " (" + comment + ")");
-                }
-            }
-            renderStringWithLn(
-                    "\n-------------------------------------------------------------------------------------------------------------------------------------------------------");
-        }
-        renderStringWithLn("");
-
-        renderStringWithLn("press enter to continue...");
-        userInput.nextLine().trim();
-        clearConsole();
-
     }
 
     static void clearConsole() {
@@ -705,15 +724,15 @@ public class App {
             } else if (input.length() < min) {
                 if (input.length() == 0) {
                     clearConsole();
-                    renderStringWithLn(string + " doesn't have to be empty");
+                    renderStringWithLn(ERROR + string + " doesn't have to be empty" + RESETCOLOR);
                 }
                 renderStringWithLn(string + " has to be " + min + " digit");
-                renderStringWithLn("press enter to continue...");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
             } else {
                 clearConsole();
-                renderStringWithLn(string + " cannot be more than " + max + " digit");
+                renderStringWithLn(ERROR + string + " cannot be more than " + max + " digit" + RESETCOLOR);
             }
         }
     }
@@ -725,7 +744,7 @@ public class App {
             input = userInput.nextLine();
             if (input.isEmpty()) {
                 clearConsole();
-                renderStringWithLn(string + " doesn't have to be empty");
+                renderStringWithLn(ERROR + string + " doesn't have to be empty" + RESETCOLOR);
             } else {
                 return input;
             }
