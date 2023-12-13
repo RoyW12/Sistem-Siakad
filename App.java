@@ -201,7 +201,7 @@ public class App {
                 String[][] newGradesLetter = new String[students.length][course.length];
                 String[][] newPredicate = new String[students.length][course.length];
                 double[][] newEquivalentValue = new double[students.length][course.length];
-                double[] newIp = new double[students.length + 1];
+                double[] newIp = new double[students.length];
                 for (int i = 0; i < students.length - 1; i++) {
                     newIp[i] = ip[i];
                     for (int j = 0; j < course.length; j++) {
@@ -221,7 +221,7 @@ public class App {
                 userInput.nextLine().trim();
                 clearConsole();
             }
-            renderStringWithLn("Do you want to input student again?");
+            renderStringWithLn("Do you want to input student again (y/n)?");
             String choice = specificStringLimit("y", "Answer", "n", 1, 1);
             if (choice.equalsIgnoreCase("y")) {
                 isFind = false;
@@ -337,7 +337,7 @@ public class App {
                 clearConsole();
             }
 
-            renderStringWithLn("Do you want to input course again?");
+            renderStringWithLn("Do you want to input course again (y/n)?");
             String choice = specificStringLimit("y", "Answer", "n", 1, 1);
             if (choice.equalsIgnoreCase("y")) {
                 isFind = false;
