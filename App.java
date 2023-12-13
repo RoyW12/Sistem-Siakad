@@ -176,7 +176,7 @@ public class App {
             fullName = getNonEmptyString("Full Name");
             classPlacement = getStringLimit(2, "Class", 2).toUpperCase();
             studyProgram = getStringLimit(2, "Study Program", 2).toUpperCase();
-            sex = getStringLimit(1, "sex", 1).toUpperCase();
+            sex = specificStringLimit("L", "sex", "P", 1, 1).toUpperCase();
             for (int i = 0; i < students.length; i++) {
                 if (nim.equals(students[i][0])) {
                     clearConsole();
@@ -217,6 +217,16 @@ public class App {
                 predicate = newPredicate;
                 equivalentValue = newEquivalentValue;
                 renderStudentsTable("Data's Student", students);
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                userInput.nextLine().trim();
+                clearConsole();
+            }
+            renderStringWithLn("Do you want to input student again?");
+            String choice = specificStringLimit("y", "Answer", "n", 1, 1);
+            if (choice.equalsIgnoreCase("y")) {
+                isFind = false;
+            } else {
+                isFind = true;
                 renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
@@ -322,6 +332,17 @@ public class App {
                 predicate = newPredicate;
                 equivalentValue = newEquivalentValue;
                 renderCourseTable("Course data", course);
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                userInput.nextLine().trim();
+                clearConsole();
+            }
+
+            renderStringWithLn("Do you want to input course again?");
+            String choice = specificStringLimit("y", "Answer", "n", 1, 1);
+            if (choice.equalsIgnoreCase("y")) {
+                isFind = false;
+            } else {
+                isFind = true;
                 renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
                 userInput.nextLine().trim();
                 clearConsole();
@@ -672,7 +693,6 @@ public class App {
                 "| No.  |    Course Code     |               Course Name              | SKS | Value (Number) | Value (Letter) | Value (Weight) |     Predicate    |");
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+-----+----------------+----------------+----------------+------------------+");
-
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
             if ((gradesLetter[indexStudent][i] == null) && (predicate[indexStudent][i] == null)) {
@@ -719,6 +739,7 @@ public class App {
             renderString(string + " :");
             input = userInput.nextLine();
             if ((input.length() <= max) && (!(input.length() < min))) {
+
                 return input;
             } else if (input.length() < min) {
                 if (input.length() == 0) {
@@ -746,6 +767,35 @@ public class App {
                 renderStringWithLn(ERROR + string + " doesn't have to be empty" + RESETCOLOR);
             } else {
                 return input;
+            }
+        }
+    }
+
+    static String specificStringLimit(String a, String string, String b, int max, int min) {
+        String input;
+        while (true) {
+            renderString(string + " :");
+            input = userInput.nextLine();
+            if ((input.length() <= max) && (!(input.length() < min))) {
+
+                if ((!input.equalsIgnoreCase(a)) && (!input.equalsIgnoreCase(b))) {
+                    clearConsole();
+                    renderStringWithLn(ERROR + "Wrong Input. You must input " + a + " / " + b + RESETCOLOR);
+                } else {
+                    return input;
+                }
+            } else if (input.length() < min) {
+                if (input.length() == 0) {
+                    clearConsole();
+                    renderStringWithLn(ERROR + string + " doesn't have to be empty" + RESETCOLOR);
+                }
+                renderStringWithLn(string + " has to be " + min + " digit");
+                renderStringWithLn(CONTINUE + "press enter to continue..." + RESETCOLOR);
+                userInput.nextLine().trim();
+                clearConsole();
+            } else {
+                clearConsole();
+                renderStringWithLn(ERROR + string + " cannot be more than " + max + " digit" + RESETCOLOR);
             }
         }
     }
