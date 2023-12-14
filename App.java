@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class App {
     static Scanner userInput = new Scanner(System.in);
@@ -502,7 +500,6 @@ public class App {
 
     static void studentsGradeReport() {
 
-        Arrays.sort(students, Comparator.comparing(student -> student[1]));
         renderStringWithLn("-------------------------------------");
         renderStringWithLn("|       Student Grade Reports       |");
         renderStringWithLn("-------------------------------------");
