@@ -475,7 +475,7 @@ public class App {
                     studentIndex = i;
                     isFind = true;
                     break;
-                } else if (nimInput.equals(students[i][0])) {
+                } else {
                     isFind = false;
                 }
             }
