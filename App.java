@@ -611,7 +611,7 @@ public class App {
         renderStringWithLn(
                 "+------+--------------------+----------------------------------------+--------------------+----------------+------+------------+");
         Double totResult = 0.0, totSks = 0.0, ip = 0.0;
-        String status = "";
+        String status = null;
         for (int i = 0; i < course.length; i++) {
             String[] newCourse = course[i];
             Double result = Double.parseDouble(newCourse[2]) * equivalentValue[indexStudent][i];
@@ -637,7 +637,7 @@ public class App {
         System.out.printf("| %-124s |\n", "IP = " + ipDecimal);
         for (int i = 0; i < course.length; i++) {
             if (gradesLetter[indexStudent][i] == null) {
-                status = null;
+                status = "-";
                 break;
             }
             if (gradesLetter[indexStudent][i] == "E") {
